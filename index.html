@@ -2,9 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- 모바일 기기 뷰포트 설정 (필수) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>바이브 코딩 입문자를 위한 웹 서비스 지도 (모바일 최적화)</title>
+    <title>바이브 코딩 입문자를 위한 웹 서비스 지도 완결판 (Node.js 포함)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Jua&display=swap" rel="stylesheet">
@@ -17,6 +16,8 @@
             --bg-color: #f8fafc;
             --text-main: #1e293b;
             --text-light: #64748b;
+            --node-color: #16a34a; /* Node.js Green */
+            --npm-color: #dc2626;  /* NPM Red */
             --html-color: #ea580c;
             --css-color: #2563eb;
             --js-color: #ca8a04;
@@ -36,7 +37,7 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            word-break: keep-all; /* 한글 단어 끊김 방지 */
+            word-break: keep-all;
             overflow-wrap: break-word;
         }
 
@@ -52,10 +53,7 @@
             background: var(--primary); margin: 15px auto 0; border-radius: 3px;
         }
 
-        .section-desc {
-            text-align: center; color: var(--text-light); font-size: 1.1rem;
-            margin-bottom: 40px;
-        }
+        .section-desc { text-align: center; color: var(--text-light); font-size: 1.1rem; margin-bottom: 40px; }
 
         /* Header */
         header {
@@ -88,25 +86,31 @@
             background: white; border-radius: 24px; padding: 40px 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.05); margin-top: -30px; position: relative; z-index: 10;
         }
-        .flow-diagram { display: flex; justify-content: space-between; position: relative; margin-top: 30px; }
         
-        /* 데스크톱 연결선 */
-        .desktop-line {
-            position: absolute; top: 40px; left: 40px; right: 40px;
-            height: 4px; background: #e2e8f0; z-index: 0;
+        .foundation-box {
+            background: #ecfdf5; border: 2px dashed var(--node-color); padding: 15px;
+            border-radius: 12px; text-align: center; margin-bottom: 30px;
         }
-        /* 모바일 연결선 (기본 숨김) */
-        .mobile-line { display: none; }
+        .foundation-box h3 { color: #047857; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
 
-        .flow-step { position: relative; z-index: 1; text-align: center; width: 18%; background: white; }
+        .flow-diagram { display: flex; justify-content: space-between; position: relative; }
+        .desktop-line { position: absolute; top: 40px; left: 30px; right: 30px; height: 4px; background: #e2e8f0; z-index: 0; }
+        .mobile-line { display: none; }
+        .flow-step { position: relative; z-index: 1; text-align: center; width: 19%; background: white; }
         .step-icon-wrap {
             width: 80px; height: 80px; background: white; border: 4px solid var(--primary);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px; font-size: 1.8rem; color: var(--primary);
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+            margin: 0 auto 15px; font-size: 1.8rem; color: var(--primary); box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
         }
-        .flow-step h3 { font-size: 1.1rem; color: #1e293b; margin-bottom: 5px; font-weight: 700; }
+        .flow-step h3 { font-size: 1.05rem; color: #1e293b; margin-bottom: 5px; font-weight: 700; }
         .flow-step p { font-size: 0.85rem; color: #64748b; line-height: 1.4;}
+
+        /* Sec 0: Node.js (New) */
+        .node-container { display: flex; gap: 20px; align-items: stretch; }
+        .node-card { flex: 1; background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; justify-content: center;}
+        .npm-card { flex: 1; background: #fef2f2; border: 2px solid #fecaca; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; justify-content: center;}
+        .node-icon { font-size: 3rem; margin-bottom: 15px; color: var(--node-color); }
+        .npm-icon { font-size: 3rem; margin-bottom: 15px; color: var(--npm-color); }
 
         /* Sec 1: Blocks */
         .building-blocks { display: flex; gap: 20px; margin-bottom: 25px;}
@@ -115,8 +119,6 @@
         .block-card.css { border-top-color: var(--css-color); }
         .block-card.js { border-top-color: var(--js-color); }
         .block-icon { font-size: 2.2rem; margin-bottom: 10px; color: #475569;}
-        .block-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: #334155;}
-        
         .state-box { background: #e6fffa; border: 2px dashed var(--state-color); padding: 20px; border-radius: 16px; display: flex; align-items: center; gap: 20px; }
 
         /* Sec 2: Split Space */
@@ -132,20 +134,16 @@
             display: flex; align-items: center; gap: 8px; justify-content: center;
         }
 
-        /* Sec 3, 4, 5: Grid Layouts */
+        /* Grid Layouts (Sec 3, 4, 5) */
         .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-card { padding: 25px; border-radius: 16px; display: flex; flex-direction: column; }
         .grid-icon { font-size: 2.5rem; margin-bottom: 15px; }
         .grid-card h3 { font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
-        .grid-card p { font-size: 0.95rem; }
         
-        /* Sec 3 */
         .storage-local { background: #fff1f2; border: 1px solid #fecdd3; }
         .storage-db { background: #ecfdf5; border: 1px solid #a7f3d0; }
-        /* Sec 4 (Git/GitHub) */
         .git-card { background: #fff7ed; border: 1px solid #fed7aa; }
         .github-card { background: #f8fafc; border: 1px solid #e2e8f0; }
-        /* Sec 5 (Local/Deploy) */
         .env-local { background: #f1f5f9; border: 1px solid #cbd5e1; }
         .env-deploy { background: #e0e7ff; border: 1px solid #c7d2fe; }
 
@@ -163,56 +161,40 @@
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
-            /* 헤더 & 타이틀 축소 */
             header { padding: 60px 15px 40px; }
             header h1 { font-size: 2.2rem; }
             header p { font-size: 1rem; }
             .container { padding: 30px 15px; }
             h2.section-title { font-size: 1.8rem; }
             .section-desc { font-size: 1rem; margin-bottom: 25px; }
-
-            /* 카드 여백 축소 */
             .detail-card { padding: 25px 15px; }
 
-            /* 빅픽처 섹션 (수직 타임라인 형태로 변경) */
+            /* Big Picture Timeline */
             .big-picture-wrapper { padding: 30px 20px; }
             .flow-diagram { flex-direction: column; gap: 20px; align-items: flex-start; }
-            .desktop-line { display: none; } /* 가로선 숨김 */
-            .mobile-line {
-                display: block; position: absolute; left: 34px; top: 20px; bottom: 20px;
-                width: 3px; background: #e2e8f0; z-index: 0;
-            }
+            .desktop-line { display: none; }
+            .mobile-line { display: block; position: absolute; left: 34px; top: 20px; bottom: 20px; width: 3px; background: #e2e8f0; z-index: 0; }
             .flow-step { width: 100%; display: flex; align-items: center; text-align: left; background: transparent; padding: 0; }
-            .step-icon-wrap { 
-                margin: 0 15px 0 0; width: 60px; height: 60px; font-size: 1.4rem; flex-shrink: 0;
-                background: white; position: relative; z-index: 2; border-width: 3px;
-            }
+            .step-icon-wrap { margin: 0 15px 0 0; width: 60px; height: 60px; font-size: 1.4rem; flex-shrink: 0; background: white; position: relative; z-index: 2; border-width: 3px; }
             .step-content { flex-grow: 1; }
-            .flow-step h3 { margin-bottom: 2px; }
 
-            /* 화면 만들기 (블록 세로 배치) */
+            /* Sec 0: Node */
+            .node-container { flex-direction: column; gap: 15px; }
+            /* Sec 1: Blocks */
             .building-blocks { flex-direction: column; gap: 15px; }
             .state-box { flex-direction: column; text-align: center; gap: 15px; padding: 15px; }
             .state-box i { font-size: 2.5rem; }
 
-            /* 역할 분리 (수직 분리 및 API 브릿지 변경) */
+            /* Sec 2: Split Space */
             .split-space { flex-direction: column; border-width: 2px; }
             .space-half { padding: 30px 15px; }
-            .api-bridge {
-                position: static; transform: none; border-radius: 0; border-left: none; border-right: none;
-                width: 100%; text-align: center; box-shadow: none;
-                border-top: 2px solid #e2e8f0; border-bottom: 2px solid #e2e8f0; padding: 10px;
-            }
+            .api-bridge { position: static; transform: none; border-radius: 0; border-left: none; border-right: none; width: 100%; text-align: center; box-shadow: none; border-top: 2px solid #e2e8f0; border-bottom: 2px solid #e2e8f0; padding: 10px; }
 
-            /* 그리드 레이아웃 (1열로 변경) */
+            /* Grids */
             .split-grid, .guide-grid { grid-template-columns: 1fr; gap: 15px; }
             .grid-card { padding: 20px; }
-            .grid-icon { font-size: 2rem; }
 
-            /* 생존 가이드 축소 */
             .survival-section { padding: 25px 15px; margin-top: 30px; border-width: 2px; }
-            
-            /* 프롬프트 박스 폰트 최적화 */
             .prompt-box { padding: 15px; font-size: 0.95rem; }
         }
     </style>
@@ -221,14 +203,19 @@
 
     <header>
         <h1>바이브 코딩 완결판 지도 🗺️</h1>
-        <p>무작정 AI에게 코드를 찍어내라고 하기 전에 꼭 알아야 할 5단계 핵심 원리.<br>비유를 통해 뼈대를 잡고, (괄호) 안의 기술 용어로 전문가처럼 프롬프트를 지휘하세요.</p>
+        <p>AI에게 무작정 코드를 찍어내라고 하기 전에 꼭 알아야 할 기초 공사와 5단계 핵심 원리.<br>비유를 통해 뼈대를 잡고, (괄호) 안의 기술 용어로 전문가처럼 프롬프트를 지휘하세요.</p>
     </header>
 
-    <!-- 0. Big Picture (5 Steps) -->
+    <!-- Big Picture -->
     <section class="container" style="padding-top: 0;">
         <div class="big-picture-wrapper">
-            <h2 class="section-title">👀 한눈에 보는 웹 제작 5단계</h2>
+            <h2 class="section-title">👀 한눈에 보는 웹 제작 로드맵</h2>
             
+            <div class="foundation-box">
+                <h3><i class="fa-brands fa-node-js"></i> 0단계. 기초 공사 (Node.js & npm)</h3>
+                <p style="font-size: 0.9rem; color: #475569; margin-top: 5px;">내 컴퓨터에서 최신 웹 앱(React 등)을 만들기 위해 가장 먼저 설치해야 하는 '전기 공사'와 '식자재 트럭'</p>
+            </div>
+
             <div class="flow-diagram">
                 <div class="desktop-line"></div>
                 <div class="mobile-line"></div>
@@ -237,42 +224,64 @@
                     <div class="step-icon-wrap"><i class="fa-solid fa-hammer"></i></div>
                     <div class="step-content">
                         <h3>1. 화면 만들기</h3>
-                        <p>뼈대를 잡고 예쁘게 꾸밉니다. (HTML/CSS/JS)</p>
+                        <p>뼈대와 디자인 (HTML/CSS/JS)</p>
                     </div>
                 </div>
                 <div class="flow-step">
                     <div class="step-icon-wrap"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
                     <div class="step-content">
                         <h3>2. 역할 나누기</h3>
-                        <p>메뉴판을 통해 홀과 주방이 소통합니다. (Front/Back)</p>
+                        <p>홀과 주방의 분리 (Front/Back)</p>
                     </div>
                 </div>
                 <div class="flow-step">
                     <div class="step-icon-wrap"><i class="fa-solid fa-vault"></i></div>
                     <div class="step-content">
                         <h3>3. 데이터 보관</h3>
-                        <p>정보가 날아가지 않게 저장합니다. (Storage/DB)</p>
+                        <p>주머니와 금고 (Storage/DB)</p>
                     </div>
                 </div>
                 <div class="flow-step">
                     <div class="step-icon-wrap" style="border-color: var(--git-color); color: var(--git-color);"><i class="fa-solid fa-code-commit"></i></div>
                     <div class="step-content">
                         <h3>4. 코드 백업</h3>
-                        <p>실수에 대비해 세이브 기록을 남깁니다. (Git/GitHub)</p>
+                        <p>안전한 세이브 (Git/GitHub)</p>
                     </div>
                 </div>
                 <div class="flow-step">
                     <div class="step-icon-wrap"><i class="fa-solid fa-rocket"></i></div>
                     <div class="step-content">
                         <h3>5. 세상에 공개</h3>
-                        <p>완성된 앱을 클라우드에 배포합니다. (Local/Deploy)</p>
+                        <p>클라우드 배포 (Local/Deploy)</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Section 1 -->
+    <!-- NEW: Step 0. Node.js -->
+    <section class="container">
+        <h2 class="section-title">0. 기초 공사 (전기와 식자재 배달)</h2>
+        <p class="section-desc">요즘 웹 개발은 단순한 문서 작성이 아닙니다. 로컬(내 PC)에 공장을 세워야 합니다.</p>
+        
+        <div class="detail-card">
+            <div class="node-container">
+                <div class="node-card">
+                    <i class="fa-brands fa-node-js node-icon"></i>
+                    <h3 style="color: #15803d; font-size: 1.4rem; margin-bottom: 5px;">Node.js (마법의 작업장 / 전기)</h3>
+                    <p style="color: #475569; font-size: 0.95rem;">원래 브라우저(손님 테이블)에서만 놀던 자바스크립트를 내 컴퓨터 전체에서 쓸 수 있게 해줍니다. <b>React, Vite 같은 최신 프레임워크를 돌리려면 이 기초 전기 공사가 반드시 선행</b>되어야 합니다.</p>
+                </div>
+                <div class="npm-card">
+                    <i class="fa-brands fa-npm npm-icon"></i>
+                    <h3 style="color: #b91c1c; font-size: 1.4rem; margin-bottom: 5px;">npm (식자재 도매상 트럭)</h3>
+                    <p style="color: #475569; font-size: 0.95rem;">Node.js를 깔면 딸려옵니다. 전 세계 개발자들이 만들어둔 수백만 개의 코드 부품(달력, 버튼 등)을 내 프로젝트로 즉시 배달해 주는 <b>패키지 매니저</b>입니다.</p>
+                </div>
+            </div>
+            <div class="prompt-box">"내 로컬 컴퓨터에 기초 공사인 <b>(Node.js)</b>가 설치되어 있어. 여기서 <b>(npm)</b> 명령어를 사용해서 <b>(Vite 기반의 React 프로젝트)</b>를 새로 생성하고 실행하는 터미널 명령어를 순서대로 알려줘."</div>
+        </div>
+    </section>
+
+    <!-- Step 1 -->
     <section class="container">
         <h2 class="section-title">1. 화면 만들기 (건축)</h2>
         <div class="detail-card">
@@ -285,14 +294,14 @@
                 <i class="fa-solid fa-clipboard-list"></i>
                 <div>
                     <h3 style="color: #0f766e; margin-bottom: 5px;">현대 웹의 마법: 상태 (State)</h3>
-                    <p style="color: #334155; font-size: 0.95rem;">과거엔 메뉴 하나가 바뀌면 식당 전체를 새로고침해야 했습니다. 지금은 <b>상태(State)</b>라는 스마트 메모장을 써서 데이터가 바뀌면 화면 깜빡임 없이 즉시 바뀝니다.</p>
+                    <p style="color: #334155; font-size: 0.95rem;">과거엔 메뉴 하나가 바뀌면 식당 전체를 새로고침해야 했습니다. 지금은 <b>상태(State)</b>라는 스마트 메모장을 써서 데이터가 바뀌면 화면 깜빡임 없이 즉시 그 부분만 바뀝니다.</p>
                 </div>
             </div>
             <div class="prompt-box">"화면을 꾸밀 때 <b>(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b>(React State 상태관리)</b>를 적용해줘."</div>
         </div>
     </section>
 
-    <!-- Section 2 -->
+    <!-- Step 2 -->
     <section class="container">
         <h2 class="section-title">2. 역할 분리와 소통 (메뉴판)</h2>
         <div class="detail-card">
@@ -300,9 +309,7 @@
                 <div class="space-half space-front">
                     <div class="space-title" style="color: var(--front-color);"><i class="fa-solid fa-store"></i> 프론트 (홀)</div>
                 </div>
-                
-                <div class="api-bridge"><i class="fa-solid fa-map-location-dot"></i> API (주문서/메뉴판)</div>
-                
+                <div class="api-bridge"><i class="fa-solid fa-map-location-dot"></i> API (메뉴판 양식)</div>
                 <div class="space-half space-back">
                     <div class="space-title" style="color: var(--back-color);"><i class="fa-solid fa-kitchen-set"></i> 백엔드 (주방)</div>
                 </div>
@@ -312,7 +319,7 @@
         </div>
     </section>
 
-    <!-- Section 3 -->
+    <!-- Step 3 -->
     <section class="container">
         <h2 class="section-title">3. 데이터 보관 (주머니 vs 금고)</h2>
         <div class="detail-card">
@@ -326,14 +333,13 @@
                     <p style="color: #475569;">서버 깊숙한 곳에 보관됩니다. <b>데이터가 안전하게 보존</b>되며, 로그인 시 어디서나 똑같은 데이터를 불러옵니다.</p>
                 </div>
             </div>
-            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b>(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 서버 금고 <b>(D1 같은 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
+            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b>(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 클라우드 금고 <b>(Cloudflare D1 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
         </div>
     </section>
 
-    <!-- Section 4 -->
+    <!-- Step 4 -->
     <section class="container">
         <h2 class="section-title">4. 코드 저장과 백업 (타임머신)</h2>
-        <p class="section-desc">AI 코딩 중 "갑자기 에러가 나요!"를 방지하는 필수 스킬입니다.</p>
         <div class="detail-card">
             <div class="split-grid">
                 <div class="grid-card git-card">
@@ -342,14 +348,14 @@
                 </div>
                 <div class="grid-card github-card">
                     <h3 style="color: var(--text-main);"><i class="fa-brands fa-github"></i> GitHub (클라우드 백업)</h3>
-                    <p style="color: #475569;">Git 기록을 인터넷에 백업하여 <b>전 세계에 앱을 배포(CI/CD)</b>할 수 있게 해줍니다.</p>
+                    <p style="color: #475569;">Git 기록을 인터넷에 백업하여 <b>전 세계에 앱을 자동 배포(CI/CD)</b>할 수 있게 해줍니다.</p>
                 </div>
             </div>
-            <div class="prompt-box">"지금 코드가 잘 작동해. 코드가 망가지기 전에 <b>(Git Commit)</b>으로 세이브 포인트를 만들고, <b>(GitHub Repository)</b>에 푸시(Push)하는 방법을 알려줘."</div>
+            <div class="prompt-box">"지금 작동이 잘 돼. 코드가 망가지기 전에 <b>(Git Commit)</b>으로 세이브 포인트를 만들고, <b>(GitHub Repository)</b>에 푸시(Push)하는 방법을 알려줘."</div>
         </div>
     </section>
 
-    <!-- Section 5 -->
+    <!-- Step 5 -->
     <section class="container">
         <h2 class="section-title">5. 세상에 공개 (정식 오픈)</h2>
         <div class="detail-card">
@@ -360,7 +366,7 @@
                 </div>
                 <div class="grid-card env-deploy">
                     <h3 style="color: var(--primary);"><i class="fa-solid fa-globe"></i> 배포 (Deploy) 환경</h3>
-                    <p style="color: #475569;">클라우드 서버에 코드를 올려 누구나 접속할 수 있는 도메인을 부여받습니다.</p>
+                    <p style="color: #475569;">클라우드 서버에 코드를 올려 누구나 접속할 수 있는 실제 도메인 주소를 부여받습니다.</p>
                 </div>
             </div>
             <div class="prompt-box">"로컬 테스트를 마쳤어. 아까 올려둔 <b>(GitHub)</b>의 코드를 <b>(Cloudflare Pages)</b> 클라우드에 자동 배포(Deploy)하는 가이드를 줘."</div>
@@ -377,15 +383,15 @@
                     <h3 style="color: #2563eb;"><i class="fa-solid fa-puzzle-piece"></i> 작게 쪼개기 (Iterative)</h3>
                     <ul class="step-list">
                         <li>"로그인 화면 뼈대(HTML) 짜줘."</li>
-                        <li>"그 다음 작동 로직(JS) 붙여."</li>
+                        <li>"그 다음 작동 로직(JS/State) 붙여."</li>
                         <li>"잘 됐으니 GitHub에 백업(Git)할게."</li>
                     </ul>
                 </div>
                 <div class="guide-card">
                     <h3 style="color: #dc2626;"><i class="fa-solid fa-bug"></i> 에러는 복붙이 생명</h3>
-                    <p style="color: #475569; font-size: 0.9rem;">빨간 에러창이 뜨면 당황하지 말고 그대로 복사해서 물어보세요.</p>
-                    <div class="error-box">TypeError: undefined...</div>
-                    <p style="color: #047857; background: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-top: 10px;">🪄 "이런 에러가 났어. 수정된 전체 코드 줘."</p>
+                    <p style="color: #475569; font-size: 0.9rem;">빨간 에러창이 뜨면 당황하지 말고 에러 로그를 그대로 복사해서 물어보세요.</p>
+                    <div class="error-box">npm ERR! code ENOENT...</div>
+                    <p style="color: #047857; background: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-top: 10px;">🪄 "터미널에 이런 에러가 났어. 해결 방법과 수정된 코드 줘."</p>
                 </div>
             </div>
         </div>
@@ -394,7 +400,7 @@
     <footer style="text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px;">
         <h2 style="font-size: 1.5rem; margin-bottom: 10px;">개념을 엮어내는 힘 🚀</h2>
         <p style="color: #94a3b8; font-size: 0.95rem;">
-            비유로 뼈대를 잡고, 괄호 안의 기술 용어로 명령하세요!
+            비유로 뼈대를 잡고, 괄호 안의 기술 용어로 전문가처럼 명령하세요!
         </p>
     </footer>
 
