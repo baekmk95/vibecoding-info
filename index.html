@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>바이브 코딩 입문자를 위한 웹 서비스 지도 완결판 (Node.js 포함)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -32,7 +31,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Noto Sans KR', sans-serif;
+            font-family: 'SUITE Variable', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
@@ -44,7 +43,7 @@
         .container { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
 
         h2.section-title {
-            font-family: 'Jua', sans-serif; font-size: 2.2rem; text-align: center;
+            font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 2.2rem; text-align: center;
             margin-bottom: 15px; color: #0f172a; position: relative;
         }
 
@@ -61,7 +60,7 @@
             text-align: center; padding: 80px 20px 60px;
             clip-path: polygon(0 0, 100% 0, 100% 97%, 0 100%);
         }
-        header h1 { font-family: 'Jua', sans-serif; font-size: 3rem; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); line-height: 1.2;}
+        header h1 { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 3rem; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); line-height: 1.2;}
         header p { font-size: 1.1rem; opacity: 0.9; max-width: 750px; margin: 0 auto; }
 
         /* Detail Cards & Prompt Box */
@@ -76,7 +75,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); line-height: 1.6;
         }
         .prompt-box::before {
-            content: '🪄 AI에게 이렇게 말해보세요!'; display: block; font-family: 'Jua', sans-serif;
+            content: '🪄 AI에게 이렇게 말해보세요!'; display: block; font-family: 'SUITE Variable', sans-serif; font-weight: 800;
             font-size: 1.1rem; color: #34d399; margin-bottom: 10px; letter-spacing: 0.5px;
         }
         .prompt-box b { color: #fcd34d; font-weight: normal; }
@@ -126,7 +125,7 @@
         .space-half { flex: 1; padding: 40px 20px; text-align: center; display: flex; flex-direction: column; justify-content: center;}
         .space-front { background-color: #f0fdfa; }
         .space-back { background-color: #f5f3ff; }
-        .space-title { font-family: 'Jua', sans-serif; font-size: 1.6rem; margin-bottom: 10px; }
+        .space-title { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: 10px; }
         .api-bridge {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: var(--api-color); color: white; padding: 12px 20px;
@@ -376,7 +375,7 @@
     <!-- Survival Guide -->
     <section class="container">
         <div class="survival-section">
-            <h2 style="font-family: 'Jua', sans-serif; font-size: 1.8rem; color: #b45309; text-align: center; margin-bottom: 10px;">🚑 바이브 코딩 생존 원칙</h2>
+            <h2 style="font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.8rem; color: #b45309; text-align: center; margin-bottom: 10px;">🚑 바이브 코딩 생존 원칙</h2>
             <p style="text-align: center; color: #92400e; font-size: 0.95rem; margin-bottom: 20px;">AI를 마법 지팡이처럼 한 번에 휘두르지 마세요.</p>
             <div class="guide-grid">
                 <div class="guide-card">
