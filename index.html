@@ -156,6 +156,18 @@
         .step-list li::before { content: '✅'; position: absolute; left: 0; top: 1px; font-size: 1.1rem;}
         .error-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: #991b1b; overflow-x: auto;}
 
+        /* Note box: 백엔드가 항상 필요한 건 아니에요 */
+        .note-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 25px 22px; margin-top: 25px; }
+        .note-title { font-size: 1.15rem; color: #334155; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .note-desc { color: #475569; font-size: 0.92rem; margin-bottom: 20px; line-height: 1.6; }
+        .note-front { background: #f0fdfa; border: 1px solid #99f6e4; }
+        .note-back { background: #f5f3ff; border: 1px solid #ddd6fe; }
+        .note-list { list-style: none; padding: 0; margin: 12px 0 0; }
+        .note-list li { position: relative; padding-left: 24px; margin-bottom: 9px; font-size: 0.9rem; color: #475569; line-height: 1.5; }
+        .note-list-ok li::before { content: '✅'; position: absolute; left: 0; top: 0; font-size: 0.85rem; }
+        .note-list-need li::before { content: '🔴'; position: absolute; left: 0; top: 1px; font-size: 0.75rem; }
+        .note-tip { margin-top: 18px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; font-size: 0.88rem; padding: 12px 14px; border-radius: 10px; line-height: 1.55; }
+
         /* =========================================
            CONCEPT MODAL (비전공자 기초개념 팝업)
            ========================================= */
@@ -327,7 +339,7 @@
                 <div class="node-card concept" data-concept="node">
                     <i class="fa-brands fa-node-js node-icon"></i>
                     <h3 style="color: #15803d; font-size: 1.4rem; margin-bottom: 5px;">Node.js (마법의 작업장 / 전기)</h3>
-                    <p style="color: #475569; font-size: 0.95rem;">원래 브라우저(손님 테이블)에서만 놀던 자바스크립트를 내 컴퓨터 전체에서 쓸 수 있게 해줍니다. <b>React, Vite 같은 최신 프레임워크를 돌리려면 이 기초 전기 공사가 반드시 선행</b>되어야 합니다.</p>
+                    <p style="color: #475569; font-size: 0.95rem;">원래 브라우저(손님 테이블)에서만 놀던 자바스크립트를 내 컴퓨터 전체에서 쓸 수 있게 해줍니다. <b><span class="concept-link" data-concept="react">React</span>, <span class="concept-link" data-concept="vite">Vite</span> 같은 최신 프레임워크를 돌리려면 이 기초 전기 공사가 반드시 선행</b>되어야 합니다.</p>
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
                 <div class="npm-card concept" data-concept="npm">
@@ -337,7 +349,7 @@
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"내 로컬 컴퓨터에 기초 공사인 <b class="concept-link" data-concept="node">(Node.js)</b>가 설치되어 있어. 여기서 <b class="concept-link" data-concept="npm">(npm)</b> 명령어를 사용해서 <b>(Vite 기반의 React 프로젝트)</b>를 새로 생성하고 실행하는 터미널 명령어를 순서대로 알려줘."</div>
+            <div class="prompt-box">"내 로컬 컴퓨터에 기초 공사인 <b class="concept-link" data-concept="node">(Node.js)</b>가 설치되어 있어. 여기서 <b class="concept-link" data-concept="npm">(npm)</b> 명령어를 사용해서 <b class="concept-link" data-concept="vite">(Vite 기반의 React 프로젝트)</b>를 새로 생성하고 실행하는 터미널 명령어를 순서대로 알려줘."</div>
         </div>
     </section>
 
@@ -353,19 +365,20 @@
                     <p style="color: #475569;">전 세계 개발자가 표준으로 쓰는 무료 주방입니다. 코드 편집·터미널·확장(Extension)이 한곳에 모여 있어, <b>모든 AI 주방의 뼈대</b>가 됩니다.</p>
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card env-deploy">
+                <div class="grid-card env-deploy concept" data-concept="aieditor">
                     <h3 style="color: var(--primary);"><i class="fa-solid fa-robot grid-icon" style="font-size: 1.8rem;"></i> AI 셰프 상주 주방 (래퍼)</h3>
                     <p style="color: #475569;">VS Code 주방 위에 'AI 셰프'를 상주시킨 도구들입니다. <b>(Cursor)</b>는 에디터 자체에, <b>(Claude Code · Codex)</b>는 터미널에서 AI가 직접 코드를 읽고 고칩니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
             <div class="state-box concept" data-concept="terminal" style="margin-top: 20px; background: #eef2ff; border-color: var(--primary);">
                 <i class="fa-solid fa-terminal" style="color: var(--primary);"></i>
                 <div>
                     <h3 style="color: #4338ca; margin-bottom: 5px;">주방의 주문 창구: 터미널 (Terminal) <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></h3>
-                    <p style="color: #334155; font-size: 0.95rem;">앞서 배운 <b>(npm)</b> 명령은 모두 이 <b>내장 터미널</b>에 입력합니다. 주방의 주문 단말기처럼, 내 컴퓨터에 직접 명령을 내리는 창구죠. <b>(Prettier 같은 포매터)</b> 확장을 더하면 코드도 깔끔하게 자동 플레이팅됩니다.</p>
+                    <p style="color: #334155; font-size: 0.95rem;">앞서 배운 <b>(npm)</b> 명령은 모두 이 <b>내장 터미널</b>에 입력합니다. 주방의 주문 단말기처럼, 내 컴퓨터에 직접 명령을 내리는 창구죠. <b class="concept-link" data-concept="prettier">(Prettier 같은 포매터)</b> 확장을 더하면 코드도 깔끔하게 자동 플레이팅됩니다.</p>
                 </div>
             </div>
-            <div class="prompt-box">"AI 셰프가 상주하는 <b>(Cursor / Claude Code)</b> 주방에서, <b>(내장 터미널)</b>을 열어 아까 만든 <b>(Vite 프로젝트)</b>를 실행하고, <b>(Prettier 포매터)</b>로 코드가 저장될 때마다 자동 정리되게 세팅하는 법을 알려줘."</div>
+            <div class="prompt-box">"AI 셰프가 상주하는 <b class="concept-link" data-concept="aieditor">(Cursor / Claude Code)</b> 주방에서, <b class="concept-link" data-concept="terminal">(내장 터미널)</b>을 열어 아까 만든 <b class="concept-link" data-concept="vite">(Vite 프로젝트)</b>를 실행하고, <b class="concept-link" data-concept="prettier">(Prettier 포매터)</b>로 코드가 저장될 때마다 자동 정리되게 세팅하는 법을 알려줘."</div>
         </div>
     </section>
 
@@ -385,7 +398,7 @@
                     <p style="color: #334155; font-size: 0.95rem;">과거엔 메뉴 하나가 바뀌면 식당 전체를 새로고침해야 했습니다. 지금은 <b>상태(State)</b>라는 스마트 메모장을 써서 데이터가 바뀌면 화면 깜빡임 없이 즉시 그 부분만 바뀝니다.</p>
                 </div>
             </div>
-            <div class="prompt-box">"화면을 꾸밀 때 <b class="concept-link" data-concept="css">(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b class="concept-link" data-concept="state">(React State 상태관리)</b>를 적용해줘."</div>
+            <div class="prompt-box">"화면을 꾸밀 때 <b class="concept-link" data-concept="tailwind">(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b class="concept-link" data-concept="state">(React State 상태관리)</b>를 적용해줘."</div>
         </div>
     </section>
 
@@ -405,6 +418,35 @@
                 </div>
             </div>
             <p style="margin-top: 15px; text-align: center; color: #475569; font-size: 0.95rem;">프론트엔드가 백엔드에 마음대로 요구할 수 없습니다. 주방장이 정해둔 <b class="concept-link" data-concept="api">메뉴판 양식(API)</b>에 맞춰 정확하게 요청해야 합니다.</p>
+
+            <div class="note-box">
+                <h3 class="note-title"><i class="fa-solid fa-circle-question"></i> 잠깐, 백엔드가 항상 필요한 건 아니에요!</h3>
+                <p class="note-desc">간단한 음료는 홀에서 바로 내드릴 수 있듯, 많은 서비스는 <b>프론트(홀)만으로</b>도 충분히 만들 수 있어요. '불을 써야 하는 요리'가 생길 때 비로소 주방(백엔드)이 필요해집니다.</p>
+                <div class="split-grid">
+                    <div class="grid-card note-front">
+                        <h3 style="color: var(--front-color);"><i class="fa-solid fa-circle-check"></i> 프론트만으로 충분해요 (홀에서 해결)</h3>
+                        <ul class="note-list note-list-ok">
+                            <li>소개·포트폴리오·랜딩 페이지</li>
+                            <li>계산기·단위 변환기 같은 도구</li>
+                            <li>내 기기에만 저장하는 메모·투두 (<b class="concept-link" data-concept="localstorage">로컬 스토리지</b>)</li>
+                            <li>공개 API를 직접 부르는 화면 (예: 날씨 조회)</li>
+                            <li>글이 고정된 정적 블로그</li>
+                        </ul>
+                    </div>
+                    <div class="grid-card note-back">
+                        <h3 style="color: var(--back-color);"><i class="fa-solid fa-fire-burner"></i> 이럴 땐 백엔드가 필요해요 (주방이 필요)</h3>
+                        <ul class="note-list note-list-need">
+                            <li>회원가입·로그인 (비밀번호 안전 보관·인증)</li>
+                            <li>여러 사용자가 데이터를 공유·동기화 (게시판·댓글·채팅)</li>
+                            <li>결제·주문 처리</li>
+                            <li>숨겨야 하는 비밀 키(API Key)가 필요한 작업</li>
+                            <li><b class="concept-link" data-concept="database">데이터베이스</b>에 영구 저장·검색, 이메일 발송 등</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="note-tip">💡 그래서 처음엔 <b>프론트부터 빠르게 만들어 보고</b>, 위 오른쪽 같은 기능이 필요해지는 순간 백엔드를 붙이는 순서를 추천해요.</p>
+            </div>
+
             <div class="prompt-box">"손님이 보는 <b class="concept-link" data-concept="frontend">(프론트 UI)</b>와 데이터를 검증하는 <b class="concept-link" data-concept="backend">(백엔드 로직)</b>을 분리하고, 이 둘이 데이터를 주고받을 수 있게 <b class="concept-link" data-concept="api">(RESTful API 엔드포인트)</b>를 만들어줘."</div>
         </div>
     </section>
@@ -425,7 +467,7 @@
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b class="concept-link" data-concept="localstorage">(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 클라우드 금고 <b class="concept-link" data-concept="database">(Cloudflare D1 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
+            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b class="concept-link" data-concept="localstorage">(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 클라우드 금고 <b class="concept-link" data-concept="d1">(Cloudflare D1 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
         </div>
     </section>
 
@@ -441,7 +483,7 @@
                 </div>
                 <div class="grid-card github-card concept" data-concept="github">
                     <h3 style="color: var(--text-main);"><i class="fa-brands fa-github"></i> GitHub (클라우드 백업)</h3>
-                    <p style="color: #475569;">Git 기록을 인터넷에 백업하여 <b>전 세계에 앱을 자동 배포(CI/CD)</b>할 수 있게 해줍니다.</p>
+                    <p style="color: #475569;">Git 기록을 인터넷에 백업하여 전 세계에 앱을 <b class="concept-link" data-concept="cicd">자동 배포(CI/CD)</b>할 수 있게 해줍니다.</p>
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
@@ -454,16 +496,18 @@
         <h2 class="section-title">5. 세상에 공개 (정식 오픈)</h2>
         <div class="detail-card">
             <div class="split-grid">
-                <div class="grid-card env-local">
+                <div class="grid-card env-local concept" data-concept="local">
                     <h3 style="color: #475569;"><i class="fa-solid fa-house-laptop"></i> 로컬 (Local) 환경</h3>
                     <p style="color: #475569;">내 컴퓨터(Localhost)에서만 접속하며 에러를 테스트하는 개발 환경입니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card env-deploy">
+                <div class="grid-card env-deploy concept" data-concept="deploy">
                     <h3 style="color: var(--primary);"><i class="fa-solid fa-globe"></i> 배포 (Deploy) 환경</h3>
-                    <p style="color: #475569;">클라우드 서버에 코드를 올려 누구나 접속할 수 있는 실제 도메인 주소를 부여받습니다.</p>
+                    <p style="color: #475569;">클라우드 서버에 코드를 올려 누구나 접속할 수 있는 실제 <span class="concept-link" data-concept="domain">도메인 주소</span>를 부여받습니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"로컬 테스트를 마쳤어. 아까 올려둔 <b>(GitHub)</b>의 코드를 <b>(Cloudflare Pages)</b> 클라우드에 자동 배포(Deploy)하는 가이드를 줘."</div>
+            <div class="prompt-box">"로컬 테스트를 마쳤어. 아까 올려둔 <b class="concept-link" data-concept="github">(GitHub)</b>의 코드를 <b class="concept-link" data-concept="pages">(Cloudflare Pages)</b> 클라우드에 자동 배포(Deploy)하는 가이드를 줘."</div>
         </div>
     </section>
 
@@ -475,24 +519,28 @@
         <div class="detail-card">
             <p style="text-align: center; color: #475569; font-size: 0.95rem; margin-bottom: 25px;">챗봇처럼 '말로만' 주문받는 것과, 내 주방에서 '직접 칼을 잡고 요리하는' 것의 결정적 차이가 바로 이 하네스에 있습니다.</p>
             <div class="split-grid">
-                <div class="grid-card storage-db">
+                <div class="grid-card storage-db concept" data-concept="rules">
                     <h3 style="color: #047857;"><i class="fa-solid fa-book grid-icon" style="font-size: 1.8rem;"></i> 하우스 레시피 (Rules)</h3>
                     <p style="color: #475569;">우리 가게의 맛·플레이팅 규칙을 적어두면 매번 설명할 필요가 없습니다. 예: Claude Code의 <b>(CLAUDE.md)</b>, Cursor의 <b>(.cursorrules)</b>. 셰프에게 건네는 '하우스 레시피'죠.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card env-deploy">
+                <div class="grid-card env-deploy concept" data-concept="tools">
                     <h3 style="color: var(--primary);"><i class="fa-solid fa-utensils grid-icon" style="font-size: 1.8rem;"></i> 조리 도구 (Tools)</h3>
                     <p style="color: #475569;">AI가 직접 재료를 손질(파일 편집)하고, 식재료를 찾고(검색), <b>(터미널 명령)</b>이라는 불까지 다루는 능력. 단순 챗봇과의 결정적 차이를 만드는 '진짜 칼과 불'입니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card git-card">
+                <div class="grid-card git-card concept" data-concept="mcp">
                     <h3 style="color: var(--git-color);"><i class="fa-solid fa-truck grid-icon" style="font-size: 1.8rem;"></i> 식자재 거래처 연결 (MCP)</h3>
                     <p style="color: #475569;">GitHub·데이터베이스·디자인 도구 등 외부 시스템에 AI를 잇는 표준 납품 라인입니다. <b>(MCP, Model Context Protocol)</b> 덕분에 주방 밖 거래처와도 연결됩니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card storage-local">
+                <div class="grid-card storage-local concept" data-concept="permissions">
                     <h3 style="color: #be123c;"><i class="fa-solid fa-clipboard-check grid-icon" style="font-size: 1.8rem;"></i> 서빙 전 검수 (Permissions)</h3>
                     <p style="color: #475569;">재료 폐기·메뉴 출시(배포)처럼 돌이키기 어려운 작업 전에 내 확인을 받게 하는 안전장치입니다. <b>(승인/Approval)</b>로 설익은 요리가 손님에게 나가는 걸 막죠.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"앞으로 이 주방에선 <b>(설명은 한국어로)</b> 하고 <b>(들여쓰기는 2칸)</b>을 지켜줘. 이 레시피 규칙을 <b>(CLAUDE.md 파일)</b>에 저장해서 매번 기억하게 해줘. 그리고 코드를 <b>(삭제하기 전)</b>엔 꼭 나한테 먼저 물어봐."</div>
+            <div class="prompt-box">"앞으로 이 주방에선 <b>(설명은 한국어로)</b> 하고 <b>(들여쓰기는 2칸)</b>을 지켜줘. 이 레시피 규칙을 <b class="concept-link" data-concept="rules">(CLAUDE.md 파일)</b>에 저장해서 매번 기억하게 해줘. 그리고 코드를 <b class="concept-link" data-concept="permissions">(삭제하기 전)</b>엔 꼭 나한테 먼저 물어봐."</div>
         </div>
     </section>
 
@@ -660,6 +708,126 @@
                 why: "컴퓨터가 고장 나도 코드가 안전하고, 여기 올린 코드로 자동 배포까지 연결할 수 있어요.",
                 more: ["코드를 올리는 걸 '푸시(push)'라고 해요.", "프로젝트 저장소를 'Repository(레포)'라고 불러요."],
                 prompt: "내 코드를 <b>(GitHub)</b> 저장소에 올리는(push) 방법을 처음부터 알려줘."
+            },
+            aieditor: {
+                title: "AI 코드 에디터 (Cursor · Claude Code)", icon: "fa-solid fa-robot", color: "#4f46e5",
+                analogy: "AI 셰프가 상주하는 '주방'이에요.",
+                simple: "일반 에디터에 AI를 붙여, 채팅으로 시키면 코드를 직접 읽고 고쳐주는 도구예요. Cursor(에디터형), Claude Code·Codex(터미널형)가 대표적입니다.",
+                why: "복사·붙여넣기 없이 AI가 내 프로젝트 안에서 바로 작업해줘서, 말로 시키는 '바이브 코딩'이 가능해져요.",
+                more: ["Cursor는 VS Code에 AI를 얹은 형태예요.", "Claude Code는 터미널에서 대화하며 작업합니다."],
+                prompt: "<b>(Cursor / Claude Code)</b>로 이 프로젝트를 열고 로그인 기능을 추가해줘."
+            },
+            rules: {
+                title: "Rules (CLAUDE.md / .cursorrules)", icon: "fa-solid fa-book", color: "#047857",
+                analogy: "셰프에게 건네는 우리 가게 '하우스 레시피'예요.",
+                simple: "AI가 이 프로젝트에서 늘 지켰으면 하는 규칙·취향을 적어두는 파일이에요. (예: Claude Code의 CLAUDE.md, Cursor의 .cursorrules)",
+                why: "매번 같은 설명을 반복하지 않아도, AI가 이 파일을 먼저 읽고 내 스타일대로 작업해줘요.",
+                more: ["'한국어로 설명해', '들여쓰기는 2칸' 같은 규칙을 적어둬요.", "프로젝트 폴더 맨 위에 두면 자동으로 참고합니다."],
+                prompt: "앞으로 설명은 한국어로 하고 들여쓰기는 2칸을 지켜줘. 이 규칙을 <b>(CLAUDE.md)</b>에 저장해줘."
+            },
+            tools: {
+                title: "Tools (도구)", icon: "fa-solid fa-utensils", color: "#4f46e5",
+                analogy: "AI 셰프가 직접 쥐는 '진짜 칼과 불'이에요.",
+                simple: "AI가 말만 하는 게 아니라 실제로 파일을 읽고 고치고, 검색하고, 터미널 명령을 실행하는 능력이에요.",
+                why: "이 도구가 있어야 AI가 '코드를 알려주는' 수준을 넘어 '직접 작업해주는' 수준이 됩니다.",
+                more: ["파일 편집·검색·터미널 실행이 대표적인 도구예요.", "단순 채팅 AI와 코딩 AI를 가르는 핵심 차이예요."],
+                prompt: "이 프로젝트 폴더에서 'TODO'라고 적힌 부분을 직접 찾아서 고쳐줘."
+            },
+            mcp: {
+                title: "MCP (Model Context Protocol)", icon: "fa-solid fa-truck", color: "#f14e32",
+                analogy: "AI 주방과 외부 거래처를 잇는 '표준 납품 라인'이에요.",
+                simple: "AI를 GitHub·데이터베이스·디자인 툴 같은 외부 시스템과 연결해주는 공개 표준(콘센트 규격)이에요.",
+                why: "이게 있으면 AI가 채팅창 밖의 실제 도구·데이터까지 직접 다룰 수 있어요.",
+                more: ["콘센트 규격처럼 표준이라, 다양한 도구를 같은 방식으로 꽂을 수 있어요.", "예: GitHub MCP를 붙이면 이슈·PR을 직접 다뤄요."],
+                prompt: "<b>(GitHub MCP)</b>를 연결해서 열려 있는 이슈 목록을 불러와줘."
+            },
+            permissions: {
+                title: "Permissions (권한 / 승인)", icon: "fa-solid fa-clipboard-check", color: "#be123c",
+                analogy: "요리를 손님에게 내보내기 전 '서빙 전 검수'예요.",
+                simple: "파일 삭제·배포처럼 되돌리기 어려운 작업을 AI가 하기 전에, 나에게 먼저 허락을 받게 하는 안전장치예요.",
+                why: "AI가 실수로 중요한 걸 지우거나 엉뚱한 걸 배포하는 사고를 막아줘요.",
+                more: ["'삭제 전에는 꼭 물어봐' 같은 규칙으로 설정할 수 있어요.", "자주 쓰는 안전한 명령은 미리 허용해 매번 묻지 않게 할 수도 있어요."],
+                prompt: "파일을 삭제하거나 배포하기 전에는 꼭 나한테 먼저 확인받고 진행해줘."
+            },
+            local: {
+                title: "로컬 환경 (Localhost)", icon: "fa-solid fa-house-laptop", color: "#475569",
+                analogy: "손님을 받기 전 '내 집 연습 주방'이에요.",
+                simple: "내 컴퓨터 안에서만 돌아가는 개발·테스트 환경이에요. 주소창에 보통 localhost로 접속해요.",
+                why: "남에게 공개하기 전에 마음껏 고치고 에러를 확인하는, 나만의 안전한 연습 공간이에요.",
+                more: ["나만 볼 수 있어서 실수해도 괜찮아요.", "여기서 충분히 테스트한 뒤 배포해요."],
+                prompt: "지금 만든 앱을 내 컴퓨터<b>(localhost)</b>에서 실행해 미리 보는 방법을 알려줘."
+            },
+            deploy: {
+                title: "배포 (Deploy)", icon: "fa-solid fa-globe", color: "#4f46e5",
+                analogy: "드디어 식당을 '정식 오픈'하는 거예요.",
+                simple: "내 코드를 클라우드 서버에 올려, 누구나 인터넷 주소로 접속할 수 있게 공개하는 일이에요.",
+                why: "배포해야 비로소 친구·손님이 실제로 내 앱을 쓸 수 있어요.",
+                more: ["Cloudflare Pages·Vercel 같은 서비스로 쉽게 배포해요.", "보통 GitHub에 올린 코드를 자동으로 배포하게 연결해요."],
+                prompt: "GitHub에 올린 코드를 <b>(Cloudflare Pages)</b>로 배포하는 방법을 알려줘."
+            },
+            cicd: {
+                title: "CI/CD (자동 배포)", icon: "fa-solid fa-arrows-rotate", color: "#0f766e",
+                analogy: "코드만 올리면 알아서 굽고 내어주는 '자동 주방 라인'이에요.",
+                simple: "코드를 GitHub에 올리면 검사하고 배포까지 자동으로 이어지게 만드는 흐름이에요.",
+                why: "매번 손으로 배포할 필요 없이, 저장만 하면 최신 버전이 자동으로 세상에 반영돼요.",
+                more: ["CI = 자동 검사, CD = 자동 배포를 뜻해요.", "사람이 빠뜨리기 쉬운 단계를 자동화해 실수를 줄여요."],
+                prompt: "GitHub에 푸시하면 자동으로 배포되도록 <b>(CI/CD)</b>를 설정하는 방법을 알려줘."
+            },
+            tailwind: {
+                title: "Tailwind CSS", icon: "fa-solid fa-palette", color: "#06b6d4",
+                analogy: "미리 만들어 둔 '양념·소스 세트'로 빠르게 간을 맞추는 거예요.",
+                simple: "CSS를 일일이 쓰는 대신, 미리 정의된 짧은 클래스 이름을 HTML에 붙여 빠르게 디자인하는 도구예요.",
+                why: "디자인 파일을 따로 오가지 않고 화면을 만들면서 바로 스타일을 입혀, 개발 속도가 빨라요.",
+                more: ["예: <b>text-center</b>, <b>p-4</b> 처럼 짧은 클래스를 붙여요.", "AI에게 'Tailwind로 만들어줘'라고 하면 잘 맞춰줍니다."],
+                prompt: "버튼을 둥글고 그림자 있게 <b>(Tailwind CSS)</b>로 꾸며줘."
+            },
+            react: {
+                title: "React", icon: "fa-brands fa-react", color: "#0ea5e9",
+                analogy: "화면을 '레고 블록(부품)'처럼 조립하는 방식이에요.",
+                simple: "버튼·카드 같은 화면 조각을 '컴포넌트'라는 부품으로 만들어 재사용하며 앱을 짜는, 가장 인기 있는 자바스크립트 도구예요.",
+                why: "같은 디자인을 복붙하지 않고 부품으로 재사용하고, 데이터(State)가 바뀌면 화면이 자동으로 갱신돼요.",
+                more: ["화면 조각 하나를 '컴포넌트(Component)'라고 불러요.", "Node.js가 깔려 있어야 설치·실행할 수 있어요."],
+                prompt: "<b>(React)</b>로 재사용 가능한 버튼 컴포넌트를 만들어줘."
+            },
+            vite: {
+                title: "Vite", icon: "fa-solid fa-bolt", color: "#8b5cf6",
+                analogy: "주방에 불을 순식간에 켜주는 '초고속 점화기'예요.",
+                simple: "React 같은 프로젝트를 빠르게 시작하고, 코드를 고치면 즉시 화면에 반영해주는 개발 도구예요.",
+                why: "예전 도구보다 실행·새로고침이 훨씬 빨라서, 고치는 즉시 결과를 확인하며 작업할 수 있어요.",
+                more: ["npm으로 'Vite 프로젝트'를 만들며 시작해요.", "개발 중엔 저장하면 바로 화면이 바뀌어요(핫 리로드)."],
+                prompt: "<b>(Vite)</b>로 새 React 프로젝트를 만드는 명령어를 알려줘."
+            },
+            prettier: {
+                title: "Prettier (포매터)", icon: "fa-solid fa-broom", color: "#c026d3",
+                analogy: "다 만든 요리를 예쁘게 '플레이팅'해주는 도구예요.",
+                simple: "들여쓰기·줄바꿈·따옴표 같은 코드 모양새를 자동으로 깔끔하게 정리해주는 도구예요.",
+                why: "코드 모양을 손으로 맞출 필요 없이 저장만 하면 일관되게 정리돼, 읽기 쉬워져요.",
+                more: ["보통 '저장할 때 자동 정리'로 설정해 둬요.", "VS Code 확장으로 간단히 깔 수 있어요."],
+                prompt: "저장할 때마다 <b>(Prettier)</b>로 코드가 자동 정리되게 설정하는 법을 알려줘."
+            },
+            d1: {
+                title: "Cloudflare D1", icon: "fa-solid fa-database", color: "#f6821f",
+                analogy: "클라우드에 두는 '간편한 중앙 금고'예요.",
+                simple: "Cloudflare가 제공하는 클라우드 데이터베이스예요. 표 형태로 저장하는 SQL 방식이고, 서버를 직접 관리할 필요가 없어요.",
+                why: "복잡한 서버 설치 없이도 여러 사용자의 데이터를 안전하게 보관·조회할 수 있어요.",
+                more: ["SQLite라는 친숙한 방식을 기반으로 해요.", "Cloudflare Pages로 배포한 앱과 잘 연결돼요."],
+                prompt: "할 일 목록을 <b>(Cloudflare D1)</b> 데이터베이스에 저장하도록 만들어줘."
+            },
+            pages: {
+                title: "Cloudflare Pages", icon: "fa-solid fa-cloud-arrow-up", color: "#f6821f",
+                analogy: "내 가게를 인터넷에 '정식 오픈'시켜주는 클라우드 임대 매장이에요.",
+                simple: "GitHub에 올린 코드를 자동으로 받아 인터넷에 배포해주는 무료 호스팅 서비스예요.",
+                why: "복잡한 서버 없이, 코드를 올리기만 하면 누구나 접속할 수 있는 주소가 생겨요.",
+                more: ["GitHub에 푸시하면 자동으로 다시 배포(CI/CD)돼요.", "비슷한 서비스로 Vercel·Netlify가 있어요."],
+                prompt: "GitHub 저장소를 <b>(Cloudflare Pages)</b>에 연결해 자동 배포하는 방법을 알려줘."
+            },
+            domain: {
+                title: "도메인 (Domain)", icon: "fa-solid fa-location-dot", color: "#0ea5e9",
+                analogy: "인터넷 세상에서 내 가게를 찾아오는 '주소(간판)'예요.",
+                simple: "example.com 처럼 사람이 외우기 쉬운 웹사이트 주소예요. 숫자로 된 실제 서버 주소(IP)를 대신해 줍니다.",
+                why: "기억하기 어려운 임시 주소 대신, 나만의 보기 좋은 주소로 사람들을 불러올 수 있어요.",
+                more: ["보통 1년 단위로 구매(등록)해요.", "배포 서비스에 '커스텀 도메인'으로 연결합니다."],
+                prompt: "내가 산 <b>(도메인)</b>을 Cloudflare Pages 사이트에 연결하는 방법을 알려줘."
             }
         };
 
