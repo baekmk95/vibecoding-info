@@ -156,6 +156,18 @@
         .step-list li::before { content: '✅'; position: absolute; left: 0; top: 1px; font-size: 1.1rem;}
         .error-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: #991b1b; overflow-x: auto;}
 
+        /* Note box: 백엔드가 항상 필요한 건 아니에요 */
+        .note-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 25px 22px; margin-top: 25px; }
+        .note-title { font-size: 1.15rem; color: #334155; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .note-desc { color: #475569; font-size: 0.92rem; margin-bottom: 20px; line-height: 1.6; }
+        .note-front { background: #f0fdfa; border: 1px solid #99f6e4; }
+        .note-back { background: #f5f3ff; border: 1px solid #ddd6fe; }
+        .note-list { list-style: none; padding: 0; margin: 12px 0 0; }
+        .note-list li { position: relative; padding-left: 24px; margin-bottom: 9px; font-size: 0.9rem; color: #475569; line-height: 1.5; }
+        .note-list-ok li::before { content: '✅'; position: absolute; left: 0; top: 0; font-size: 0.85rem; }
+        .note-list-need li::before { content: '🔴'; position: absolute; left: 0; top: 1px; font-size: 0.75rem; }
+        .note-tip { margin-top: 18px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; font-size: 0.88rem; padding: 12px 14px; border-radius: 10px; line-height: 1.55; }
+
         /* =========================================
            CONCEPT MODAL (비전공자 기초개념 팝업)
            ========================================= */
@@ -406,6 +418,35 @@
                 </div>
             </div>
             <p style="margin-top: 15px; text-align: center; color: #475569; font-size: 0.95rem;">프론트엔드가 백엔드에 마음대로 요구할 수 없습니다. 주방장이 정해둔 <b class="concept-link" data-concept="api">메뉴판 양식(API)</b>에 맞춰 정확하게 요청해야 합니다.</p>
+
+            <div class="note-box">
+                <h3 class="note-title"><i class="fa-solid fa-circle-question"></i> 잠깐, 백엔드가 항상 필요한 건 아니에요!</h3>
+                <p class="note-desc">간단한 음료는 홀에서 바로 내드릴 수 있듯, 많은 서비스는 <b>프론트(홀)만으로</b>도 충분히 만들 수 있어요. '불을 써야 하는 요리'가 생길 때 비로소 주방(백엔드)이 필요해집니다.</p>
+                <div class="split-grid">
+                    <div class="grid-card note-front">
+                        <h3 style="color: var(--front-color);"><i class="fa-solid fa-circle-check"></i> 프론트만으로 충분해요 (홀에서 해결)</h3>
+                        <ul class="note-list note-list-ok">
+                            <li>소개·포트폴리오·랜딩 페이지</li>
+                            <li>계산기·단위 변환기 같은 도구</li>
+                            <li>내 기기에만 저장하는 메모·투두 (<b class="concept-link" data-concept="localstorage">로컬 스토리지</b>)</li>
+                            <li>공개 API를 직접 부르는 화면 (예: 날씨 조회)</li>
+                            <li>글이 고정된 정적 블로그</li>
+                        </ul>
+                    </div>
+                    <div class="grid-card note-back">
+                        <h3 style="color: var(--back-color);"><i class="fa-solid fa-fire-burner"></i> 이럴 땐 백엔드가 필요해요 (주방이 필요)</h3>
+                        <ul class="note-list note-list-need">
+                            <li>회원가입·로그인 (비밀번호 안전 보관·인증)</li>
+                            <li>여러 사용자가 데이터를 공유·동기화 (게시판·댓글·채팅)</li>
+                            <li>결제·주문 처리</li>
+                            <li>숨겨야 하는 비밀 키(API Key)가 필요한 작업</li>
+                            <li><b class="concept-link" data-concept="database">데이터베이스</b>에 영구 저장·검색, 이메일 발송 등</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="note-tip">💡 그래서 처음엔 <b>프론트부터 빠르게 만들어 보고</b>, 위 오른쪽 같은 기능이 필요해지는 순간 백엔드를 붙이는 순서를 추천해요.</p>
+            </div>
+
             <div class="prompt-box">"손님이 보는 <b class="concept-link" data-concept="frontend">(프론트 UI)</b>와 데이터를 검증하는 <b class="concept-link" data-concept="backend">(백엔드 로직)</b>을 분리하고, 이 둘이 데이터를 주고받을 수 있게 <b class="concept-link" data-concept="api">(RESTful API 엔드포인트)</b>를 만들어줘."</div>
         </div>
     </section>
