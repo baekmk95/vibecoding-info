@@ -157,6 +157,59 @@
         .error-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: #991b1b; overflow-x: auto;}
 
         /* =========================================
+           CONCEPT MODAL (비전공자 기초개념 팝업)
+           ========================================= */
+        .concept { cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+        .concept:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(79,70,229,0.18); }
+        .concept-badge {
+            display: inline-flex; align-items: center; gap: 5px; margin-top: 14px; align-self: center;
+            font-size: 0.72rem; font-weight: 700; color: var(--primary); white-space: nowrap;
+            background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 20px; padding: 3px 10px;
+        }
+        .concept-link { border-bottom: 2px dotted currentColor; cursor: pointer; }
+        .concept-link:hover { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(2px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+            padding: 20px; opacity: 0; transition: opacity .2s ease;
+        }
+        .modal-overlay.open { display: flex; opacity: 1; }
+        .modal-card {
+            background: white; border-radius: 20px; max-width: 520px; width: 100%;
+            max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            transform: translateY(20px); transition: transform .25s ease;
+        }
+        .modal-overlay.open .modal-card { transform: translateY(0); }
+        .modal-header {
+            display: flex; align-items: center; gap: 12px; padding: 22px 24px 16px;
+            border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; background: white; border-radius: 20px 20px 0 0;
+        }
+        .modal-icon { font-size: 1.9rem; line-height: 1; }
+        .modal-title-wrap h3 { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.4rem; color: #0f172a; }
+        .modal-close {
+            margin-left: auto; background: #f1f5f9; border: none; border-radius: 50%;
+            width: 36px; height: 36px; font-size: 1rem; cursor: pointer; color: #475569; flex-shrink: 0;
+        }
+        .modal-close:hover { background: #e2e8f0; }
+        .modal-body { padding: 20px 24px 26px; }
+        .modal-row { margin-bottom: 18px; }
+        .modal-row:last-child { margin-bottom: 0; }
+        .modal-label { font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #1e293b; }
+        .modal-row p { color: #334155; font-size: 0.95rem; line-height: 1.65; }
+        .modal-row ul { list-style: none; padding: 0; }
+        .modal-row ul li { color: #475569; font-size: 0.9rem; padding-left: 16px; position: relative; margin-bottom: 6px; line-height: 1.55; }
+        .modal-row ul li::before { content: '•'; position: absolute; left: 3px; color: var(--primary); font-weight: 700; }
+        .modal-prompt {
+            background: #1e293b; color: #f8fafc; border-left: 5px solid #10b981;
+            padding: 14px 16px; border-radius: 10px; font-size: 0.9rem; line-height: 1.6;
+        }
+        .modal-prompt::before {
+            content: '🪄 이렇게 시켜보세요'; display: block; color: #34d399;
+            font-weight: 800; font-size: 0.85rem; margin-bottom: 7px; letter-spacing: 0.3px;
+        }
+
+        /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
@@ -195,6 +248,12 @@
 
             .survival-section { padding: 25px 15px; margin-top: 30px; border-width: 2px; }
             .prompt-box { padding: 15px; font-size: 0.95rem; }
+
+            /* Modal: bottom-sheet feel on mobile */
+            .modal-overlay { padding: 0; align-items: flex-end; }
+            .modal-card { max-width: 100%; max-height: 92vh; border-radius: 20px 20px 0 0; }
+            .modal-header { border-radius: 20px 20px 0 0; }
+            .modal-title-wrap h3 { font-size: 1.25rem; }
         }
     </style>
 </head>
@@ -265,18 +324,20 @@
         
         <div class="detail-card">
             <div class="node-container">
-                <div class="node-card">
+                <div class="node-card concept" data-concept="node">
                     <i class="fa-brands fa-node-js node-icon"></i>
                     <h3 style="color: #15803d; font-size: 1.4rem; margin-bottom: 5px;">Node.js (마법의 작업장 / 전기)</h3>
                     <p style="color: #475569; font-size: 0.95rem;">원래 브라우저(손님 테이블)에서만 놀던 자바스크립트를 내 컴퓨터 전체에서 쓸 수 있게 해줍니다. <b>React, Vite 같은 최신 프레임워크를 돌리려면 이 기초 전기 공사가 반드시 선행</b>되어야 합니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="npm-card">
+                <div class="npm-card concept" data-concept="npm">
                     <i class="fa-brands fa-npm npm-icon"></i>
                     <h3 style="color: #b91c1c; font-size: 1.4rem; margin-bottom: 5px;">npm (식자재 도매상 트럭)</h3>
                     <p style="color: #475569; font-size: 0.95rem;">Node.js를 깔면 딸려옵니다. 전 세계 개발자들이 만들어둔 수백만 개의 코드 부품(달력, 버튼 등)을 내 프로젝트로 즉시 배달해 주는 <b>패키지 매니저</b>입니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"내 로컬 컴퓨터에 기초 공사인 <b>(Node.js)</b>가 설치되어 있어. 여기서 <b>(npm)</b> 명령어를 사용해서 <b>(Vite 기반의 React 프로젝트)</b>를 새로 생성하고 실행하는 터미널 명령어를 순서대로 알려줘."</div>
+            <div class="prompt-box">"내 로컬 컴퓨터에 기초 공사인 <b class="concept-link" data-concept="node">(Node.js)</b>가 설치되어 있어. 여기서 <b class="concept-link" data-concept="npm">(npm)</b> 명령어를 사용해서 <b>(Vite 기반의 React 프로젝트)</b>를 새로 생성하고 실행하는 터미널 명령어를 순서대로 알려줘."</div>
         </div>
     </section>
 
@@ -287,19 +348,20 @@
 
         <div class="detail-card">
             <div class="split-grid">
-                <div class="grid-card github-card">
+                <div class="grid-card github-card concept" data-concept="ide">
                     <h3 style="color: var(--text-main);"><i class="fa-solid fa-kitchen-set grid-icon" style="font-size: 1.8rem;"></i> 기본 주방 설비 (VS Code)</h3>
                     <p style="color: #475569;">전 세계 개발자가 표준으로 쓰는 무료 주방입니다. 코드 편집·터미널·확장(Extension)이 한곳에 모여 있어, <b>모든 AI 주방의 뼈대</b>가 됩니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
                 <div class="grid-card env-deploy">
                     <h3 style="color: var(--primary);"><i class="fa-solid fa-robot grid-icon" style="font-size: 1.8rem;"></i> AI 셰프 상주 주방 (래퍼)</h3>
                     <p style="color: #475569;">VS Code 주방 위에 'AI 셰프'를 상주시킨 도구들입니다. <b>(Cursor)</b>는 에디터 자체에, <b>(Claude Code · Codex)</b>는 터미널에서 AI가 직접 코드를 읽고 고칩니다.</p>
                 </div>
             </div>
-            <div class="state-box" style="margin-top: 20px; background: #eef2ff; border-color: var(--primary);">
+            <div class="state-box concept" data-concept="terminal" style="margin-top: 20px; background: #eef2ff; border-color: var(--primary);">
                 <i class="fa-solid fa-terminal" style="color: var(--primary);"></i>
                 <div>
-                    <h3 style="color: #4338ca; margin-bottom: 5px;">주방의 주문 창구: 터미널 (Terminal)</h3>
+                    <h3 style="color: #4338ca; margin-bottom: 5px;">주방의 주문 창구: 터미널 (Terminal) <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></h3>
                     <p style="color: #334155; font-size: 0.95rem;">앞서 배운 <b>(npm)</b> 명령은 모두 이 <b>내장 터미널</b>에 입력합니다. 주방의 주문 단말기처럼, 내 컴퓨터에 직접 명령을 내리는 창구죠. <b>(Prettier 같은 포매터)</b> 확장을 더하면 코드도 깔끔하게 자동 플레이팅됩니다.</p>
                 </div>
             </div>
@@ -312,18 +374,18 @@
         <h2 class="section-title">1. 화면 만들기 (건축)</h2>
         <div class="detail-card">
             <div class="building-blocks">
-                <div class="block-card html"><i class="fa-solid fa-building block-icon" style="color: var(--html-color);"></i><div class="block-title">HTML (뼈대)</div></div>
-                <div class="block-card css"><i class="fa-solid fa-paint-roller block-icon" style="color: var(--css-color);"></i><div class="block-title">CSS (꾸미기)</div></div>
-                <div class="block-card js"><i class="fa-solid fa-cogs block-icon" style="color: var(--js-color);"></i><div class="block-title">JS (동작)</div></div>
+                <div class="block-card html concept" data-concept="html"><i class="fa-solid fa-building block-icon" style="color: var(--html-color);"></i><div class="block-title">HTML (뼈대)</div><span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></div>
+                <div class="block-card css concept" data-concept="css"><i class="fa-solid fa-paint-roller block-icon" style="color: var(--css-color);"></i><div class="block-title">CSS (꾸미기)</div><span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></div>
+                <div class="block-card js concept" data-concept="js"><i class="fa-solid fa-cogs block-icon" style="color: var(--js-color);"></i><div class="block-title">JS (동작)</div><span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></div>
             </div>
-            <div class="state-box">
+            <div class="state-box concept" data-concept="state">
                 <i class="fa-solid fa-clipboard-list"></i>
                 <div>
-                    <h3 style="color: #0f766e; margin-bottom: 5px;">현대 웹의 마법: 상태 (State)</h3>
+                    <h3 style="color: #0f766e; margin-bottom: 5px;">현대 웹의 마법: 상태 (State) <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span></h3>
                     <p style="color: #334155; font-size: 0.95rem;">과거엔 메뉴 하나가 바뀌면 식당 전체를 새로고침해야 했습니다. 지금은 <b>상태(State)</b>라는 스마트 메모장을 써서 데이터가 바뀌면 화면 깜빡임 없이 즉시 그 부분만 바뀝니다.</p>
                 </div>
             </div>
-            <div class="prompt-box">"화면을 꾸밀 때 <b>(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b>(React State 상태관리)</b>를 적용해줘."</div>
+            <div class="prompt-box">"화면을 꾸밀 때 <b class="concept-link" data-concept="css">(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b class="concept-link" data-concept="state">(React State 상태관리)</b>를 적용해줘."</div>
         </div>
     </section>
 
@@ -332,16 +394,18 @@
         <h2 class="section-title">2. 역할 분리와 소통 (메뉴판)</h2>
         <div class="detail-card">
             <div class="split-space">
-                <div class="space-half space-front">
+                <div class="space-half space-front concept" data-concept="frontend">
                     <div class="space-title" style="color: var(--front-color);"><i class="fa-solid fa-store"></i> 프론트 (홀)</div>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span>
                 </div>
-                <div class="api-bridge"><i class="fa-solid fa-map-location-dot"></i> API (메뉴판 양식)</div>
-                <div class="space-half space-back">
+                <div class="api-bridge" data-concept="api" style="cursor: pointer;"><i class="fa-solid fa-map-location-dot"></i> API (메뉴판 양식)</div>
+                <div class="space-half space-back concept" data-concept="backend">
                     <div class="space-title" style="color: var(--back-color);"><i class="fa-solid fa-kitchen-set"></i> 백엔드 (주방)</div>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히</span>
                 </div>
             </div>
-            <p style="margin-top: 15px; text-align: center; color: #475569; font-size: 0.95rem;">프론트엔드가 백엔드에 마음대로 요구할 수 없습니다. 주방장이 정해둔 <b>메뉴판 양식(API)</b>에 맞춰 정확하게 요청해야 합니다.</p>
-            <div class="prompt-box">"손님이 보는 <b>(프론트 UI)</b>와 데이터를 검증하는 <b>(백엔드 로직)</b>을 분리하고, 이 둘이 데이터를 주고받을 수 있게 <b>(RESTful API 엔드포인트)</b>를 만들어줘."</div>
+            <p style="margin-top: 15px; text-align: center; color: #475569; font-size: 0.95rem;">프론트엔드가 백엔드에 마음대로 요구할 수 없습니다. 주방장이 정해둔 <b class="concept-link" data-concept="api">메뉴판 양식(API)</b>에 맞춰 정확하게 요청해야 합니다.</p>
+            <div class="prompt-box">"손님이 보는 <b class="concept-link" data-concept="frontend">(프론트 UI)</b>와 데이터를 검증하는 <b class="concept-link" data-concept="backend">(백엔드 로직)</b>을 분리하고, 이 둘이 데이터를 주고받을 수 있게 <b class="concept-link" data-concept="api">(RESTful API 엔드포인트)</b>를 만들어줘."</div>
         </div>
     </section>
 
@@ -350,16 +414,18 @@
         <h2 class="section-title">3. 데이터 보관 (주머니 vs 금고)</h2>
         <div class="detail-card">
             <div class="split-grid">
-                <div class="grid-card storage-local">
+                <div class="grid-card storage-local concept" data-concept="localstorage">
                     <h3 style="color: #be123c;"><i class="fa-solid fa-pocket"></i> 손님 주머니 (Local Storage)</h3>
                     <p style="color: #475569;">내 폰에만 저장됩니다. 인터넷 없이도 작동하지만, 브라우저 기록을 지우거나 다른 기기로 접속하면 <b>데이터가 영원히 날아갑니다.</b></p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card storage-db">
+                <div class="grid-card storage-db concept" data-concept="database">
                     <h3 style="color: #047857;"><i class="fa-solid fa-vault"></i> 중앙 금고 (Database)</h3>
                     <p style="color: #475569;">서버 깊숙한 곳에 보관됩니다. <b>데이터가 안전하게 보존</b>되며, 로그인 시 어디서나 똑같은 데이터를 불러옵니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b>(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 클라우드 금고 <b>(Cloudflare D1 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
+            <div class="prompt-box">"데이터가 유지되게 일단 브라우저 <b class="concept-link" data-concept="localstorage">(로컬 스토리지)</b>에 임시 저장되도록 짜줘. 나중에 실제 클라우드 금고 <b class="concept-link" data-concept="database">(Cloudflare D1 SQL 데이터베이스)</b>로 교체할 수 있게 해둬."</div>
         </div>
     </section>
 
@@ -368,16 +434,18 @@
         <h2 class="section-title">4. 코드 저장과 백업 (타임머신)</h2>
         <div class="detail-card">
             <div class="split-grid">
-                <div class="grid-card git-card">
+                <div class="grid-card git-card concept" data-concept="git">
                     <h3 style="color: var(--git-color);"><i class="fa-solid fa-code-commit"></i> Git (개인 타임머신)</h3>
                     <p style="color: #475569;">AI가 코드를 망쳐도 어제로 되돌려주는 <b>세이브 포인트(버전 관리)</b>입니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
-                <div class="grid-card github-card">
+                <div class="grid-card github-card concept" data-concept="github">
                     <h3 style="color: var(--text-main);"><i class="fa-brands fa-github"></i> GitHub (클라우드 백업)</h3>
                     <p style="color: #475569;">Git 기록을 인터넷에 백업하여 <b>전 세계에 앱을 자동 배포(CI/CD)</b>할 수 있게 해줍니다.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
-            <div class="prompt-box">"지금 작동이 잘 돼. 코드가 망가지기 전에 <b>(Git Commit)</b>으로 세이브 포인트를 만들고, <b>(GitHub Repository)</b>에 푸시(Push)하는 방법을 알려줘."</div>
+            <div class="prompt-box">"지금 작동이 잘 돼. 코드가 망가지기 전에 <b class="concept-link" data-concept="git">(Git Commit)</b>으로 세이브 포인트를 만들고, <b class="concept-link" data-concept="github">(GitHub Repository)</b>에 푸시(Push)하는 방법을 알려줘."</div>
         </div>
     </section>
 
@@ -458,6 +526,193 @@
             비유로 뼈대를 잡고, 괄호 안의 기술 용어로 전문가처럼 명령하세요!
         </p>
     </footer>
+
+    <!-- Concept Modal -->
+    <div class="modal-overlay" id="conceptModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="modal-icon" id="modalIcon"></span>
+                <div class="modal-title-wrap"><h3 id="modalTitle"></h3></div>
+                <button class="modal-close" id="modalClose" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const CONCEPTS = {
+            node: {
+                title: "Node.js", icon: "fa-brands fa-node-js", color: "#16a34a",
+                analogy: "주방에 전기를 끌어오는 '기초 공사'예요.",
+                simple: "원래 웹 브라우저 안에서만 작동하던 자바스크립트를, 내 컴퓨터 어디서나 실행할 수 있게 해주는 프로그램이에요.",
+                why: "이게 깔려 있어야 React·Vite 같은 최신 도구를 설치하고 돌릴 수 있어요. 없으면 npm 명령부터 막힙니다.",
+                more: ["보통 짝수 번호의 LTS(안정) 버전을 설치해요.", "설치됐는지는 터미널에 <b>node -v</b> 를 쳐서 확인합니다."],
+                prompt: "내 컴퓨터에 <b>(Node.js)</b>가 설치돼 있는지 확인하는 방법을 알려줘."
+            },
+            npm: {
+                title: "npm", icon: "fa-brands fa-npm", color: "#dc2626",
+                analogy: "전 세계 부엌으로 식자재를 배달하는 '도매 트럭'이에요.",
+                simple: "다른 개발자들이 만들어둔 코드 부품(달력·버튼 등)을 내 프로젝트로 가져와 설치해주는 도구예요. Node.js를 깔면 함께 따라옵니다.",
+                why: "바닥부터 다 만들 필요 없이, 검증된 부품을 골라 끼우면 개발 속도가 확 빨라져요.",
+                more: ["<b>npm install 패키지이름</b> 으로 부품을 설치해요.", "설치한 부품 목록은 <b>package.json</b> 파일에 기록됩니다."],
+                prompt: "이 프로젝트에 날짜를 다루는 라이브러리를 <b>(npm)</b>으로 설치하는 명령어를 알려줘."
+            },
+            ide: {
+                title: "IDE / VS Code", icon: "fa-solid fa-kitchen-set", color: "#4f46e5",
+                analogy: "셰프와 내가 함께 요리하는 '주방' 전체예요.",
+                simple: "코드를 쓰고, 실행하고, 오류를 잡는 일을 한곳에서 할 수 있게 모아둔 프로그램이에요. 대표 주자가 무료인 VS Code입니다.",
+                why: "메모장에 코드를 쓰는 것과 달리 오타 표시·자동완성·터미널이 다 들어 있어 작업이 훨씬 수월해요.",
+                more: ["Cursor·Windsurf는 VS Code에 AI를 얹은 버전이에요.", "확장(Extension)을 깔아 기능을 늘릴 수 있어요."],
+                prompt: "<b>(VS Code)</b>에서 HTML 파일을 만들고 브라우저로 미리 보는 방법을 알려줘."
+            },
+            terminal: {
+                title: "터미널 (Terminal)", icon: "fa-solid fa-terminal", color: "#4338ca",
+                analogy: "주방에 주문을 넣는 '주문 단말기'예요.",
+                simple: "마우스 클릭 대신 글자(명령어)로 컴퓨터에 직접 일을 시키는 입력창이에요.",
+                why: "npm 설치, 프로젝트 실행, 깃 백업 같은 작업은 대부분 여기서 명령어 한 줄로 합니다.",
+                more: ["검은 화면에 글자만 보여도 당황하지 마세요. 한 줄씩 입력하는 곳이에요.", "AI에게 '실행할 명령어를 알려줘'라고 하면 됩니다."],
+                prompt: "<b>(터미널)</b>에서 지금 만든 프로젝트를 실행하는 명령어를 순서대로 알려줘."
+            },
+            html: {
+                title: "HTML", icon: "fa-solid fa-building", color: "#ea580c",
+                analogy: "건물의 '뼈대와 골조'예요.",
+                simple: "화면에 무엇이 있는지(제목·글·버튼·이미지)를 정하는 구조 언어예요.",
+                why: "내용의 뼈대가 있어야 그 위에 디자인(CSS)과 동작(JS)을 입힐 수 있어요.",
+                more: ["<b>&lt;h1&gt;제목&lt;/h1&gt;</b> 처럼 '태그'로 요소를 표시해요."],
+                prompt: "제목과 버튼 하나가 있는 기본 <b>(HTML)</b> 뼈대를 만들어줘."
+            },
+            css: {
+                title: "CSS", icon: "fa-solid fa-paint-roller", color: "#2563eb",
+                analogy: "건물에 칠하는 '페인트와 인테리어'예요.",
+                simple: "색·글꼴·크기·배치 등 화면의 '보이는 모양'을 꾸미는 언어예요.",
+                why: "같은 HTML도 CSS에 따라 완전히 다른 느낌이 돼요. 디자인을 담당합니다.",
+                more: ["<b>Tailwind CSS</b>는 미리 만든 디자인 부품을 빠르게 붙이는 방식이에요."],
+                prompt: "버튼을 둥글고 파란색으로 꾸미는 <b>(CSS)</b>를 만들어줘."
+            },
+            js: {
+                title: "JavaScript", icon: "fa-solid fa-cogs", color: "#ca8a04",
+                analogy: "건물을 움직이게 하는 '전기 배선과 기계'예요.",
+                simple: "버튼을 누르면 반응하고, 숫자를 계산하고, 화면을 바꾸는 '동작'을 담당하는 언어예요.",
+                why: "HTML·CSS가 정적인 그림이라면, JS가 있어야 살아 움직이는 앱이 됩니다.",
+                more: ["React 같은 인기 도구도 사실은 자바스크립트로 만들어져 있어요."],
+                prompt: "버튼을 누르면 숫자가 1씩 올라가는 <b>(자바스크립트)</b>를 만들어줘."
+            },
+            state: {
+                title: "State (상태)", icon: "fa-solid fa-clipboard-list", color: "#0f766e",
+                analogy: "주방의 '실시간 주문 현황판'이에요.",
+                simple: "화면이 기억하고 있는 현재 데이터(예: 장바구니 개수, 로그인 여부)예요. 이 값이 바뀌면 화면도 자동으로 바뀝니다.",
+                why: "예전엔 값 하나 바뀌면 전체를 새로고침했지만, 상태를 쓰면 깜빡임 없이 그 부분만 즉시 바뀌어요.",
+                more: ["React에서는 <b>useState</b> 같은 기능으로 상태를 다뤄요."],
+                prompt: "장바구니 개수를 <b>(State)</b>로 관리해서, 담기 버튼을 누르면 숫자가 바로 늘어나게 해줘."
+            },
+            frontend: {
+                title: "프론트엔드 (Frontend)", icon: "fa-solid fa-store", color: "#0d9488",
+                analogy: "손님을 맞이하는 식당 '홀'이에요.",
+                simple: "사용자가 눈으로 보고 직접 만지는 화면 부분이에요. 버튼·글·디자인이 다 여기 속합니다.",
+                why: "아무리 좋은 기능도, 보기 좋고 쓰기 편한 화면이 없으면 쓰기 어려워요.",
+                more: ["HTML·CSS·JS, 그리고 React 같은 도구로 만들어요."],
+                prompt: "로그인 화면의 <b>(프론트엔드)</b> — 입력창 2개와 버튼을 만들어줘."
+            },
+            backend: {
+                title: "백엔드 (Backend)", icon: "fa-solid fa-kitchen-set", color: "#7c3aed",
+                analogy: "요리가 이뤄지는 '주방'이에요.",
+                simple: "손님 눈에는 안 보이지만 데이터를 저장·검증·계산하는 서버 쪽 부분이에요.",
+                why: "비밀번호 확인, 결제, 데이터 저장처럼 '안전하고 정확해야 하는 일'은 여기서 처리해요.",
+                more: ["프론트와는 API라는 약속을 통해 데이터를 주고받아요."],
+                prompt: "입력한 비밀번호가 맞는지 검증하는 <b>(백엔드)</b> 로직을 만들어줘."
+            },
+            api: {
+                title: "API (RESTful API)", icon: "fa-solid fa-map-location-dot", color: "#f43f5e",
+                analogy: "홀과 주방이 주고받는 '메뉴판 양식'이에요.",
+                simple: "프론트(홀)와 백엔드(주방)가 정해진 규칙대로 데이터를 주고받는 약속이에요.",
+                why: "이 약속이 있어야 화면과 서버가 서로 말이 통하고, 엉뚱한 요청을 막을 수 있어요.",
+                more: ["조회는 GET, 생성은 POST처럼 '주문 방식'이 정해져 있어요.", "이 규칙을 잘 지킨 걸 <b>RESTful API</b>라고 불러요."],
+                prompt: "회원 정보를 조회하는 <b>(REST API 엔드포인트)</b>를 만들어줘."
+            },
+            localstorage: {
+                title: "Local Storage", icon: "fa-solid fa-pocket", color: "#be123c",
+                analogy: "내 주머니에 넣어두는 '쪽지'예요.",
+                simple: "데이터를 내 브라우저(기기) 안에만 저장하는 방법이에요.",
+                why: "서버 없이 간단히 저장할 수 있어 빠르지만, 브라우저 기록을 지우거나 다른 기기로 가면 사라져요.",
+                more: ["비밀번호 같은 중요한 정보는 절대 여기 저장하면 안 돼요."],
+                prompt: "입력한 메모를 <b>(로컬 스토리지)</b>에 저장해서 새로고침해도 남아 있게 해줘."
+            },
+            database: {
+                title: "Database (DB)", icon: "fa-solid fa-vault", color: "#047857",
+                analogy: "서버 깊은 곳에 있는 '중앙 금고'예요.",
+                simple: "데이터를 서버에 안전하게 모아 보관하는 창고예요. 로그인하면 어느 기기에서나 같은 데이터를 불러올 수 있어요.",
+                why: "회원 정보·게시글처럼 영구히 안전하게 보관해야 할 데이터는 DB에 저장해요.",
+                more: ["표 형태로 저장하는 <b>SQL</b> 방식이 대표적이에요. (예: Cloudflare D1)"],
+                prompt: "할 일 목록을 <b>(데이터베이스)</b>에 저장하는 구조를 설계해줘."
+            },
+            git: {
+                title: "Git", icon: "fa-solid fa-code-commit", color: "#f14e32",
+                analogy: "게임의 '세이브 포인트'(개인 타임머신)예요.",
+                simple: "코드의 변경 이력을 단계별로 저장해두는 도구예요. 문제가 생기면 이전 상태로 되돌릴 수 있어요.",
+                why: "AI가 코드를 망쳐도 '저장해둔 시점'으로 돌아갈 수 있어, 마음 놓고 실험할 수 있어요.",
+                more: ["저장 한 번을 '커밋(commit)'이라고 불러요.", "잘 되는 시점마다 커밋해두는 습관이 중요해요."],
+                prompt: "지금 상태를 <b>(Git)</b>으로 저장(커밋)하는 명령어를 알려줘."
+            },
+            github: {
+                title: "GitHub", icon: "fa-brands fa-github", color: "#181717",
+                analogy: "코드를 올려두는 '클라우드 금고 + 협업 공간'이에요.",
+                simple: "내 컴퓨터의 Git 기록을 인터넷에 백업하고, 다른 사람과 함께 작업할 수 있게 해주는 서비스예요.",
+                why: "컴퓨터가 고장 나도 코드가 안전하고, 여기 올린 코드로 자동 배포까지 연결할 수 있어요.",
+                more: ["코드를 올리는 걸 '푸시(push)'라고 해요.", "프로젝트 저장소를 'Repository(레포)'라고 불러요."],
+                prompt: "내 코드를 <b>(GitHub)</b> 저장소에 올리는(push) 방법을 처음부터 알려줘."
+            }
+        };
+
+        (function () {
+            const overlay = document.getElementById('conceptModal');
+            const iconEl = document.getElementById('modalIcon');
+            const titleEl = document.getElementById('modalTitle');
+            const bodyEl = document.getElementById('modalBody');
+            const closeBtn = document.getElementById('modalClose');
+            let lastFocus = null;
+
+            function buildBody(c) {
+                let h = '';
+                h += '<div class="modal-row"><div class="modal-label">🍳 한 줄 비유</div><p>' + c.analogy + '</p></div>';
+                h += '<div class="modal-row"><div class="modal-label">💡 쉽게 말하면</div><p>' + c.simple + '</p></div>';
+                h += '<div class="modal-row"><div class="modal-label">❓ 왜 필요해?</div><p>' + c.why + '</p></div>';
+                if (c.more && c.more.length) {
+                    h += '<div class="modal-row"><div class="modal-label">➕ 더 알아두기</div><ul>' +
+                        c.more.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul></div>';
+                }
+                h += '<div class="modal-row"><div class="modal-prompt">' + c.prompt + '</div></div>';
+                return h;
+            }
+
+            function openModal(key) {
+                const c = CONCEPTS[key];
+                if (!c) return;
+                lastFocus = document.activeElement;
+                iconEl.innerHTML = '<i class="' + c.icon + '" style="color:' + c.color + '"></i>';
+                titleEl.textContent = c.title;
+                bodyEl.innerHTML = buildBody(c);
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                closeBtn.focus();
+            }
+
+            function closeModal() {
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+                if (lastFocus && lastFocus.focus) lastFocus.focus();
+            }
+
+            document.addEventListener('click', function (e) {
+                const trigger = e.target.closest('[data-concept]');
+                if (trigger) { e.preventDefault(); openModal(trigger.getAttribute('data-concept')); }
+            });
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+            });
+        })();
+    </script>
 
 </body>
 </html>
