@@ -278,12 +278,18 @@
         body.slide-mode > header,
         body.slide-mode > section,
         body.slide-mode > footer { display: none; }
+        body.slide-mode { background: var(--bg-color); }
         body.slide-mode > .slide-active {
             display: block; position: fixed; left: 0; right: 0; top: 0; bottom: 0;
-            overflow-y: auto; background: var(--bg-color); margin: 0; max-width: none;
+            overflow-y: auto; margin: 0; max-width: none;
             padding: 80px 20px 100px; animation: slideFade .35s ease;
         }
+        body.slide-mode > section.slide-active { background: var(--bg-color); }
         body.slide-mode > section.slide-active > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+        /* Header as title slide: keep its gradient, center content, drop the clip */
+        body.slide-mode > header.slide-active {
+            clip-path: none; display: flex; flex-direction: column; justify-content: center;
+        }
         @keyframes slideFade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
@@ -320,6 +326,15 @@
         .pg-result { display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
         .pg-result-label { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 0.85rem; padding: 9px 13px; display: flex; align-items: center; gap: 7px; }
         .pg-frame { width: 100%; flex: 1; min-height: 280px; border: none; background: #fff; }
+
+        /* =========================================
+           CLOUD PLATFORMS (배포 환경 고르기)
+           ========================================= */
+        .cloud-group-title { font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+        .cloud-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .cloud-card { background: #f8fafc; border: 1px solid #e2e8f0; }
+        .cloud-card h3 { font-size: 1.15rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .cloud-card p { font-size: 0.9rem; }
 
         /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
@@ -377,6 +392,7 @@
             .video-grid { grid-template-columns: 1fr; gap: 16px; }
             .playground { grid-template-columns: 1fr; }
             .pg-code, .pg-frame { min-height: 220px; }
+            .cloud-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -677,6 +693,51 @@ document.getElementById('btn').addEventListener('click', function () {
         </div>
     </section>
 
+    <!-- Step 5.5: Cloud platforms -->
+    <section class="container">
+        <h2 class="section-title">☁️ 어디에 배포할까? (클라우드 고르기)</h2>
+        <p class="section-desc">완성한 앱을 올릴 '클라우드'를 고를 차례예요. 입문자 친화 플랫폼부터 전문가용 종합 클라우드까지 — 카드를 눌러 자세히 보세요.</p>
+        <div class="detail-card">
+            <h3 class="cloud-group-title" style="color: #16a34a;"><i class="fa-solid fa-seedling"></i> 입문자 친화 (빠르고 쉽게 시작)</h3>
+            <div class="cloud-grid">
+                <div class="grid-card cloud-card concept" data-concept="cloudflare">
+                    <h3 style="color: #f6821f;"><i class="fa-brands fa-cloudflare grid-icon" style="font-size: 1.8rem;"></i> Cloudflare</h3>
+                    <p style="color: #475569;">GitHub만 연결하면 전 세계에 무료로 빠르게 배포(Pages). DB(D1)까지 손쉽게.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+                <div class="grid-card cloud-card concept" data-concept="supabase">
+                    <h3 style="color: #10b981;"><i class="fa-solid fa-bolt grid-icon" style="font-size: 1.8rem;"></i> Supabase</h3>
+                    <p style="color: #475569;">DB·로그인·저장소 등 백엔드 기능을 코드 조금으로. Firebase의 오픈소스 대안.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+                <div class="grid-card cloud-card concept" data-concept="firebase">
+                    <h3 style="color: #f59e0b;"><i class="fa-solid fa-fire grid-icon" style="font-size: 1.8rem;"></i> Firebase</h3>
+                    <p style="color: #475569;">구글의 올인원 백엔드. 실시간 DB·로그인·호스팅을 앱에 빠르게 붙이기.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+            </div>
+            <h3 class="cloud-group-title" style="color: #7c3aed; margin-top: 28px;"><i class="fa-solid fa-building"></i> 전문가용 종합 클라우드 (강력하지만 러닝커브↑)</h3>
+            <div class="cloud-grid">
+                <div class="grid-card cloud-card concept" data-concept="aws">
+                    <h3 style="color: #ff9900;"><i class="fa-brands fa-aws grid-icon" style="font-size: 1.8rem;"></i> AWS</h3>
+                    <p style="color: #475569;">세계에서 가장 큰 클라우드. 수백 가지 서비스로 어떤 규모든 감당.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+                <div class="grid-card cloud-card concept" data-concept="gcp">
+                    <h3 style="color: #4285f4;"><i class="fa-brands fa-google grid-icon" style="font-size: 1.8rem;"></i> Google Cloud</h3>
+                    <p style="color: #475569;">데이터 분석·AI/머신러닝과 구글 생태계 연동에 강한 클라우드.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+                <div class="grid-card cloud-card concept" data-concept="azure">
+                    <h3 style="color: #0078d4;"><i class="fa-brands fa-microsoft grid-icon" style="font-size: 1.8rem;"></i> Azure</h3>
+                    <p style="color: #475569;">기업용 시스템과 윈도우/오피스·.NET 환경에 강한 MS 클라우드.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
+            </div>
+            <div class="prompt-box">"내 프로젝트는 <b>(간단한 웹앱)</b>이야. 처음엔 <b class="concept-link" data-concept="cloudflare">(Cloudflare)</b>나 <b class="concept-link" data-concept="supabase">(Supabase)</b> 같은 입문자 친화 플랫폼으로 빠르게 배포하고, 나중에 규모가 커지면 <b class="concept-link" data-concept="aws">(AWS)</b> 같은 전문 클라우드로 옮기는 전략을 알려줘."</div>
+        </div>
+    </section>
+
     <!-- NEW: AI Harness -->
     <section class="container">
         <h2 class="section-title">✨ AI 셰프와 협업하는 법 (AI 하네스)</h2>
@@ -816,7 +877,13 @@ document.getElementById('btn').addEventListener('click', function () {
             vite: [{ label: "Vite 공식", url: "https://vite.dev/" }],
             pages: [{ label: "Cloudflare Pages", url: "https://pages.cloudflare.com/" }],
             d1: [{ label: "Cloudflare D1 문서", url: "https://developers.cloudflare.com/d1/" }],
-            skill: [{ label: "Claude Code Skills 문서", url: "https://code.claude.com/docs/en/skills" }]
+            skill: [{ label: "Claude Code Skills 문서", url: "https://code.claude.com/docs/en/skills" }],
+            cloudflare: [{ label: "Cloudflare 공식", url: "https://www.cloudflare.com/" }],
+            supabase: [{ label: "Supabase 공식", url: "https://supabase.com/" }],
+            firebase: [{ label: "Firebase 공식", url: "https://firebase.google.com/" }],
+            aws: [{ label: "AWS 공식", url: "https://aws.amazon.com/" }],
+            gcp: [{ label: "Google Cloud 공식", url: "https://cloud.google.com/" }],
+            azure: [{ label: "Microsoft Azure 공식", url: "https://azure.microsoft.com/" }]
         };
 
         const CONCEPTS = {
@@ -1067,6 +1134,54 @@ document.getElementById('btn').addEventListener('click', function () {
                 why: "매번 길게 설명하지 않아도, 그 작업에 딱 맞는 전문 지식을 AI가 즉시 불러와 일관되게 처리해줘요.",
                 more: ["하우스 레시피(Rules)가 '가게 전체 규칙'이라면, 스킬은 '특정 요리 전용 레시피'예요.", "Claude Code에선 SKILL.md 파일로 만들어요."],
                 prompt: "이 프로젝트의 'PDF 보고서 생성' 작업을 <b>(Skill)</b>로 만들어서, 다음부터는 그 스킬로 처리해줘."
+            },
+            cloudflare: {
+                title: "Cloudflare", icon: "fa-brands fa-cloudflare", color: "#f6821f",
+                analogy: "전국에 매장을 깔아주는 '초고속 배달망 + 임대 매장'이에요.",
+                simple: "전 세계에 빠르게 사이트를 배포(Pages)하고, 데이터베이스(D1)·서버리스 기능까지 무료 티어로 제공하는 플랫폼이에요.",
+                why: "설정이 간단하고 무료로 시작할 수 있어, 입문자가 GitHub 코드만 연결하면 바로 배포돼요.",
+                more: ["정적 사이트는 Cloudflare Pages, DB는 D1을 써요.", "이 가이드 사이트도 Cloudflare Pages로 배포돼 있어요."],
+                prompt: "내 GitHub 저장소를 <b>(Cloudflare Pages)</b>에 연결해서 배포해줘."
+            },
+            supabase: {
+                title: "Supabase", icon: "fa-solid fa-bolt", color: "#3ecf8e",
+                analogy: "주방 설비(DB·인증·저장소)가 다 갖춰진 '풀옵션 공유주방'이에요.",
+                simple: "데이터베이스·로그인(인증)·파일 저장 같은 백엔드 기능을 코드 조금으로 바로 쓸 수 있게 해주는 오픈소스 플랫폼이에요. (Firebase의 오픈소스 대안)",
+                why: "백엔드를 직접 구축하지 않아도 회원가입·데이터 저장 기능을 빠르게 붙일 수 있어요.",
+                more: ["익숙한 PostgreSQL(SQL) 데이터베이스를 사용해요.", "무료 티어로 시작할 수 있어요."],
+                prompt: "<b>(Supabase)</b>로 회원가입/로그인과 데이터 저장 기능을 붙여줘."
+            },
+            firebase: {
+                title: "Firebase", icon: "fa-solid fa-fire", color: "#f59e0b",
+                analogy: "구글이 운영하는 '올인원 간편 주방 키트'예요.",
+                simple: "구글의 백엔드 플랫폼이에요. 실시간 데이터베이스·로그인·호스팅·푸시 알림 등을 앱에 빠르게 붙일 수 있어요.",
+                why: "서버 없이도 모바일·웹 앱의 백엔드를 손쉽게 구성할 수 있어 입문자와 프로토타입에 인기예요.",
+                more: ["실시간 동기화에 강해요(채팅 등).", "구글 계정으로 바로 시작해요."],
+                prompt: "<b>(Firebase)</b>로 실시간 채팅 데이터 저장 기능을 만들어줘."
+            },
+            aws: {
+                title: "AWS (Amazon Web Services)", icon: "fa-brands fa-aws", color: "#ff9900",
+                analogy: "없는 게 없는 '초대형 종합 식자재·설비 상사'예요.",
+                simple: "아마존이 만든 세계에서 가장 큰 클라우드예요. 서버·DB·저장소 등 수백 가지 서비스를 제공해요.",
+                why: "확장성과 기능이 압도적이라 대규모 서비스가 많이 써요. 다만 종류가 많아 입문 난이도는 높은 편이에요.",
+                more: ["대표 서비스: EC2(서버), S3(저장소), RDS(DB).", "처음엔 어렵지만 가장 표준적인 선택지예요."],
+                prompt: "<b>(AWS S3)</b>에 이미지를 업로드하고 불러오는 방법을 알려줘."
+            },
+            gcp: {
+                title: "GCP (Google Cloud)", icon: "fa-brands fa-google", color: "#4285f4",
+                analogy: "구글의 기술력으로 무장한 '대형 클라우드 상사'예요.",
+                simple: "구글이 운영하는 클라우드예요. 데이터 분석·AI/머신러닝·대규모 인프라에 강점이 있어요.",
+                why: "빅데이터·AI 작업이나 구글 생태계와의 연동이 필요할 때 특히 강력해요.",
+                more: ["Firebase도 사실 구글 클라우드 위에서 동작해요.", "대표 서비스: Compute Engine, BigQuery."],
+                prompt: "<b>(GCP)</b>에 내 앱을 배포하는 기본 절차를 알려줘."
+            },
+            azure: {
+                title: "Microsoft Azure", icon: "fa-brands fa-microsoft", color: "#0078d4",
+                analogy: "기업·윈도우 환경에 강한 'MS표 대형 클라우드 상사'예요.",
+                simple: "마이크로소프트의 클라우드예요. 기업용 시스템, 윈도우/오피스 생태계, .NET 환경과 잘 맞아요.",
+                why: "회사에서 MS 제품을 많이 쓰거나 기업용 통합이 필요할 때 자주 선택해요.",
+                more: ["대표 서비스: App Service, Azure SQL.", "기업(엔터프라이즈) 시장에서 인기가 높아요."],
+                prompt: "<b>(Azure App Service)</b>에 웹앱을 배포하는 방법을 알려줘."
             }
         };
 
