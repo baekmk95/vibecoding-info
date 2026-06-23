@@ -209,7 +209,7 @@
 
         /* Common errors dictionary */
         .err-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .err-card { background: #fff; border: 1px solid #fecaca; border-left: 5px solid #ef4444; border-radius: 14px; padding: 18px 20px; }
+        .err-card { background: #fff; border: 1px solid #fecaca; border-left: 5px solid #ef4444; border-radius: 14px; padding: 18px 20px; min-width: 0; }
         .err-card h3 { font-size: 1.02rem; color: #b91c1c; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
         .err-snippet { display: block; background: #1e293b; color: #fca5a5; font-family: 'Courier New', monospace; font-size: 0.78rem; padding: 8px 10px; border-radius: 8px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap; }
         .err-card p { color: #475569; font-size: 0.9rem; line-height: 1.6; }
@@ -496,6 +496,7 @@
             .pg-code, .pg-frame { min-height: 220px; }
             .cloud-grid { grid-template-columns: 1fr; }
             .err-grid { grid-template-columns: 1fr; }
+            .err-snippet { white-space: normal; word-break: break-all; }
 
             /* 사내 꿀팁: 모바일에서 카드가 넘치지 않게 */
             .tips-section { padding: 24px 14px; }
