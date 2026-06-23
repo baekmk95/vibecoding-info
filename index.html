@@ -1898,6 +1898,16 @@ document.getElementById('btn').addEventListener('click', function () {
             }
             window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
+            // Hero "아래에서 시작하기": advance to next slide when in slide mode
+            var heroCta = document.querySelector('.hero-cta');
+            if (heroCta) heroCta.addEventListener('click', function (e) {
+                if (document.body.classList.contains('slide-mode')) {
+                    e.preventDefault();
+                    var n = document.getElementById('slideNext');
+                    if (n && !n.disabled) n.click();
+                }
+            });
+
             // Swipe to change slides (slide mode) — reuse existing nav buttons
             var sx = 0, sy = 0;
             document.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
