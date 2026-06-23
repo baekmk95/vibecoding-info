@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바이브 코딩 실습 — 부서별 인력 현황 대시보드 만들기</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.woff2">
+    <style>
+        @font-face { font-family: 'SUITE Variable'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.woff2') format('woff2'); }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
         :root { --primary: #4f46e5; --secondary: #ec4899; --bg-color: #f8fafc; --text-main: #1e293b; --text-light: #64748b; --git-color: #f14e32; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; }
-        body { font-family: 'SUITE Variable', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; width: 100%; max-width: 100%; overflow-x: hidden; word-break: keep-all; overflow-wrap: break-word; }
+        body { font-family: 'SUITE Variable', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; width: 100%; max-width: 100%; overflow-x: hidden; word-break: keep-all; overflow-wrap: break-word; }
         img, svg, table, pre, canvas, iframe { max-width: 100%; }
         .container { max-width: 1000px; margin: 0 auto; padding: 45px 20px; }
         h2.section-title { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 2rem; text-align: center; margin-bottom: 14px; color: #0f172a; }
