@@ -285,6 +285,26 @@
         @keyframes slideFade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
+           RECOMMENDED VIDEOS (추천 영상)
+           ========================================= */
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .video-card {
+            text-decoration: none; background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06); transition: transform .15s ease, box-shadow .15s ease; display: block;
+        }
+        .video-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(0,0,0,0.12); }
+        .video-thumb { position: relative; aspect-ratio: 16 / 9; background: #000; }
+        .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .video-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+        .video-play i {
+            color: #fff; font-size: 1.6rem; background: rgba(220,38,38,0.92);
+            width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            padding-left: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.35); transition: background .15s ease;
+        }
+        .video-card:hover .video-play i { background: #dc2626; }
+        .video-label { padding: 14px 16px; font-weight: 700; color: #1e293b; font-size: 0.95rem; display: flex; align-items: center; gap: 7px; }
+
+        /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
@@ -336,6 +356,8 @@
             body.slide-mode > .slide-active { padding: 66px 14px 92px; }
             .slide-btn { width: 36px; height: 36px; }
             .copy-btn { font-size: 0.72rem; padding: 3px 8px; }
+
+            .video-grid { grid-template-columns: 1fr; gap: 16px; }
         }
     </style>
 </head>
@@ -609,6 +631,11 @@
                     <p style="color: #475569;">재료 폐기·메뉴 출시(배포)처럼 돌이키기 어려운 작업 전에 내 확인을 받게 하는 안전장치입니다. <b>(승인/Approval)</b>로 설익은 요리가 손님에게 나가는 걸 막죠.</p>
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
+                <div class="grid-card github-card concept" data-concept="skill">
+                    <h3 style="color: #0d9488;"><i class="fa-solid fa-scroll grid-icon" style="font-size: 1.8rem;"></i> 전문 비법 레시피 (Skill)</h3>
+                    <p style="color: #475569;">특정 메뉴(작업)를 위한 절차·요령·도구를 하나로 묶은 '비법 레시피 키트'입니다. 필요할 때만 꺼내 써서 그 작업을 늘 일관되게 처리해요. <b>(Claude Code의 Agent Skills)</b>가 대표적이에요.</p>
+                    <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
+                </div>
             </div>
             <div class="prompt-box">"앞으로 이 주방에선 <b>(설명은 한국어로)</b> 하고 <b>(들여쓰기는 2칸)</b>을 지켜줘. 이 레시피 규칙을 <b class="concept-link" data-concept="rules">(CLAUDE.md 파일)</b>에 저장해서 매번 기억하게 해줘. 그리고 코드를 <b class="concept-link" data-concept="permissions">(삭제하기 전)</b>엔 꼭 나한테 먼저 물어봐."</div>
         </div>
@@ -635,6 +662,35 @@
                     <p style="color: #047857; background: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-top: 10px;">🪄 "터미널에 이런 에러가 났어. 해결 방법과 수정된 코드 줘."</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Recommended videos -->
+    <section class="container">
+        <h2 class="section-title">📺 추천 영상</h2>
+        <p class="section-desc">바이브 코딩 입문에 도움이 되는 영상을 모았어요. 썸네일을 누르면 유튜브로 이동합니다.</p>
+        <div class="video-grid">
+            <a class="video-card" href="https://youtu.be/Kl5EcYd3G2E" target="_blank" rel="noopener noreferrer">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/Kl5EcYd3G2E/hqdefault.jpg" alt="추천 영상 1 썸네일" loading="lazy">
+                    <span class="video-play"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="video-label"><i class="fa-brands fa-youtube" style="color:#dc2626;"></i> 추천 영상 ①</div>
+            </a>
+            <a class="video-card" href="https://youtu.be/0TEPC1UDGM0" target="_blank" rel="noopener noreferrer">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/0TEPC1UDGM0/hqdefault.jpg" alt="추천 영상 2 썸네일" loading="lazy">
+                    <span class="video-play"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="video-label"><i class="fa-brands fa-youtube" style="color:#dc2626;"></i> 추천 영상 ②</div>
+            </a>
+            <a class="video-card" href="https://youtu.be/2vnr5g4DFqU" target="_blank" rel="noopener noreferrer">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/2vnr5g4DFqU/hqdefault.jpg" alt="추천 영상 3 썸네일" loading="lazy">
+                    <span class="video-play"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="video-label"><i class="fa-brands fa-youtube" style="color:#dc2626;"></i> 추천 영상 ③</div>
+            </a>
         </div>
     </section>
 
@@ -685,7 +741,8 @@
             react: [{ label: "React 공식", url: "https://react.dev/" }],
             vite: [{ label: "Vite 공식", url: "https://vite.dev/" }],
             pages: [{ label: "Cloudflare Pages", url: "https://pages.cloudflare.com/" }],
-            d1: [{ label: "Cloudflare D1 문서", url: "https://developers.cloudflare.com/d1/" }]
+            d1: [{ label: "Cloudflare D1 문서", url: "https://developers.cloudflare.com/d1/" }],
+            skill: [{ label: "Claude Code Skills 문서", url: "https://code.claude.com/docs/en/skills" }]
         };
 
         const CONCEPTS = {
@@ -928,6 +985,14 @@
                 why: "기억하기 어려운 임시 주소 대신, 나만의 보기 좋은 주소로 사람들을 불러올 수 있어요.",
                 more: ["보통 1년 단위로 구매(등록)해요.", "배포 서비스에 '커스텀 도메인'으로 연결합니다."],
                 prompt: "내가 산 <b>(도메인)</b>을 Cloudflare Pages 사이트에 연결하는 방법을 알려줘."
+            },
+            skill: {
+                title: "Skill (스킬)", icon: "fa-solid fa-scroll", color: "#0d9488",
+                analogy: "특정 메뉴를 위한 '전문 비법 레시피 키트'예요.",
+                simple: "AI가 특정 작업(예: PDF 보고서 만들기, 슬라이드 제작, 정해진 코드 패턴)을 잘 해내도록 필요한 절차·요령·도구를 하나로 묶어둔 패키지예요. 관련 작업일 때 AI가 알아서 꺼내 씁니다.",
+                why: "매번 길게 설명하지 않아도, 그 작업에 딱 맞는 전문 지식을 AI가 즉시 불러와 일관되게 처리해줘요.",
+                more: ["하우스 레시피(Rules)가 '가게 전체 규칙'이라면, 스킬은 '특정 요리 전용 레시피'예요.", "Claude Code에선 SKILL.md 파일로 만들어요."],
+                prompt: "이 프로젝트의 'PDF 보고서 생성' 작업을 <b>(Skill)</b>로 만들어서, 다음부터는 그 스킬로 처리해줘."
             }
         };
 
