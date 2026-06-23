@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바이브 코딩 입문 가이드 (웹 서비스 기초)</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
@@ -30,15 +30,20 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; }
+
         body {
             font-family: 'SUITE Variable', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
+            width: 100%;
+            max-width: 100%;
             overflow-x: hidden;
             word-break: keep-all;
             overflow-wrap: break-word;
         }
+        img, svg, table, pre, canvas, iframe { max-width: 100%; }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
 
@@ -431,6 +436,7 @@
             header { padding: 60px 15px 40px; }
             header h1 { font-size: 2.2rem; }
             header p { font-size: 1rem; }
+            .harness-grid > .grid-card { flex: 1 1 100%; min-width: 0; }
             .hero { padding: 56px 18px 52px; }
             .hero-quote { font-size: 1.3rem; line-height: 1.45; }
             .hero-attr { font-size: 0.9rem; }

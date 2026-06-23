@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바이브 코딩 실습 — 부서별 인력 현황 대시보드 만들기</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
@@ -10,7 +10,9 @@
     <style>
         :root { --primary: #4f46e5; --secondary: #ec4899; --bg-color: #f8fafc; --text-main: #1e293b; --text-light: #64748b; --git-color: #f14e32; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'SUITE Variable', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; word-break: keep-all; overflow-wrap: break-word; }
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; }
+        body { font-family: 'SUITE Variable', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; width: 100%; max-width: 100%; overflow-x: hidden; word-break: keep-all; overflow-wrap: break-word; }
+        img, svg, table, pre, canvas, iframe { max-width: 100%; }
         .container { max-width: 1000px; margin: 0 auto; padding: 45px 20px; }
         h2.section-title { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 2rem; text-align: center; margin-bottom: 14px; color: #0f172a; }
         h2.section-title::after { content: ''; display: block; width: 60px; height: 5px; background: var(--primary); margin: 14px auto 0; border-radius: 3px; }
