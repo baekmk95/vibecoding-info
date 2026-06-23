@@ -305,6 +305,21 @@
         .video-label { padding: 14px 16px; font-weight: 700; color: #1e293b; font-size: 0.95rem; display: flex; align-items: center; gap: 7px; }
 
         /* =========================================
+           LIVE PLAYGROUND (코드 ↔ 렌더링 비교)
+           ========================================= */
+        .playground { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .pg-editor { display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .pg-tabs { display: flex; align-items: center; gap: 4px; background: #1e293b; padding: 7px; }
+        .pg-tab { background: transparent; color: #94a3b8; border: none; padding: 6px 13px; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .pg-tab.active { background: #4f46e5; color: #fff; }
+        .pg-reset { margin-left: auto; background: #334155; color: #cbd5e1; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+        .pg-reset:hover { background: #475569; }
+        .pg-code { width: 100%; min-height: 280px; border: none; background: #0f172a; color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 0.85rem; padding: 14px; resize: vertical; line-height: 1.55; outline: none; tab-size: 2; }
+        .pg-result { display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .pg-result-label { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 0.85rem; padding: 9px 13px; display: flex; align-items: center; gap: 7px; }
+        .pg-frame { width: 100%; flex: 1; min-height: 280px; border: none; background: #fff; }
+
+        /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
@@ -358,6 +373,8 @@
             .copy-btn { font-size: 0.72rem; padding: 3px 8px; }
 
             .video-grid { grid-template-columns: 1fr; gap: 16px; }
+            .playground { grid-template-columns: 1fr; }
+            .pg-code, .pg-frame { min-height: 220px; }
         }
     </style>
 </head>
@@ -491,6 +508,61 @@
                 </div>
             </div>
             <div class="prompt-box">"화면을 꾸밀 때 <b class="concept-link" data-concept="tailwind">(Tailwind CSS)</b>를 사용하고, 버튼을 클릭하면 새로고침 없이 숫자가 즉시 바뀌도록 <b class="concept-link" data-concept="state">(React State 상태관리)</b>를 적용해줘."</div>
+        </div>
+    </section>
+
+    <!-- Step 1.5: Live Playground -->
+    <section class="container" id="playground">
+        <h2 class="section-title">🎨 직접 해보기 (라이브 플레이그라운드)</h2>
+        <p class="section-desc">왼쪽 코드를 바꾸면 오른쪽 화면이 실시간으로 바뀝니다. HTML(뼈대)·CSS(꾸미기)·JS(동작)가 어떻게 합쳐져 화면이 되는지 직접 확인해 보세요.</p>
+        <div class="detail-card">
+            <div class="playground">
+                <div class="pg-editor">
+                    <div class="pg-tabs">
+                        <button class="pg-tab active" type="button" data-pg="html"><i class="fa-solid fa-building" style="color:var(--html-color);"></i> HTML</button>
+                        <button class="pg-tab" type="button" data-pg="css"><i class="fa-solid fa-paint-roller" style="color:var(--css-color);"></i> CSS</button>
+                        <button class="pg-tab" type="button" data-pg="js"><i class="fa-solid fa-cogs" style="color:var(--js-color);"></i> JS</button>
+                        <button class="pg-reset" type="button" id="pgReset"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
+                    </div>
+                    <textarea class="pg-code" data-pg-code="html" spellcheck="false" aria-label="HTML 코드"><div class="card">
+  <h2>안녕하세요 👋</h2>
+  <p>버튼을 눌러보세요.</p>
+  <button id="btn">클릭 횟수: <span id="count">0</span></button>
+</div></textarea>
+                    <textarea class="pg-code" data-pg-code="css" spellcheck="false" aria-label="CSS 코드" hidden>body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  background: #eef2ff;
+  padding: 24px 28px;
+  border-radius: 16px;
+  text-align: center;
+}
+button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+}</textarea>
+                    <textarea class="pg-code" data-pg-code="js" spellcheck="false" aria-label="JS 코드" hidden>let n = 0;
+document.getElementById('btn').addEventListener('click', function () {
+  n = n + 1;
+  document.getElementById('count').textContent = n;
+});</textarea>
+                </div>
+                <div class="pg-result">
+                    <div class="pg-result-label"><i class="fa-solid fa-play"></i> 결과 화면 (실시간 렌더링)</div>
+                    <iframe class="pg-frame" id="pgFrame" title="코드 미리보기" sandbox="allow-scripts"></iframe>
+                </div>
+            </div>
+            <p style="margin-top: 14px; text-align: center; color: #64748b; font-size: 0.88rem;">💡 위 탭에서 <b>HTML·CSS·JS</b>를 바꿔보면, 같은 화면이 어떻게 달라지는지 바로 비교할 수 있어요.</p>
         </div>
     </section>
 
@@ -783,7 +855,7 @@
                 analogy: "건물의 '뼈대와 골조'예요.",
                 simple: "화면에 무엇이 있는지(제목·글·버튼·이미지)를 정하는 구조 언어예요.",
                 why: "내용의 뼈대가 있어야 그 위에 디자인(CSS)과 동작(JS)을 입힐 수 있어요.",
-                more: ["<b>&lt;h1&gt;제목&lt;/h1&gt;</b> 처럼 '태그'로 요소를 표시해요."],
+                more: ["<b>&lt;h1&gt;제목&lt;/h1&gt;</b> 처럼 '태그'로 요소를 표시해요.", "👉 '🎨 직접 해보기' 섹션에서 코드를 바꿔보며 결과를 확인해 보세요."],
                 prompt: "제목과 버튼 하나가 있는 기본 <b>(HTML)</b> 뼈대를 만들어줘."
             },
             css: {
@@ -791,7 +863,7 @@
                 analogy: "건물에 칠하는 '페인트와 인테리어'예요.",
                 simple: "색·글꼴·크기·배치 등 화면의 '보이는 모양'을 꾸미는 언어예요.",
                 why: "같은 HTML도 CSS에 따라 완전히 다른 느낌이 돼요. 디자인을 담당합니다.",
-                more: ["<b>Tailwind CSS</b>는 미리 만든 디자인 부품을 빠르게 붙이는 방식이에요."],
+                more: ["<b>Tailwind CSS</b>는 미리 만든 디자인 부품을 빠르게 붙이는 방식이에요.", "👉 '🎨 직접 해보기' 섹션에서 코드를 바꿔보며 결과를 확인해 보세요."],
                 prompt: "버튼을 둥글고 파란색으로 꾸미는 <b>(CSS)</b>를 만들어줘."
             },
             js: {
@@ -799,7 +871,7 @@
                 analogy: "건물을 움직이게 하는 '전기 배선과 기계'예요.",
                 simple: "버튼을 누르면 반응하고, 숫자를 계산하고, 화면을 바꾸는 '동작'을 담당하는 언어예요.",
                 why: "HTML·CSS가 정적인 그림이라면, JS가 있어야 살아 움직이는 앱이 됩니다.",
-                more: ["React 같은 인기 도구도 사실은 자바스크립트로 만들어져 있어요."],
+                more: ["React 같은 인기 도구도 사실은 자바스크립트로 만들어져 있어요.", "👉 '🎨 직접 해보기' 섹션에서 코드를 바꿔보며 결과를 확인해 보세요."],
                 prompt: "버튼을 누르면 숫자가 1씩 올라가는 <b>(자바스크립트)</b>를 만들어줘."
             },
             state: {
@@ -1144,6 +1216,44 @@
                 else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
                 else if (e.key === 'Escape') { e.preventDefault(); exit(); }
             });
+        })();
+
+        // ===== Live playground (코드 ↔ 렌더링) =====
+        (function () {
+            var frame = document.getElementById('pgFrame');
+            if (!frame) return;
+            var tabs = document.querySelectorAll('.pg-tab');
+            var areas = {};
+            document.querySelectorAll('.pg-code').forEach(function (t) { areas[t.getAttribute('data-pg-code')] = t; });
+            if (!areas.html || !areas.css || !areas.js) return;
+            var defaults = { html: areas.html.value, css: areas.css.value, js: areas.js.value };
+            var timer;
+
+            function render() {
+                var doc = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>' +
+                    areas.css.value + '</style></head><body>' + areas.html.value +
+                    '<scr' + 'ipt>' + areas.js.value + '</scr' + 'ipt></body></html>';
+                frame.srcdoc = doc;
+            }
+            function schedule() { clearTimeout(timer); timer = setTimeout(render, 300); }
+
+            Object.keys(areas).forEach(function (k) { areas[k].addEventListener('input', schedule); });
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    var key = tab.getAttribute('data-pg');
+                    tabs.forEach(function (t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    Object.keys(areas).forEach(function (k) { areas[k].hidden = (k !== key); });
+                });
+            });
+            var resetBtn = document.getElementById('pgReset');
+            if (resetBtn) resetBtn.addEventListener('click', function () {
+                areas.html.value = defaults.html;
+                areas.css.value = defaults.css;
+                areas.js.value = defaults.js;
+                render();
+            });
+            render();
         })();
     </script>
 
