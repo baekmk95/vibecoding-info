@@ -161,6 +161,20 @@
         .step-list { list-style: none; padding: 0; font-size: 0.9rem;}
         .step-list li { margin-bottom: 10px; padding-left: 30px; position: relative; color: #475569;}
         .step-list li::before { content: '✅'; position: absolute; left: 0; top: 1px; font-size: 1.1rem;}
+
+        /* Corporate tips */
+        .tips-section { background: #eff6ff; border: 3px solid #60a5fa; border-radius: 20px; padding: 40px 30px; }
+        .tips-heading { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.8rem; color: #1d4ed8; text-align: center; margin-bottom: 10px; }
+        .tips-sub { text-align: center; color: #1e40af; font-size: 0.95rem; margin-bottom: 24px; }
+        .tips-list { display: grid; gap: 16px; }
+        .tip-card { background: white; border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); border-left: 5px solid #3b82f6; }
+        .tip-card h3 { font-size: 1.05rem; color: #1e3a8a; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .tip-card p { color: #475569; font-size: 0.92rem; line-height: 1.65; }
+        .tip-card p + p { margin-top: 10px; }
+        .tip-note { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 11px 13px; font-size: 0.88rem !important; }
+        .tip-card.warn { border-left-color: #ef4444; background: #fef2f2; }
+        .tip-card.warn h3 { color: #b91c1c; }
+        .tip-danger { background: #fee2e2; border: 1px solid #fecaca; border-radius: 10px; padding: 11px 13px; color: #991b1b !important; font-weight: 700; }
         .error-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: #991b1b; overflow-x: auto;}
 
         /* Note box: 백엔드가 항상 필요한 건 아니에요 */
@@ -852,6 +866,38 @@ document.getElementById('btn').addEventListener('click', function () {
         </div>
     </section>
 
+    <!-- Corporate environment tips -->
+    <section class="container">
+        <div class="tips-section">
+            <h2 class="tips-heading">🏢 사내 환경에서 결과물 활용 꿀팁</h2>
+            <p class="tips-sub">회사 보안 환경에선 일반 배포와 다른 점이 많아요. 미리 알아두면 삽질을 크게 줄일 수 있습니다.</p>
+            <div class="tips-list">
+                <div class="tip-card">
+                    <h3><i class="fa-solid fa-file-code"></i> 1. <span class="concept-link" data-concept="spa">SPA</span>를 적극 활용하세요</h3>
+                    <p>파일을 반입할 때 HTML·CSS·JS를 매번 여러 개 올리긴 번거로워요. 개발은 파일을 나눠(모듈화) 하더라도, <b>배포용은 하나의 SPA(단일 HTML 파일)로 합쳐서</b> 반입하면 훨씬 수월합니다.</p>
+                </div>
+                <div class="tip-card">
+                    <h3><i class="fa-solid fa-box-open"></i> 2. 패키지 설치(<span class="concept-link" data-concept="npm">npm</span>·pip)는 막혀 있어요 → 로컬에서 <span class="concept-link" data-concept="build">빌드</span></h3>
+                    <p>보안 때문에 사내에선 npm·pip 같은 패키지 설치가 대개 안 됩니다. 그래서 <b>내 PC(로컬)에서 개발·빌드를 끝내고, 완성된 결과물만 반입</b>해야 해요.</p>
+                    <p class="tip-note">📦 <b>빌드(Build)</b>란? 사람이 나눠 쓴 코드와 라이브러리를, 브라우저가 바로 읽을 수 있는 <b>최종 파일로 묶고 압축</b>하는 과정이에요. (자세히는 위 '빌드' 단어를 눌러보세요)</p>
+                </div>
+                <div class="tip-card">
+                    <h3><i class="fa-solid fa-network-wired"></i> 3. <span class="concept-link" data-concept="cdn">CDN</span>은 보통 동작해요 (unpkg·jsDelivr)</h3>
+                    <p>패키지 설치가 막혀도 <b>CDN으로 라이브러리를 불러오는 방식은 대개 동작</b>합니다. unpkg·jsDelivr 등을 쓰세요. 다만 환경에 따라 특정 CDN이 차단돼 있기도 하니, <b>자주 쓰는 CDN은 미리 동작하는지 확인</b>하세요.</p>
+                </div>
+                <div class="tip-card">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> 4. SharePoint·Outlook·OneDrive에선 &lt;script&gt;가 막히기도</h3>
+                    <p>이 환경들에선 보안상 HTML 안의 <b>&lt;script&gt;(자바스크립트)가 작동하지 않는 경우</b>가 많아요. 대신 <b>파일을 다운로드해서 열면 정상 동작</b>합니다. <b>어디로 배포·공유할지를 미리 정하고</b> 거기에 맞춰 만드세요.</p>
+                </div>
+                <div class="tip-card warn">
+                    <h3><i class="fa-solid fa-shield-halved"></i> 5. 사내 데이터는 절대 AI에 넘기지 마세요</h3>
+                    <p>사내 데이터 파일엔 문서보안(DRM) 솔루션이 걸려 있어요. 데이터를 보여주거나 가공하는 작업은 <b>데이터를 CSV로 import해서 화면에서 처리</b>하게 만드세요.</p>
+                    <p class="tip-danger">🚨 AI에게는 <b>데이터의 '컬럼(항목) 구조'만</b> 알려주고, <b>실제 데이터 내용은 절대 전달하지 마세요.</b></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Recommended videos -->
     <section class="container">
         <h2 class="section-title">📺 추천 영상</h2>
@@ -935,7 +981,11 @@ document.getElementById('btn').addEventListener('click', function () {
             firebase: [{ label: "Firebase 공식", url: "https://firebase.google.com/" }],
             aws: [{ label: "AWS 공식", url: "https://aws.amazon.com/" }],
             gcp: [{ label: "Google Cloud 공식", url: "https://cloud.google.com/" }],
-            azure: [{ label: "Microsoft Azure 공식", url: "https://azure.microsoft.com/" }]
+            azure: [{ label: "Microsoft Azure 공식", url: "https://azure.microsoft.com/" }],
+            cdn: [
+                { label: "jsDelivr", url: "https://www.jsdelivr.com/" },
+                { label: "unpkg", url: "https://unpkg.com/" }
+            ]
         };
 
         const CONCEPTS = {
@@ -1274,6 +1324,30 @@ document.getElementById('btn').addEventListener('click', function () {
                 why: "회사에서 MS 제품을 많이 쓰거나 기업용 통합이 필요할 때 자주 선택해요.",
                 more: ["대표 서비스: App Service, Azure SQL.", "기업(엔터프라이즈) 시장에서 인기가 높아요."],
                 prompt: "<b>(Azure App Service)</b>에 웹앱을 배포하는 방법을 알려줘."
+            },
+            spa: {
+                title: "SPA (Single Page Application)", icon: "fa-solid fa-file-code", color: "#4f46e5",
+                analogy: "여러 페이지를 한 장에 담은 '폴더블 메뉴판'이에요.",
+                simple: "페이지를 옮겨도 새 HTML을 다시 불러오지 않고, 한 페이지 안에서 화면만 바꿔 보여주는 방식이에요. 배포 시 파일 하나로 합치기도 좋아요.",
+                why: "사내처럼 파일 반입이 번거로운 환경에선, 단일 HTML 파일로 만들면 올리고 공유하기가 훨씬 편해요.",
+                more: ["React·Vue 같은 도구가 대표적인 SPA 방식이에요.", "개발은 파일을 나눠 하고, 빌드로 하나로 합칠 수 있어요."],
+                prompt: "이 앱을 파일 하나로 동작하는 <b>(SPA, 단일 HTML)</b>로 만들어줘."
+            },
+            build: {
+                title: "빌드 (Build)", icon: "fa-solid fa-box-open", color: "#ca8a04",
+                analogy: "손질한 재료들을 손님상에 낼 '완성 도시락으로 포장'하는 과정이에요.",
+                simple: "사람이 보기 좋게 나눠 쓴 코드와 라이브러리를, 브라우저가 바로 읽을 수 있는 최종 파일(HTML·JS·CSS)로 묶고 압축하는 과정이에요.",
+                why: "사내에서 npm 설치가 막혀 있어도, 로컬에서 빌드한 '완성 결과물'만 반입하면 그대로 동작해요.",
+                more: ["Vite 등에서 'npm run build' 같은 명령으로 만들어요.", "결과물은 보통 dist 폴더에 생겨요."],
+                prompt: "이 프로젝트를 <b>(빌드)</b>해서, 사내에 반입할 최종 결과물 파일을 만들어줘."
+            },
+            cdn: {
+                title: "CDN (콘텐츠 전송망)", icon: "fa-solid fa-network-wired", color: "#0d9488",
+                analogy: "전국 편의점에서 바로 꺼내 쓰는 '공용 식자재 매대'예요.",
+                simple: "라이브러리(코드 부품)를 내 프로젝트에 설치하지 않고, 인터넷 주소(링크) 한 줄로 바로 불러와 쓰는 방식이에요.",
+                why: "npm 설치가 막힌 환경에서도 CDN 링크는 대개 동작해서, 라이브러리를 그대로 쓸 수 있어요.",
+                more: ["대표 CDN: unpkg, jsDelivr.", "환경에 따라 차단된 CDN도 있으니 미리 확인하세요."],
+                prompt: "이 라이브러리를 npm 대신 <b>(jsDelivr CDN)</b> 링크로 불러오게 바꿔줘."
             }
         };
 
