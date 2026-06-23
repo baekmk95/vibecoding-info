@@ -68,6 +68,22 @@
         header h1 { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 3rem; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); line-height: 1.2;}
         header p { font-size: 1.1rem; opacity: 0.9; max-width: 750px; margin: 0 auto; }
 
+        /* Hero (landing) */
+        .hero { background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 55%, #4c1d95 100%); color: #fff; text-align: center; padding: 90px 24px 80px; }
+        .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 30px; padding: 6px 16px; font-size: 0.85rem; font-weight: 700; color: #c7d2fe; margin-bottom: 26px; }
+        .hero-quote { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.95rem; line-height: 1.5; max-width: 760px; margin: 0 auto 14px; }
+        .hero-quote .qmark { color: #a78bfa; }
+        .hero-attr { color: #a5b4fc; font-size: 1rem; margin-bottom: 34px; }
+        .hero-msg { max-width: 680px; margin: 0 auto 32px; font-size: 1.08rem; color: #e2e8f0; line-height: 1.75; }
+        .hero-msg b { color: #fcd34d; font-weight: 700; }
+        .hero-cta { display: inline-flex; align-items: center; gap: 9px; background: #fff; color: #4c1d95; font-weight: 800; font-size: 1.05rem; padding: 14px 28px; border-radius: 40px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.25); transition: transform .15s ease, box-shadow .15s ease; }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,0.3); }
+
+        /* Wrap-up footer */
+        .wrap-emoji { font-size: 2.2rem; margin-bottom: 8px; }
+        .wrap-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; background: var(--primary); color: #fff; font-weight: 800; padding: 12px 24px; border-radius: 40px; text-decoration: none; }
+        .wrap-cta:hover { filter: brightness(1.1); }
+
         /* Detail Cards & Prompt Box */
         .detail-card {
             background: white; border-radius: 20px; padding: 40px;
@@ -330,6 +346,7 @@
             padding: 80px 20px 100px; animation: slideFade .35s ease;
         }
         body.slide-mode > section.slide-active { background: var(--bg-color); }
+        body.slide-mode > section.hero.slide-active { background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 55%, #4c1d95 100%); display: flex; flex-direction: column; justify-content: center; }
         body.slide-mode > section.slide-active > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
         /* Header as title slide: keep its gradient, center content, drop the clip */
         body.slide-mode > header.slide-active {
@@ -414,6 +431,11 @@
             header { padding: 60px 15px 40px; }
             header h1 { font-size: 2.2rem; }
             header p { font-size: 1rem; }
+            .hero { padding: 56px 18px 52px; }
+            .hero-quote { font-size: 1.3rem; line-height: 1.45; }
+            .hero-attr { font-size: 0.9rem; }
+            .hero-msg { font-size: 1rem; }
+            .hero-cta { font-size: 0.98rem; padding: 13px 24px; }
             .container { padding: 30px 15px; }
             h2.section-title { font-size: 1.8rem; }
             .section-desc { font-size: 1rem; margin-bottom: 25px; }
@@ -470,7 +492,16 @@
 </head>
 <body>
 
-    <header>
+    <!-- Hero / Landing -->
+    <section class="hero">
+        <div class="hero-badge">🔭 더 멀리 보기</div>
+        <div class="hero-quote"><span class="qmark">“</span>내가 더 멀리 보았다면, 그것은 거인의 어깨 위에 서 있었기 때문이다.<span class="qmark">”</span></div>
+        <div class="hero-attr">— 아이작 뉴턴 (Isaac Newton)</div>
+        <p class="hero-msg">이제 그 거인은 <b>AI</b>입니다. 혼자라면 몇 달이 걸릴 일도, <b>AI라는 거인의 어깨 위에서</b> 더 멀리 보고 더 멀리 갈 수 있어요.<br>이 가이드는 그 어깨에 <b>단단히 올라타는 법</b>을 차근차근 안내합니다.</p>
+        <a class="hero-cta" href="#start">아래에서 시작하기 <i class="fa-solid fa-arrow-down"></i></a>
+    </section>
+
+    <header id="start">
         <h1>바이브 코딩 입문 가이드 🧭</h1>
         <p>AI에게 무작정 코드를 맡기기 전에 알아두면 좋은 기초와 5단계 흐름.<br>비유로 큰 그림을 잡고, (괄호) 안의 기술 용어로 또박또박 요청해 보세요.</p>
     </header>
@@ -1032,11 +1063,14 @@ document.getElementById('btn').addEventListener('click', function () {
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 10px;">하나씩 익혀가요 🙂</h2>
-        <p style="color: #94a3b8; font-size: 0.95rem;">
-            비유로 큰 그림을 잡고, 괄호 안의 기술 용어로 또박또박 요청해 보세요.
+    <footer style="text-align: center; padding: 48px 20px; background: linear-gradient(160deg, #0f172a, #4c1d95); color: white; margin-top: 30px;">
+        <div class="wrap-emoji">🔭</div>
+        <h2 style="font-size: 1.6rem; margin-bottom: 10px;">이제, 거인의 어깨 위로</h2>
+        <p style="color: #cbd5e1; font-size: 0.98rem; max-width: 560px; margin: 0 auto;">
+            AI라는 거인의 어깨 위에서 당신의 아이디어를 <b style="color:#fcd34d;font-weight:700;">더 멀리, 더 빠르게</b>.<br>
+            작게 시작해 하나씩 쌓아 올리면 됩니다.
         </p>
+        <a class="wrap-cta" href="practice.html">직접 해보러 가기 <i class="fa-solid fa-arrow-right"></i></a>
     </footer>
 
     <!-- Slide deck controls -->
