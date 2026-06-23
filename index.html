@@ -53,6 +53,11 @@
         }
 
         .section-desc { text-align: center; color: var(--text-light); font-size: 1.1rem; margin-bottom: 40px; }
+        .subsection-title {
+            font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.5rem;
+            color: #334155; text-align: center; margin: 50px 0 10px; padding-top: 30px;
+            border-top: 2px dashed #e2e8f0;
+        }
 
         /* Header */
         header {
@@ -740,12 +745,10 @@ document.getElementById('btn').addEventListener('click', function () {
             </div>
             <div class="prompt-box">"로컬 테스트를 마쳤어. 아까 올려둔 <b class="concept-link" data-concept="github">(GitHub)</b>의 코드를 <b class="concept-link" data-concept="pages">(Cloudflare Pages)</b> 클라우드에 자동 배포(Deploy)하는 가이드를 줘."</div>
         </div>
-    </section>
 
-    <!-- Step 5.5: Cloud platforms -->
-    <section class="container">
-        <h2 class="section-title">☁️ 어디에 배포할까? (클라우드 고르기)</h2>
-        <p class="section-desc">완성한 앱을 올릴 '클라우드'를 고를 차례예요. 입문자 친화 플랫폼부터 전문가용 종합 클라우드까지 — 카드를 눌러 자세히 보세요.</p>
+        <!-- 배포의 부연 설명: 어디에 배포할까 (Step 5와 같은 섹션/슬라이드) -->
+        <h3 class="subsection-title">☁️ 그래서, 어디에 배포할까? (클라우드 고르기)</h3>
+        <p class="section-desc">위에서 본 '배포'를 실제로 어디에 할지 고를 차례예요. 입문자 친화 플랫폼부터 전문가용 종합 클라우드까지 — 카드를 눌러 자세히 보세요.</p>
         <div class="detail-card">
             <h3 class="cloud-group-title" style="color: #16a34a;"><i class="fa-solid fa-seedling"></i> 입문자 친화 (빠르고 쉽게 시작)</h3>
             <div class="cloud-grid">
