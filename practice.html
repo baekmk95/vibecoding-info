@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바이브 코딩 실습 — 부서별 인력 현황 대시보드 만들기</title>
+    <meta name="description" content="VS Code와 로컬 Git으로 HR 데이터를 대시보드로 만드는 바이브 코딩 실습 — 환경 세팅부터 계획·검증·빌드 반입까지 단계별로.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="바이브 코딩 실습: HR 대시보드 만들기">
+    <meta property="og:description" content="환경 세팅 → 계획 → 데이터 → 표·KPI·차트·필터·내보내기 → 모듈화·빌드까지 단계별 따라하기.">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:url" content="https://vibecoding-info.pages.dev/practice.html">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.woff2">
@@ -163,6 +171,13 @@
         @keyframes slideFade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         footer { text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px; }
+
+        #toTop { position: fixed; bottom: 20px; right: 18px; z-index: 850; width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--primary); color: #fff; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 16px rgba(79,70,229,0.4); opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s ease, transform .2s ease; }
+        #toTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        body.slide-mode #toTop { display: none; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+        }
 
         @media (max-width: 1024px) {
             .container { padding: 40px 18px; }
@@ -856,6 +871,41 @@ git commit -m "start: HR 대시보드 실습 시작"</span>
                 else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
                 else if (e.key === 'Escape') { e.preventDefault(); exit(); }
             });
+        })();
+
+        // ===== A11y + mobile UX (focus trap, back-to-top, swipe) =====
+        (function () {
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Tab') return;
+                var card = document.querySelector('.modal-overlay.open .modal-card');
+                if (!card) return;
+                var f = card.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+                if (!f.length) return;
+                var first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            });
+
+            var top = document.createElement('button');
+            top.id = 'toTop'; top.type = 'button'; top.setAttribute('aria-label', '맨 위로');
+            top.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+            document.body.appendChild(top);
+            top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            function onScroll() {
+                if (!document.body.classList.contains('slide-mode') && window.scrollY > 600) top.classList.add('show');
+                else top.classList.remove('show');
+            }
+            window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+            var sx = 0, sy = 0;
+            document.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+            document.addEventListener('touchend', function (e) {
+                if (!document.body.classList.contains('slide-mode')) return;
+                var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+                if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+                var btn = document.getElementById(dx < 0 ? 'slideNext' : 'slidePrev');
+                if (btn && !btn.disabled) btn.click();
+            }, { passive: true });
         })();
     </script>
 
