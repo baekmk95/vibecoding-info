@@ -135,6 +135,8 @@
 
         /* Grid Layouts (Sec 3, 4, 5) */
         .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .harness-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .harness-grid > .grid-card { flex: 0 1 calc(50% - 10px); min-width: 260px; }
         .grid-card { padding: 25px; border-radius: 16px; display: flex; flex-direction: column; }
         .grid-icon { font-size: 2.5rem; margin-bottom: 15px; }
         .grid-card h3 { font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
@@ -682,7 +684,7 @@ document.getElementById('btn').addEventListener('click', function () {
 
         <div class="detail-card">
             <p style="text-align: center; color: #475569; font-size: 0.95rem; margin-bottom: 25px;">챗봇처럼 '말로만' 주문받는 것과, 내 주방에서 '직접 칼을 잡고 요리하는' 것의 결정적 차이가 바로 이 하네스에 있습니다.</p>
-            <div class="split-grid">
+            <div class="harness-grid">
                 <div class="grid-card storage-db concept" data-concept="rules">
                     <h3 style="color: #047857;"><i class="fa-solid fa-book grid-icon" style="font-size: 1.8rem;"></i> 하우스 레시피 (Rules)</h3>
                     <p style="color: #475569;">우리 가게의 맛·플레이팅 규칙을 적어두면 매번 설명할 필요가 없습니다. 예: Claude Code의 <b>(CLAUDE.md)</b>, Cursor의 <b>(.cursorrules)</b>. 셰프에게 건네는 '하우스 레시피'죠.</p>
