@@ -190,11 +190,11 @@
         .step-list li::before { content: '✅'; position: absolute; left: 0; top: 1px; font-size: 1.1rem;}
 
         /* Corporate tips */
-        .tips-section { background: linear-gradient(135deg, #eff6ff, #e0e7ff); border: 2px solid #93c5fd; border-radius: 20px; padding: 38px 30px; }
+        .tips-section { background: linear-gradient(135deg, #eff6ff, #e0e7ff); border: 2px solid #93c5fd; border-radius: 20px; padding: 38px 30px; overflow: hidden; }
         .tips-heading { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 1.9rem; color: #1d4ed8; text-align: center; margin-bottom: 10px; }
         .tips-sub { text-align: center; color: #1e40af; font-size: 0.98rem; margin-bottom: 26px; }
         .tips-list { display: grid; gap: 14px; }
-        .tip-card { display: flex; gap: 16px; background: #fff; border-radius: 14px; padding: 22px 24px; box-shadow: 0 6px 16px rgba(30,58,138,0.10); border: 1px solid #dbeafe; }
+        .tip-card { display: flex; gap: 16px; background: #fff; border-radius: 14px; padding: 22px 24px; box-shadow: 0 6px 16px rgba(30,58,138,0.10); border: 1px solid #dbeafe; min-width: 0; }
         .tip-num {
             flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
             background: #2563eb; color: #fff; font-weight: 800; font-size: 1.15rem;
@@ -504,7 +504,7 @@
             .err-snippet { white-space: normal; word-break: break-all; }
 
             /* 사내 꿀팁: 모바일에서 카드가 넘치지 않게 */
-            .tips-section { padding: 24px 14px; }
+            .tips-section { padding: 22px 16px; }
             .tip-card { padding: 18px 16px; gap: 12px; }
             .tip-num { width: 34px; height: 34px; font-size: 1.05rem; }
             .tip-card h3 { display: block; font-size: 1.05rem; }
