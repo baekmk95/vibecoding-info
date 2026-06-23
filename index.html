@@ -478,10 +478,10 @@
         .hero-cta { animation: heroUp .6s .4s both, ctaGlow 2.6s ease-in-out 1.2s infinite; }
 
         /* Git graph draws itself when scrolled into view (JS-gated, slide-safe) */
-        body.anim-ready .git-graph .draw { stroke-dasharray: 650; stroke-dashoffset: 650; }
-        body.anim-ready .detail-card.reveal.in .git-graph .draw { animation: gitdraw 1.3s ease forwards; }
+        /* default: fully visible. JS adds .gx (hide) then .animate (draw) when in view */
+        .git-graph.gx .draw { stroke-dasharray: 700; stroke-dashoffset: 700; }
+        .git-graph.gx .draw.animate { animation: gitdraw 1.2s ease forwards; }
         @keyframes gitdraw { to { stroke-dashoffset: 0; } }
-        body.slide-mode .git-graph .draw { stroke-dashoffset: 0 !important; }
         /* Roadmap step icons gently float */
         .step-icon-wrap { animation: floaty 5s ease-in-out infinite; }
         .flow-step:nth-child(even) .step-icon-wrap { animation-delay: .9s; }
@@ -1832,11 +1832,27 @@ document.getElementById('btn').addEventListener('click', function () {
             var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             targets.forEach(function (el) { el.classList.add('reveal'); });
             if (reduce || !('IntersectionObserver' in window)) { targets.forEach(function (el) { el.classList.add('in'); }); return; }
-            document.body.classList.add('anim-ready');
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
             }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
             targets.forEach(function (el) { io.observe(el); });
+        })();
+
+        // ===== Git graph: draw itself when the graph enters view (scroll & slide) =====
+        (function () {
+            var g = document.querySelector('.git-graph');
+            if (!g || !('IntersectionObserver' in window)) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            g.classList.add('gx'); // hide the strokes until drawn
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.draw').forEach(function (el) { el.classList.add('animate'); });
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            io.observe(g);
         })();
 
         // ===== A11y + mobile UX (keyboard, focus trap, back-to-top, swipe) =====
