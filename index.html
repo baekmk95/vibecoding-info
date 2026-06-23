@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바이브 코딩 입문 가이드 (웹 서비스 기초)</title>
+    <meta name="description" content="비전공자도 이해하는 바이브 코딩 입문 가이드 — 비유로 큰 그림을 잡고, 기술 용어로 또박또박 AI에게 요청하는 법. IDE·AI 하네스·배포·실습까지.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="바이브 코딩 입문 가이드">
+    <meta property="og:description" content="비유로 큰 그림을 잡고, 기술 용어로 또박또박 AI에게 요청하는 법. IDE·AI 하네스·배포·실습까지.">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:url" content="https://vibecoding-info.pages.dev/">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.woff2">
@@ -432,6 +440,16 @@
         .git-chip:hover { background: #fff1e6; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .git-chip i { opacity: 0.75; }
 
+        /* Back-to-top button */
+        #toTop { position: fixed; bottom: 20px; right: 18px; z-index: 850; width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--primary); color: #fff; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 16px rgba(79,70,229,0.4); opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s ease, transform .2s ease; }
+        #toTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        body.slide-mode #toTop { display: none; }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+        }
+
         /* =========================================
            TABLET BREAKPOINT
            ========================================= */
@@ -515,6 +533,7 @@
             .tip-num { width: 34px; height: 34px; font-size: 1.05rem; }
             .tip-card h3 { display: block; font-size: 1.05rem; }
             .tip-card h3 i { margin-right: 6px; }
+            #toTop { bottom: 16px; right: 14px; width: 42px; height: 42px; }
         }
     </style>
 </head>
@@ -1758,6 +1777,57 @@ document.getElementById('btn').addEventListener('click', function () {
                 render();
             });
             render();
+        })();
+
+        // ===== A11y + mobile UX (keyboard, focus trap, back-to-top, swipe) =====
+        (function () {
+            // Keyboard-accessible concept triggers (divs/spans)
+            document.querySelectorAll('[data-concept]').forEach(function (el) {
+                var t = el.tagName.toLowerCase();
+                if (t === 'a' || t === 'button') return;
+                el.setAttribute('role', 'button');
+                el.setAttribute('tabindex', '0');
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                var el = document.activeElement;
+                if (el && el.getAttribute && el.getAttribute('data-concept')) { e.preventDefault(); el.click(); }
+            });
+
+            // Focus trap for any open modal
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Tab') return;
+                var card = document.querySelector('.modal-overlay.open .modal-card');
+                if (!card) return;
+                var f = card.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+                if (!f.length) return;
+                var first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            });
+
+            // Back-to-top button
+            var top = document.createElement('button');
+            top.id = 'toTop'; top.type = 'button'; top.setAttribute('aria-label', '맨 위로');
+            top.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+            document.body.appendChild(top);
+            top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            function onScroll() {
+                if (!document.body.classList.contains('slide-mode') && window.scrollY > 600) top.classList.add('show');
+                else top.classList.remove('show');
+            }
+            window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+            // Swipe to change slides (slide mode) — reuse existing nav buttons
+            var sx = 0, sy = 0;
+            document.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+            document.addEventListener('touchend', function (e) {
+                if (!document.body.classList.contains('slide-mode')) return;
+                var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+                if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+                var btn = document.getElementById(dx < 0 ? 'slideNext' : 'slidePrev');
+                if (btn && !btn.disabled) btn.click();
+            }, { passive: true });
         })();
     </script>
 
