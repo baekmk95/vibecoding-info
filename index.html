@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>바이브 코딩 입문자를 위한 웹 서비스 지도 완결판 (Node.js 포함)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>바이브 코딩 입문 가이드 (웹 서비스 기초)</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -399,6 +399,15 @@
         .git-chip i { opacity: 0.75; }
 
         /* =========================================
+           TABLET BREAKPOINT
+           ========================================= */
+        @media (max-width: 1024px) {
+            .container { padding: 40px 18px; }
+            .cloud-grid { grid-template-columns: 1fr 1fr; }
+            header h1 { font-size: 2.6rem; }
+        }
+
+        /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
@@ -462,8 +471,8 @@
 <body>
 
     <header>
-        <h1>바이브 코딩 완결판 지도 🗺️</h1>
-        <p>AI에게 무작정 코드를 찍어내라고 하기 전에 꼭 알아야 할 기초 공사와 5단계 핵심 원리.<br>비유를 통해 뼈대를 잡고, (괄호) 안의 기술 용어로 전문가처럼 프롬프트를 지휘하세요.</p>
+        <h1>바이브 코딩 입문 가이드 🧭</h1>
+        <p>AI에게 무작정 코드를 맡기기 전에 알아두면 좋은 기초와 5단계 흐름.<br>비유로 큰 그림을 잡고, (괄호) 안의 기술 용어로 또박또박 요청해 보세요.</p>
     </header>
 
     <!-- Big Picture -->
@@ -1024,9 +1033,9 @@ document.getElementById('btn').addEventListener('click', function () {
     </section>
 
     <footer style="text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 10px;">개념을 엮어내는 힘 🚀</h2>
+        <h2 style="font-size: 1.5rem; margin-bottom: 10px;">하나씩 익혀가요 🙂</h2>
         <p style="color: #94a3b8; font-size: 0.95rem;">
-            비유로 뼈대를 잡고, 괄호 안의 기술 용어로 전문가처럼 명령하세요!
+            비유로 큰 그림을 잡고, 괄호 안의 기술 용어로 또박또박 요청해 보세요.
         </p>
     </footer>
 

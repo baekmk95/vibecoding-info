@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>바이브 코딩 실습 — 부서별 인력 현황 대시보드 만들기</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
@@ -150,6 +150,10 @@
 
         footer { text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px; }
 
+        @media (max-width: 1024px) {
+            .container { padding: 40px 18px; }
+            header h1 { font-size: 2.3rem; }
+        }
         @media (max-width: 768px) {
             header h1 { font-size: 2rem; }
             .container { padding: 30px 15px; }
