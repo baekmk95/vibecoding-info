@@ -567,6 +567,45 @@ git commit -m "start: HR 대시보드 실습 시작"</span>
         </div>
     </section>
 
+    <!-- STEP 9 모듈화 & 빌드 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 9</span></div>
+        <h2 class="section-title">📦 모듈화 & 빌드해서 반입하기</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">9</div>
+                <div class="mission-body">
+                    <h3>커지면 나누고, 반입은 빌드 결과물만 <button class="info-btn" data-info="build"><i class="fa-solid fa-circle-info"></i> 의미 &amp; 주의</button></h3>
+                    <p>기능이 늘수록 모든 코드를 <b>index.html 하나</b>에 넣으면 맥락 잡기 어렵고 스파게티 코드가 돼요. 역할별로 파일을 <b>나누고(모듈화)</b>, 사내 반입 땐 <b>빌드한 결과물(dist)만</b> 가져갑니다.</p>
+                    <div class="think-box">
+                        <div class="think-title">💭 먼저 스스로: 어떻게 나누고 반입할까?</div>
+                        <ul>
+                            <li>어떤 기준으로 파일을 나눌까? (데이터 처리 / 차트 / 필터 / 화면)</li>
+                            <li>빌드하면 무엇이 나오나? (합쳐·압축된 dist 결과물)</li>
+                            <li>사내엔 무엇만 반입? (소스 전체 X → dist 결과물만)</li>
+                        </ul>
+                    </div>
+                    <details class="example">
+                        <summary>🪄 모범 예시 프롬프트 펼쳐보기</summary>
+                        <div class="prompt-box">
+                            <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                            <span class="prompt-text">"기능이 늘어 index.html이 너무 길어졌어. 역할별로 파일을 나눠 <b>모듈화</b>하고, <b>Vite로 빌드</b>하면 <b>dist 폴더</b>에 합쳐진 결과물이 나오게 해줘. 사내엔 그 <b>dist 결과물만</b> 반입할 거야. 빌드·실행 명령도 알려줘."</span>
+                        </div>
+                    </details>
+                    <div class="verify-box">
+                        <div class="verify-title">🧪 이렇게 검증하세요</div>
+                        <ul>
+                            <li>빌드 후 <b>dist 폴더</b>가 생겼는가?</li>
+                            <li>dist 결과물만 열어도(브라우저로) 똑같이 동작하는가?</li>
+                            <li>반입은 소스 전체가 아니라 <b>dist 결과물만</b>인지 확인</li>
+                        </ul>
+                    </div>
+                    <div class="checkpoint">✅ 빌드 결과물이 동작하면 → <code>git commit -m "build: 반입용 dist 생성"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 회고 -->
     <section class="container">
         <div class="center"><span class="step-tag brief">마무리 · 회고</span></div>
@@ -579,6 +618,7 @@ git commit -m "start: HR 대시보드 실습 시작"</span>
                 <li>실제 데이터를 AI에 주지 않고 만들었다</li>
                 <li>각 STEP에서 <b>스스로 프롬프트를 설계</b>해 봤다</li>
                 <li>중요 로직(집계·계산)을 <b>직접 검증</b>했다 (그레이존 없음)</li>
+                <li>커지면 <b>모듈화 → 빌드(dist)로 반입</b>한다는 흐름을 이해했다</li>
             </ul>
             <div class="cmd-box">
                 <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
@@ -692,6 +732,12 @@ git commit -m "start: HR 대시보드 실습 시작"</span>
                 meaning: "AI도 틀려요. 특히 집계·계산·인증 같은 중요 로직은 직접 확인해야 안심할 수 있어요. '되는 것 같다'가 아니라 '확실히 된다'를 만들어요.",
                 caution: ["숫자는 손으로 한두 건 계산해 결과와 대조.", "중요 로직을 '아마 되겠지(그레이존)'로 두지 말기."],
                 links: [{ label: "가이드: 검증", href: "index.html#concept=verify" }, { label: "가이드: 테스트·TDD", href: "index.html#concept=tdd" }]
+            },
+            build: {
+                title: "모듈화 & 빌드(반입)", icon: "fa-solid fa-box-open", color: "#ca8a04",
+                meaning: "기능이 늘수록 한 파일에 다 넣으면 맥락 파악이 어렵고 스파게티 코드가 돼요. 역할별로 파일을 나누면(모듈화) 관리가 쉬워집니다. 다만 사내 반입 땐 소스 전체가 아니라, 빌드로 합쳐·압축한 '결과물(dist)'만 가져갑니다.",
+                caution: ["사내는 npm 설치가 막히니 빌드는 로컬에서 끝내고 dist만 반입.", "dist 결과물만으로 동작하는지 꼭 확인."],
+                links: [{ label: "가이드: 빌드", href: "index.html#concept=build" }, { label: "가이드: SPA", href: "index.html#concept=spa" }]
             }
         };
 
