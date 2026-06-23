@@ -1505,6 +1505,14 @@ document.getElementById('btn').addEventListener('click', function () {
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
             });
+
+            // Deep link: index.html#concept=git opens that concept modal (used by practice page)
+            function openFromHash() {
+                var m = (location.hash || '').match(/concept=([a-z0-9]+)/i);
+                if (m && CONCEPTS[m[1]]) openModal(m[1]);
+            }
+            window.addEventListener('hashchange', openFromHash);
+            openFromHash();
         })();
 
         // ===== Copy buttons + Slide deck mode =====
