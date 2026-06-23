@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>바이브 코딩 실습 — 부서별 인력 현황 대시보드 만들기</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUITE/fonts/variable/woff2/SUITEVariable.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #ec4899;
+            --bg-color: #f8fafc;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --git-color: #f14e32;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'SUITE Variable', sans-serif; background-color: var(--bg-color);
+            color: var(--text-main); line-height: 1.6; overflow-x: hidden;
+            word-break: keep-all; overflow-wrap: break-word;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 45px 20px; }
+        h2.section-title {
+            font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 2rem;
+            text-align: center; margin-bottom: 14px; color: #0f172a; position: relative;
+        }
+        h2.section-title::after { content: ''; display: block; width: 60px; height: 5px; background: var(--primary); margin: 14px auto 0; border-radius: 3px; }
+        .section-desc { text-align: center; color: var(--text-light); font-size: 1.05rem; margin-bottom: 34px; }
+        .step-tag { display: inline-block; background: #eef2ff; color: var(--primary); font-weight: 800; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; margin: 0 auto 14px; }
+        .step-tag.brief { background: #f1f5f9; color: #64748b; }
+        .step-tag.go { background: #dcfce7; color: #15803d; }
+        .center { text-align: center; }
+
+        /* Header */
+        header { background: linear-gradient(135deg, #0f172a, #3730a3); color: white; text-align: center; padding: 70px 20px 56px; clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%); }
+        header h1 { font-family: 'SUITE Variable', sans-serif; font-weight: 800; font-size: 2.6rem; margin-bottom: 14px; line-height: 1.2; }
+        header p { font-size: 1.05rem; opacity: 0.92; max-width: 700px; margin: 0 auto 10px; }
+        .back-link { display: inline-flex; align-items: center; gap: 7px; color: #c7d2fe; text-decoration: none; font-weight: 700; font-size: 0.9rem; margin-top: 8px; }
+        .back-link:hover { color: #fff; }
+
+        .detail-card { background: white; border-radius: 20px; padding: 34px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+        /* Prompt / command boxes */
+        .prompt-box, .cmd-box { position: relative; background: #1e293b; color: #f8fafc; border-radius: 12px; padding: 18px 20px; font-size: 0.98rem; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .prompt-box { border-left: 5px solid #10b981; margin-top: 16px; }
+        .cmd-box { border-left: 5px solid #38bdf8; margin-top: 14px; font-family: 'Courier New', monospace; font-size: 0.9rem; white-space: pre-wrap; }
+        .prompt-box::before { content: '🪄 AI에게 이렇게 시켜보세요'; display: block; font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 8px; }
+        .cmd-box::before { content: '⌨️ 터미널 명령'; display: block; font-weight: 800; color: #7dd3fc; font-size: 0.85rem; margin-bottom: 8px; }
+        .prompt-box b { color: #fcd34d; font-weight: 700; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(255,255,255,0.12); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 5px; transition: all .15s ease; }
+        .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+        .copy-btn.copied { background: #10b981; color: #fff; border-color: #10b981; }
+        .prompt-text { display: block; }
+
+        /* Goal mockup */
+        .mock { border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; background: #fff; }
+        .mock-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+        .mock-kpi { background: #eef2ff; border-radius: 12px; padding: 16px; text-align: center; }
+        .mock-kpi .v { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .mock-kpi .l { font-size: 0.82rem; color: #64748b; margin-top: 4px; }
+        .mock-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .mock-bar, .mock-donut { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; height: 150px; display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding: 14px; }
+        .mock-bar span { width: 26px; background: var(--primary); border-radius: 4px 4px 0 0; opacity: 0.85; }
+        .mock-donut { align-items: center; }
+        .mock-donut .ring { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#4f46e5 0 40%, #ec4899 40% 65%, #14b8a6 65% 85%, #f59e0b 85% 100%); }
+
+        /* Schema + data */
+        .schema-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 6px; }
+        .schema-table th, .schema-table td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; white-space: nowrap; }
+        .schema-table th { background: #f1f5f9; color: #334155; font-weight: 700; }
+        .schema-table td { color: #475569; }
+        .table-scroll { overflow-x: auto; border-radius: 10px; }
+        .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 12px; padding: 12px 20px; font-weight: 800; font-size: 0.95rem; cursor: pointer; font-family: inherit; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { filter: brightness(1.08); }
+        .btn-ghost { background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe; }
+        .btn-ghost:hover { background: #e0e7ff; }
+        .note { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 12px; padding: 14px 16px; font-size: 0.9rem; margin-top: 16px; }
+        .danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 12px; padding: 14px 16px; font-size: 0.9rem; margin-top: 16px; font-weight: 600; }
+
+        /* Step (mission) layout */
+        .mission { display: flex; gap: 18px; }
+        .mission-num { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(79,70,229,0.4); }
+        .mission-body { flex: 1; min-width: 0; }
+        .mission-body h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 8px; }
+        .mission-body > p { color: #475569; }
+        .checkpoint { background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; border-radius: 10px; padding: 10px 13px; font-size: 0.88rem; margin-top: 14px; font-weight: 700; }
+        .checkpoint code { background: #d1fae5; padding: 1px 6px; border-radius: 4px; }
+        .goal-list { list-style: none; padding: 0; margin-top: 8px; }
+        .goal-list li { padding-left: 26px; position: relative; margin-bottom: 8px; color: #475569; }
+        .goal-list li::before { content: '✅'; position: absolute; left: 0; }
+        .rule-list { list-style: none; padding: 0; }
+        .rule-list li { padding-left: 28px; position: relative; margin-bottom: 12px; color: #334155; }
+        .rule-list li::before { content: '🔒'; position: absolute; left: 0; }
+        .start-banner { text-align: center; background: linear-gradient(135deg,#dcfce7,#bbf7d0); border: 2px dashed #4ade80; border-radius: 16px; padding: 18px; margin-bottom: 8px; color: #166534; font-weight: 800; font-size: 1.05rem; }
+
+        /* Slide deck */
+        .slide-toggle { position: fixed; top: 16px; right: 16px; z-index: 900; background: var(--primary); color: #fff; border: none; border-radius: 30px; padding: 9px 16px; font-size: 0.85rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 16px rgba(79,70,229,0.35); display: inline-flex; align-items: center; gap: 7px; font-family: inherit; }
+        .slide-toggle:hover { filter: brightness(1.08); }
+        .slide-nav { display: none; }
+        body.slide-mode { overflow: hidden; background: var(--bg-color); }
+        body.slide-mode .slide-nav { display: flex; position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 900; align-items: center; gap: 10px; background: white; padding: 8px 14px; border-radius: 40px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+        .slide-btn { background: #f1f5f9; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; color: #334155; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; }
+        .slide-btn:hover { background: #e2e8f0; }
+        .slide-btn:disabled { opacity: 0.35; cursor: default; }
+        .slide-exit { background: #fee2e2; color: #b91c1c; }
+        .slide-counter { font-weight: 800; color: #475569; font-size: 0.9rem; min-width: 56px; text-align: center; }
+        body.slide-mode > header, body.slide-mode > section, body.slide-mode > footer { display: none; }
+        body.slide-mode > .slide-active { display: block; position: fixed; left: 0; right: 0; top: 0; bottom: 0; overflow-y: auto; margin: 0; max-width: none; padding: 80px 20px 100px; animation: slideFade .35s ease; }
+        body.slide-mode > section.slide-active { background: var(--bg-color); }
+        body.slide-mode > section.slide-active > * { max-width: 1000px; margin-left: auto; margin-right: auto; }
+        body.slide-mode > header.slide-active { clip-path: none; display: flex; flex-direction: column; justify-content: center; }
+        @keyframes slideFade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { text-align: center; padding: 40px 20px; background: #0f172a; color: white; margin-top: 30px; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .container { padding: 30px 15px; }
+            h2.section-title { font-size: 1.6rem; }
+            .detail-card { padding: 22px 16px; }
+            .mock-kpis { grid-template-columns: 1fr 1fr; }
+            .mock-charts { grid-template-columns: 1fr; }
+            .slide-toggle { top: 10px; right: 10px; padding: 7px 12px; font-size: 0.78rem; }
+            .slide-toggle .slide-toggle-label { display: none; }
+            body.slide-mode > .slide-active { padding: 66px 14px 92px; }
+            .slide-btn { width: 36px; height: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 표지 -->
+    <header>
+        <h1>📊 실습: 부서별 인력 현황 대시보드</h1>
+        <p>엑셀(CSV) HR 데이터를 끌어다 놓으면 한눈에 보이는 대시보드를 만들어 봅니다.<br>도구는 <b>VS Code + 로컬 Git</b>, 예상 소요 30~40분. <b>환경 세팅부터 STEP 순서대로</b> 따라오세요.</p>
+        <a class="back-link" href="index.html"><i class="fa-solid fa-arrow-left"></i> 가이드로 돌아가기</a>
+    </header>
+
+    <!-- 학습 목표 -->
+    <section class="container">
+        <h2 class="section-title">🎯 이번 실습으로 배우는 것</h2>
+        <div class="detail-card">
+            <ul class="goal-list">
+                <li>CSV 파일을 브라우저에서 직접 읽어 표로 보여주기</li>
+                <li>데이터를 집계해 KPI 카드·차트로 시각화하기 (CDN 활용)</li>
+                <li>필터로 원하는 부서/조건만 보기</li>
+                <li>완성 화면을 이미지(PNG)·단일 HTML로 내보내 공유하기</li>
+                <li><b>로컬 Git</b>으로 단계마다 세이브 포인트(커밋) 남기기</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 브리핑 ① 문제 상황 -->
+    <section class="container">
+        <div class="center"><span class="step-tag brief">브리핑 ① · 문제 상황</span></div>
+        <h2 class="section-title">🧩 어떤 문제를 푸나요?</h2>
+        <div class="detail-card">
+            <p style="font-size:1.05rem; color:#334155;">당신은 <b>HR 담당자</b>입니다. 매달 부서별 인력 현황을 <b>엑셀</b>로 받지만, 행이 수십~수백 줄이라 한눈에 파악하기 어렵습니다. "부서별 인원은? 직급 분포는? 평균 근속연수는? 퇴사율은?" 같은 질문에 매번 수식을 다시 짜야 하죠.</p>
+            <p style="margin-top:14px; color:#475569;">그래서 <b>엑셀 데이터를 끌어다 놓기만 하면</b> 핵심 지표와 차트가 자동으로 그려지는 <b>나만의 대시보드</b>를 바이브코딩으로 만들려고 합니다.</p>
+        </div>
+    </section>
+
+    <!-- 브리핑 ② 목표 결과물 -->
+    <section class="container">
+        <div class="center"><span class="step-tag brief">브리핑 ② · 목표 결과물</span></div>
+        <h2 class="section-title">🖼️ 이런 걸 만들 거예요</h2>
+        <p class="section-desc">아래는 완성 이미지(목업)예요. 실제 데이터에 따라 숫자·그래프가 채워집니다.</p>
+        <div class="detail-card">
+            <div class="mock">
+                <div class="mock-kpis">
+                    <div class="mock-kpi"><div class="v">128</div><div class="l">총원</div></div>
+                    <div class="mock-kpi"><div class="v">6</div><div class="l">부서 수</div></div>
+                    <div class="mock-kpi"><div class="v">5.2년</div><div class="l">평균 근속</div></div>
+                    <div class="mock-kpi"><div class="v">12%</div><div class="l">퇴사율</div></div>
+                </div>
+                <div class="mock-charts">
+                    <div class="mock-bar"><span style="height:60%"></span><span style="height:85%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:35%"></span></div>
+                    <div class="mock-donut"><div class="ring"></div></div>
+                </div>
+                <p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:12px;">↑ KPI 카드 · 부서별 인원(막대) · 직급 분포(도넛) · (아래엔 표 + 필터 + 내보내기 버튼)</p>
+            </div>
+            <ul class="goal-list" style="margin-top:18px;">
+                <li>상단 <b>KPI 카드</b>: 총원 · 부서 수 · 평균 근속연수 · 퇴사율</li>
+                <li><b>차트</b>: 부서별 인원(막대), 직급 분포(도넛), 입사연도 추이(선)</li>
+                <li><b>표 + 필터</b>: 부서/재직상태로 걸러 보기</li>
+                <li><b>내보내기</b>: PNG 이미지 저장 + 단일 HTML로 정리</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 브리핑 ③ 규칙 -->
+    <section class="container">
+        <div class="center"><span class="step-tag brief">브리핑 ③ · 규칙</span></div>
+        <h2 class="section-title">🔒 시작 전, 꼭 지킬 규칙</h2>
+        <p class="section-desc">사내 환경을 가정한 실습이라 보안 규칙이 핵심이에요.</p>
+        <div class="detail-card">
+            <ul class="rule-list">
+                <li><b>실제 데이터는 절대 AI에 주지 않기.</b> AI에는 <b>컬럼 구조 + 가짜 샘플 2~3행</b>만 알려주고 로직을 만듭니다.</li>
+                <li><b>데이터는 브라우저에서만 처리.</b> 파일 업로드 없이 내 PC 안에서만 읽어요(로컬 처리).</li>
+                <li><b>결과물은 단일 HTML</b>로. 라이브러리는 <b>CDN</b>으로 불러옵니다(npm 설치 X).</li>
+                <li>데이터가 박힌 결과물(스냅샷·이미지)은 곧 <b>사내 자산</b> → 보관/공유 등급을 지킵니다.</li>
+            </ul>
+            <div class="danger">🚨 이 실습의 샘플 데이터는 <b>전부 가짜</b>입니다. 실제 사내 데이터로 연습할 땐 위 규칙을 반드시 지키세요.</div>
+        </div>
+    </section>
+
+    <!-- STEP 1 환경 세팅 -->
+    <section class="container">
+        <div class="center"><span class="step-tag go">▶ 여기서부터 따라하기</span></div>
+        <h2 class="section-title">STEP 1 · 환경 세팅 (VS Code + 로컬 Git)</h2>
+        <p class="section-desc">작업 폴더를 만들고 첫 세이브 포인트를 찍어요.</p>
+        <div class="detail-card">
+            <div class="start-banner">🙌 지금부터는 직접 손으로 따라하는 단계예요. STEP 1 → 7 순서대로!</div>
+            <div class="mission">
+                <div class="mission-num">1</div>
+                <div class="mission-body">
+                    <h3>작업 폴더 만들고 Git 초기화</h3>
+                    <ul class="goal-list">
+                        <li>VS Code에서 새 폴더(예: <b>hr-dashboard</b>) 열기</li>
+                        <li>그 안에 <b>index.html</b> 파일 새로 만들기</li>
+                        <li>VS Code 내장 <b>터미널</b> 열기 (단축키: Ctrl + `)</li>
+                        <li>아래 명령으로 Git 초기화 + 첫 커밋</li>
+                    </ul>
+                    <div class="cmd-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">git init
+git add .
+git commit -m "start: HR 대시보드 실습 시작"</span>
+                    </div>
+                    <div class="note">📌 Git이 없다면 <a href="index.html" target="_blank">가이드</a>의 'Git' 카드에서 다운로드 링크를 참고하세요.</div>
+                    <div class="checkpoint">✅ 폴더·파일·git 준비 완료!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 2 데이터 준비 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 2 · 데이터 준비</span></div>
+        <h2 class="section-title">📥 샘플 HR 데이터 받기 (가짜)</h2>
+        <p class="section-desc">샘플 CSV를 받아 작업 폴더에 넣고, AI에는 '스키마'만 복사해 둡니다.</p>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">2</div>
+                <div class="mission-body">
+                    <h3>CSV 다운로드 + 스키마 복사</h3>
+                    <p style="margin-bottom:8px;">컬럼 구조 (이것만 AI에 알려주세요):</p>
+                    <div class="table-scroll">
+                        <table class="schema-table" id="previewTable"></table>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" id="downloadCsv"><i class="fa-solid fa-download"></i> 샘플 CSV 다운로드 (40행)</button>
+                        <button class="btn btn-ghost copy-schema"><i class="fa-solid fa-copy"></i> 스키마 + 샘플 복사 (AI용)</button>
+                    </div>
+                    <span class="prompt-text" id="schemaText" style="display:none;"></span>
+                    <div class="note">💡 받은 <b>sample_hr_data.csv</b>를 STEP 1에서 만든 폴더에 넣으세요. CSV는 Excel 호환(UTF-8 BOM)이라 더블클릭하면 엑셀로도 열려요.</div>
+                    <div class="checkpoint">✅ CSV가 폴더에 있고, 스키마를 복사해 뒀다!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 3 표 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 3</span></div>
+        <h2 class="section-title">📄 CSV 끌어다 놓고 표로 보기</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">3</div>
+                <div class="mission-body">
+                    <h3>드래그&드롭으로 데이터 읽기</h3>
+                    <p>CSV 파일을 화면에 끌어다 놓으면 표로 그려지게 만듭니다. 업로드 없이 브라우저에서만 읽어요.</p>
+                    <div class="prompt-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">"CSV 파일을 끌어다 놓으면 브라우저에서만 읽어 표로 보여주는 단일 HTML을 만들어줘. 파싱은 <b>PapaParse(CDN)</b>를 쓰고, 컬럼은 (사번·이름·부서·직급·입사일·재직상태·평가등급·연차사용일·성별·생년)이야. 데이터는 외부로 업로드하지 말고 로컬에서만 처리해줘."</span>
+                    </div>
+                    <div class="checkpoint">✅ 표가 잘 나오면 → <code>git commit -m "feat: CSV 표 렌더링"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 4 KPI -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 4</span></div>
+        <h2 class="section-title">🔢 KPI 카드 만들기</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">4</div>
+                <div class="mission-body">
+                    <h3>핵심 숫자 4개 요약</h3>
+                    <p>표 위에 한눈에 보이는 요약 카드를 추가합니다.</p>
+                    <div class="prompt-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">"불러온 데이터로 상단에 KPI 카드 4개를 만들어줘: <b>총원, 부서 수, 평균 근속연수(입사일 기준), 퇴사율(재직상태가 '퇴사'인 비율)</b>. 카드 형태로 보기 좋게 배치해줘."</span>
+                    </div>
+                    <div class="checkpoint">✅ 숫자가 맞으면 → <code>git commit -m "feat: KPI 카드"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 5 차트 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 5</span></div>
+        <h2 class="section-title">📊 차트 그리기</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">5</div>
+                <div class="mission-body">
+                    <h3>부서별·직급별 시각화</h3>
+                    <p>Chart.js를 CDN으로 불러와 막대·도넛·선 그래프를 그립니다.</p>
+                    <div class="prompt-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">"<b>Chart.js(CDN)</b>로 차트 3개를 추가해줘: ① 부서별 인원 <b>막대그래프</b> ② 직급 분포 <b>도넛</b> ③ 입사연도별 인원 <b>선그래프</b>. 데이터가 바뀌면 차트도 갱신되게 해줘."</span>
+                    </div>
+                    <div class="checkpoint">✅ 차트가 그려지면 → <code>git commit -m "feat: 차트 추가"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 6 필터 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 6</span></div>
+        <h2 class="section-title">🔎 필터 추가</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">6</div>
+                <div class="mission-body">
+                    <h3>부서·재직상태로 걸러 보기</h3>
+                    <p>드롭다운으로 원하는 조건만 보고, KPI·차트·표가 함께 바뀌게 합니다.</p>
+                    <div class="prompt-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">"상단에 <b>부서</b> 선택과 <b>재직상태</b> 선택 필터를 추가해줘. 필터를 바꾸면 KPI 카드·차트·표가 모두 그 조건으로 다시 계산되게 해줘."</span>
+                    </div>
+                    <div class="checkpoint">✅ 필터가 동작하면 → <code>git commit -m "feat: 필터"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 7 내보내기 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">STEP 7</span></div>
+        <h2 class="section-title">💾 내보내기 & 마무리</h2>
+        <div class="detail-card">
+            <div class="mission">
+                <div class="mission-num">7</div>
+                <div class="mission-body">
+                    <h3>이미지·단일 HTML로 공유</h3>
+                    <p>현재 화면을 PNG로 저장하고, 의존성 없는 단일 HTML로 정리합니다. (SharePoint 등 script가 막히는 곳엔 이미지가 안전한 대안)</p>
+                    <div class="prompt-box">
+                        <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                        <span class="prompt-text">"현재 대시보드 화면을 <b>PNG로 저장</b>하는 버튼을 <b>html2canvas(CDN)</b>로 추가하고, 전체를 <b>의존성 없는 단일 HTML</b>로 정리해줘. (CDN 링크는 그대로 두고 별도 설치가 필요 없게)"</span>
+                    </div>
+                    <div class="checkpoint">✅ 완성! → <code>git commit -m "feat: 내보내기 + 단일 HTML 정리"</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 회고 -->
+    <section class="container">
+        <div class="center"><span class="step-tag brief">마무리 · 회고</span></div>
+        <h2 class="section-title">✅ 점검 & 돌아보기</h2>
+        <div class="detail-card">
+            <ul class="goal-list">
+                <li>CSV를 끌어다 놓으면 표·KPI·차트가 나온다</li>
+                <li>필터를 바꾸면 모든 화면이 함께 바뀐다</li>
+                <li>PNG 저장과 단일 HTML 정리가 된다</li>
+                <li>실제 데이터를 AI에 주지 않고 만들었다</li>
+            </ul>
+            <div class="cmd-box">
+                <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                <span class="prompt-text">git log --oneline</span>
+            </div>
+            <div class="note">📜 <b>git log</b>로 내가 찍은 세이브 포인트들을 돌아보세요. 망가졌다면 이전 커밋으로 되돌릴 수 있어요.</div>
+        </div>
+    </section>
+
+    <!-- 도전과제 -->
+    <section class="container">
+        <div class="center"><span class="step-tag">BONUS</span></div>
+        <h2 class="section-title">🚀 더 도전해보기</h2>
+        <div class="detail-card">
+            <ul class="goal-list">
+                <li>평가등급 분포·성별 비율 등 차트 추가</li>
+                <li>"이번 달 인사이트" 한 줄 자동 요약 문구 만들기</li>
+                <li>필터 상태를 <b>로컬 스토리지</b>에 저장해 새로고침해도 유지</li>
+                <li>인쇄(PDF) 보기 좋은 레이아웃 만들기</li>
+                <li><b>브랜치</b>를 만들어 새 차트를 실험하고 main에 머지해보기</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <h2 style="font-size: 1.4rem; margin-bottom: 10px;">수고했어요! 🎉</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem;">작게 쪼개고, 커밋으로 저장하고, 에러는 그대로 복사해 물어보세요.</p>
+        <a class="back-link" href="index.html" style="margin-top:14px;"><i class="fa-solid fa-arrow-left"></i> 가이드로 돌아가기</a>
+    </footer>
+
+    <!-- Slide deck controls -->
+    <button class="slide-toggle" id="slideToggle" type="button">
+        <i class="fa-solid fa-display"></i> <span class="slide-toggle-label">슬라이드 모드</span>
+    </button>
+    <div class="slide-nav" id="slideNav">
+        <button class="slide-btn" id="slidePrev" type="button" aria-label="이전 슬라이드"><i class="fa-solid fa-chevron-left"></i></button>
+        <span class="slide-counter" id="slideCounter">1 / 1</span>
+        <button class="slide-btn" id="slideNext" type="button" aria-label="다음 슬라이드"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="slide-btn slide-exit" id="slideExit" type="button" aria-label="슬라이드 모드 종료"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <script>
+        // ---- Sample HR data (fake, deterministic) ----
+        var HEADER = ['사번', '이름', '부서', '직급', '입사일', '재직상태', '평가등급', '연차사용일', '성별', '생년'];
+        function pad(n) { return n < 10 ? '0' + n : '' + n; }
+        function genRows() {
+            var depts = ['영업', '인사', '개발', '마케팅', '재무', '생산'];
+            var ranks = ['사원', '대리', '과장', '차장', '부장'];
+            var grades = ['S', 'A', 'B', 'C'];
+            var sur = '김이박최정강조윤장임';
+            var giv = ['민준', '서연', '도윤', '지우', '하준', '서윤', '지호', '지민', '예준', '수아', '하은', '주원', '지아', '우진', '채원', '현우'];
+            var seed = 42;
+            function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+            var rows = [];
+            for (var i = 0; i < 40; i++) {
+                var year = 2012 + Math.floor(rnd() * 12);
+                rows.push([
+                    1001 + i,
+                    sur[Math.floor(rnd() * sur.length)] + giv[Math.floor(rnd() * giv.length)],
+                    depts[Math.floor(rnd() * depts.length)],
+                    ranks[Math.floor(rnd() * ranks.length)],
+                    year + '-' + pad(1 + Math.floor(rnd() * 12)) + '-' + pad(1 + Math.floor(rnd() * 28)),
+                    rnd() < 0.85 ? '재직' : '퇴사',
+                    grades[Math.floor(rnd() * grades.length)],
+                    Math.floor(rnd() * 15),
+                    rnd() < 0.5 ? '남' : '여',
+                    1975 + Math.floor(rnd() * 25)
+                ]);
+            }
+            return rows;
+        }
+        var ROWS = genRows();
+
+        // preview table (header + first 5 rows)
+        (function () {
+            var t = document.getElementById('previewTable');
+            if (!t) return;
+            var html = '<tr>' + HEADER.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '</tr>';
+            ROWS.slice(0, 5).forEach(function (r) {
+                html += '<tr>' + r.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+            });
+            html += '<tr><td colspan="' + HEADER.length + '" style="text-align:center;color:#94a3b8;">… 외 ' + (ROWS.length - 5) + '행 (총 ' + ROWS.length + '행)</td></tr>';
+            t.innerHTML = html;
+        })();
+
+        // schema text for copy (schema + 2 fake sample rows only)
+        (function () {
+            var el = document.getElementById('schemaText');
+            if (!el) return;
+            el.textContent = '컬럼: 사번, 이름, 부서, 직급, 입사일(YYYY-MM-DD), 재직상태(재직/퇴사), 평가등급(S/A/B/C), 연차사용일(숫자), 성별(남/여), 생년(YYYY)\n예시 2행:\n' +
+                ROWS.slice(0, 2).map(function (r) { return r.join(', '); }).join('\n');
+        })();
+
+        // CSV download (UTF-8 BOM for Excel)
+        (function () {
+            var btn = document.getElementById('downloadCsv');
+            if (!btn) return;
+            btn.addEventListener('click', function () {
+                var csv = '﻿' + HEADER.join(',') + '\n' + ROWS.map(function (r) { return r.join(','); }).join('\n');
+                var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url; a.download = 'sample_hr_data.csv';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        })();
+
+        // ---- Copy buttons (prompt-box / cmd-box / schema) ----
+        (function () {
+            function fallbackCopy(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.focus(); ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+            }
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.copy-btn, .copy-schema');
+                if (!btn) return;
+                e.preventDefault();
+                var text;
+                if (btn.classList.contains('copy-schema')) {
+                    var sc = document.getElementById('schemaText');
+                    text = sc ? sc.textContent : '';
+                } else {
+                    var container = btn.parentElement;
+                    var textEl = container.querySelector('.prompt-text');
+                    text = (textEl ? textEl.textContent : container.textContent);
+                }
+                text = text.replace(/^[\s"“”']+|[\s"“”']+$/g, '');
+                var orig = btn.innerHTML;
+                function done() {
+                    btn.classList.add('copied');
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 복사됨!';
+                    setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1500);
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text); done(); });
+                } else { fallbackCopy(text); done(); }
+            });
+        })();
+
+        // ---- Slide deck mode ----
+        (function () {
+            var toggleBtn = document.getElementById('slideToggle');
+            var prevBtn = document.getElementById('slidePrev');
+            var nextBtn = document.getElementById('slideNext');
+            var exitBtn = document.getElementById('slideExit');
+            var counter = document.getElementById('slideCounter');
+            var slides = Array.prototype.filter.call(document.body.children, function (el) {
+                return /^(HEADER|SECTION|FOOTER)$/.test(el.tagName);
+            });
+            var slideMode = false, idx = 0;
+            function render() {
+                slides.forEach(function (s, i) { s.classList.toggle('slide-active', i === idx && slideMode); });
+                counter.textContent = (idx + 1) + ' / ' + slides.length;
+                prevBtn.disabled = idx === 0;
+                nextBtn.disabled = idx === slides.length - 1;
+                if (slides[idx]) slides[idx].scrollTop = 0;
+            }
+            function enter() { slideMode = true; document.body.classList.add('slide-mode'); toggleBtn.innerHTML = '<i class="fa-solid fa-list"></i> <span class="slide-toggle-label">일반 모드</span>'; render(); }
+            function exit() { slideMode = false; document.body.classList.remove('slide-mode'); slides.forEach(function (s) { s.classList.remove('slide-active'); }); toggleBtn.innerHTML = '<i class="fa-solid fa-display"></i> <span class="slide-toggle-label">슬라이드 모드</span>'; }
+            function go(d) { var n = idx + d; if (n < 0 || n >= slides.length) return; idx = n; render(); }
+            toggleBtn.addEventListener('click', function () { slideMode ? exit() : enter(); });
+            prevBtn.addEventListener('click', function () { go(-1); });
+            nextBtn.addEventListener('click', function () { go(1); });
+            exitBtn.addEventListener('click', exit);
+            document.addEventListener('keydown', function (e) {
+                if (!slideMode) return;
+                if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+                else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+                else if (e.key === 'Escape') { e.preventDefault(); exit(); }
+            });
+        })();
+    </script>
+
+</body>
+</html>
