@@ -337,6 +337,23 @@
         .cloud-card p { font-size: 0.9rem; }
 
         /* =========================================
+           GIT FLOW (브랜치 · 커밋 · 머지 그래프)
+           ========================================= */
+        .git-flow { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 16px; padding: 22px; margin-bottom: 25px; }
+        .git-flow-title { color: #c2410c; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+        .git-graph { width: 100%; max-width: 580px; height: auto; display: block; margin: 0 auto 6px; }
+        .git-graph text { font-family: 'SUITE Variable', sans-serif; font-weight: 800; }
+        .git-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .git-chip {
+            display: inline-flex; align-items: center; gap: 7px; background: #fff;
+            border: 1px solid #fed7aa; border-radius: 30px; padding: 8px 16px;
+            font-weight: 700; color: #9a3412; cursor: pointer; font-size: 0.9rem;
+            font-family: inherit; transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+        }
+        .git-chip:hover { background: #fff1e6; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .git-chip i { opacity: 0.75; }
+
+        /* =========================================
            MOBILE RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
@@ -669,6 +686,38 @@ document.getElementById('btn').addEventListener('click', function () {
                     <span class="concept-badge"><i class="fa-solid fa-circle-info"></i> 자세히 보기</span>
                 </div>
             </div>
+
+            <div class="git-flow">
+                <h3 class="git-flow-title"><i class="fa-solid fa-code-branch"></i> Git 흐름 한눈에 보기 (브랜치 · 커밋 · 머지)</h3>
+                <svg class="git-graph" viewBox="0 0 620 180" role="img" aria-label="Git 브랜치와 머지를 보여주는 그래프">
+                    <!-- feature branch path: diverge from main, run parallel, merge back -->
+                    <path d="M170 135 C 215 135, 215 55, 260 55 L 400 55 C 445 55, 445 135, 490 135" fill="none" stroke="#ec4899" stroke-width="4"/>
+                    <!-- main branch line -->
+                    <line x1="55" y1="135" x2="585" y2="135" stroke="#4f46e5" stroke-width="4"/>
+                    <!-- main commits -->
+                    <circle cx="55" cy="135" r="11" fill="#4f46e5"/>
+                    <circle cx="170" cy="135" r="11" fill="#4f46e5"/>
+                    <circle cx="490" cy="135" r="14" fill="#4f46e5" stroke="#fff" stroke-width="3"/>
+                    <circle cx="585" cy="135" r="11" fill="#4f46e5"/>
+                    <!-- feature commits -->
+                    <circle cx="280" cy="55" r="11" fill="#ec4899"/>
+                    <circle cx="390" cy="55" r="11" fill="#ec4899"/>
+                    <!-- labels -->
+                    <text x="48" y="168" fill="#4f46e5" font-size="15">main (본 메뉴)</text>
+                    <text x="250" y="33" fill="#ec4899" font-size="15">feature 브랜치 (실험)</text>
+                    <text x="150" y="110" fill="#9333ea" font-size="13">분기</text>
+                    <text x="470" y="110" fill="#9333ea" font-size="13">머지</text>
+                </svg>
+                <p style="text-align: center; color: #9a3412; font-size: 0.9rem; margin-bottom: 14px;">원본(main)은 그대로 두고 <b>브랜치(가지)</b>에서 실험 → 커밋으로 저장 → 완성되면 main에 <b>머지(합치기)</b>. 아래 용어를 눌러 자세히 보세요.</p>
+                <div class="git-chips">
+                    <button class="git-chip" type="button" data-concept="commit"><i class="fa-solid fa-floppy-disk"></i> 커밋 (Commit)</button>
+                    <button class="git-chip" type="button" data-concept="branch"><i class="fa-solid fa-code-branch"></i> 브랜치 (Branch)</button>
+                    <button class="git-chip" type="button" data-concept="push"><i class="fa-solid fa-cloud-arrow-up"></i> 푸시 (Push)</button>
+                    <button class="git-chip" type="button" data-concept="pull"><i class="fa-solid fa-cloud-arrow-down"></i> 풀 (Pull)</button>
+                    <button class="git-chip" type="button" data-concept="merge"><i class="fa-solid fa-code-merge"></i> 머지 (Merge)</button>
+                </div>
+            </div>
+
             <div class="prompt-box">"지금 작동이 잘 돼. 코드가 망가지기 전에 <b class="concept-link" data-concept="git">(Git Commit)</b>으로 세이브 포인트를 만들고, <b class="concept-link" data-concept="github">(GitHub Repository)</b>에 푸시(Push)하는 방법을 알려줘."</div>
         </div>
     </section>
@@ -998,6 +1047,46 @@ document.getElementById('btn').addEventListener('click', function () {
                 why: "AI가 코드를 망쳐도 '저장해둔 시점'으로 돌아갈 수 있어, 마음 놓고 실험할 수 있어요.",
                 more: ["저장 한 번을 '커밋(commit)'이라고 불러요.", "잘 되는 시점마다 커밋해두는 습관이 중요해요."],
                 prompt: "지금 상태를 <b>(Git)</b>으로 저장(커밋)하는 명령어를 알려줘."
+            },
+            commit: {
+                title: "커밋 (Commit)", icon: "fa-solid fa-floppy-disk", color: "#f14e32",
+                analogy: "요리 과정을 찍어두는 '스냅샷 세이브'예요.",
+                simple: "지금까지의 코드 변경을 하나의 저장 지점으로 기록하는 거예요. 메시지를 붙여 '무엇을 바꿨는지'를 함께 남깁니다.",
+                why: "문제가 생기면 이 저장 지점으로 되돌릴 수 있고, 누가 언제 무엇을 바꿨는지 추적할 수 있어요.",
+                more: ["메시지는 '로그인 버튼 추가'처럼 구체적으로 적어요.", "작동이 잘 될 때마다 자주 커밋하는 게 좋아요."],
+                prompt: "지금 변경사항을 'OO 기능 추가'라는 메시지로 <b>(커밋)</b>해줘."
+            },
+            branch: {
+                title: "브랜치 (Branch)", icon: "fa-solid fa-code-branch", color: "#9333ea",
+                analogy: "본 메뉴는 그대로 두고 옆에서 시험 요리하는 '실험용 조리대'예요.",
+                simple: "원본(main) 코드를 건드리지 않고 새 기능을 따로 실험할 수 있도록, 코드 흐름을 나뭇가지처럼 나누는 거예요.",
+                why: "실험하다 망쳐도 원본은 안전해요. 여러 작업을 동시에 진행할 수도 있어요.",
+                more: ["보통 'main'이 본 메뉴, 'feature/login' 같은 가지에서 작업해요.", "완성되면 main으로 합쳐요(머지)."],
+                prompt: "'feature/login'이라는 새 <b>(브랜치)</b>를 만들어서 거기서 작업할게."
+            },
+            push: {
+                title: "푸시 (Push)", icon: "fa-solid fa-cloud-arrow-up", color: "#2563eb",
+                analogy: "내 주방에서 만든 걸 '본사 창고(GitHub)로 올려보내는' 거예요.",
+                simple: "내 컴퓨터에 커밋한 내용을 GitHub 같은 원격 저장소로 업로드하는 거예요.",
+                why: "코드를 인터넷에 백업하고, 동료와 공유하거나 자동 배포로 연결할 수 있어요.",
+                more: ["보통 git push 명령으로 올려요.", "푸시해야 다른 기기·동료가 내 변경을 볼 수 있어요."],
+                prompt: "지금 커밋들을 GitHub에 <b>(push)</b>해줘."
+            },
+            pull: {
+                title: "풀 (Pull)", icon: "fa-solid fa-cloud-arrow-down", color: "#0d9488",
+                analogy: "본사 창고의 최신 재료를 '내 주방으로 가져오는' 거예요.",
+                simple: "원격 저장소(GitHub)의 최신 변경사항을 내 컴퓨터로 내려받아 합치는 거예요.",
+                why: "다른 사람이 올린 최신 코드를 받아 내 작업을 최신 상태로 유지할 때 써요.",
+                more: ["협업할 땐 작업 시작 전 pull로 최신화하는 습관이 좋아요.", "푸시(올리기)의 반대 방향이에요."],
+                prompt: "GitHub의 최신 변경사항을 내 컴퓨터로 <b>(pull)</b> 해줘."
+            },
+            merge: {
+                title: "머지 (Merge)", icon: "fa-solid fa-code-merge", color: "#ec4899",
+                analogy: "실험 조리대에서 완성한 메뉴를 '본 메뉴판에 합치는' 거예요.",
+                simple: "브랜치에서 완성한 변경사항을 원래 브랜치(main)로 합치는 작업이에요.",
+                why: "따로 개발한 기능을 본 코드에 반영할 때 써요.",
+                more: ["같은 부분을 동시에 고치면 '충돌(conflict)'이 날 수 있는데, 어느 쪽을 쓸지 골라 해결해요.", "GitHub에선 Pull Request로 검토한 뒤 머지해요."],
+                prompt: "feature/login 브랜치를 main에 <b>(머지)</b>하는 방법을 알려줘. 충돌이 나면 해결법도."
             },
             github: {
                 title: "GitHub", icon: "fa-brands fa-github", color: "#181717",
