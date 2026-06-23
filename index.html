@@ -236,6 +236,16 @@
         .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
         .copy-btn.copied { background: #10b981; color: #fff; border-color: #10b981; }
 
+        /* Official download / site links in modal */
+        .modal-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .modal-link {
+            display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+            background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe; border-radius: 10px;
+            padding: 8px 12px; font-size: 0.85rem; font-weight: 700; transition: background .15s ease;
+        }
+        .modal-link:hover { background: #e0e7ff; }
+        .modal-link .ext { font-size: 0.7rem; opacity: 0.6; }
+
         /* =========================================
            SLIDE DECK MODE (슬라이드 모드)
            ========================================= */
@@ -659,6 +669,25 @@
     </div>
 
     <script>
+        const LINKS = {
+            node: [{ label: "Node.js 다운로드", url: "https://nodejs.org/en/download" }],
+            npm: [{ label: "npm (Node.js에 포함)", url: "https://nodejs.org/en/download" }],
+            ide: [{ label: "VS Code 다운로드", url: "https://code.visualstudio.com/download" }],
+            aieditor: [
+                { label: "Cursor 다운로드", url: "https://cursor.com/" },
+                { label: "Claude Code 설치", url: "https://claude.com/download" },
+                { label: "Codex CLI 설치", url: "https://developers.openai.com/codex/cli" }
+            ],
+            git: [{ label: "Git 다운로드", url: "https://git-scm.com/downloads" }],
+            github: [{ label: "GitHub 가입", url: "https://github.com/" }],
+            prettier: [{ label: "Prettier 공식", url: "https://prettier.io/" }],
+            tailwind: [{ label: "Tailwind CSS 공식", url: "https://tailwindcss.com/" }],
+            react: [{ label: "React 공식", url: "https://react.dev/" }],
+            vite: [{ label: "Vite 공식", url: "https://vite.dev/" }],
+            pages: [{ label: "Cloudflare Pages", url: "https://pages.cloudflare.com/" }],
+            d1: [{ label: "Cloudflare D1 문서", url: "https://developers.cloudflare.com/d1/" }]
+        };
+
         const CONCEPTS = {
             node: {
                 title: "Node.js", icon: "fa-brands fa-node-js", color: "#16a34a",
@@ -910,7 +939,7 @@
             const closeBtn = document.getElementById('modalClose');
             let lastFocus = null;
 
-            function buildBody(c) {
+            function buildBody(c, key) {
                 let h = '';
                 h += '<div class="modal-row"><div class="modal-label">🍳 한 줄 비유</div><p>' + c.analogy + '</p></div>';
                 h += '<div class="modal-row"><div class="modal-label">💡 쉽게 말하면</div><p>' + c.simple + '</p></div>';
@@ -918,6 +947,14 @@
                 if (c.more && c.more.length) {
                     h += '<div class="modal-row"><div class="modal-label">➕ 더 알아두기</div><ul>' +
                         c.more.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul></div>';
+                }
+                var links = LINKS[key];
+                if (links && links.length) {
+                    h += '<div class="modal-row"><div class="modal-label">🔗 공식 다운로드 / 사이트</div><div class="modal-links">' +
+                        links.map(function (l) {
+                            return '<a class="modal-link" href="' + l.url + '" target="_blank" rel="noopener noreferrer">' +
+                                l.label + ' <i class="fa-solid fa-arrow-up-right-from-square ext"></i></a>';
+                        }).join('') + '</div></div>';
                 }
                 h += '<div class="modal-row"><div class="modal-prompt">' +
                     '<button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>' +
@@ -931,7 +968,7 @@
                 lastFocus = document.activeElement;
                 iconEl.innerHTML = '<i class="' + c.icon + '" style="color:' + c.color + '"></i>';
                 titleEl.textContent = c.title;
-                bodyEl.innerHTML = buildBody(c);
+                bodyEl.innerHTML = buildBody(c, key);
                 overlay.classList.add('open');
                 document.body.style.overflow = 'hidden';
                 closeBtn.focus();
