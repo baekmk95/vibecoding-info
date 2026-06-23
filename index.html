@@ -175,6 +175,16 @@
         .tip-card.warn { border-left-color: #ef4444; background: #fef2f2; }
         .tip-card.warn h3 { color: #b91c1c; }
         .tip-danger { background: #fee2e2; border: 1px solid #fecaca; border-radius: 10px; padding: 11px 13px; color: #991b1b !important; font-weight: 700; }
+
+        /* Common errors dictionary */
+        .err-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .err-card { background: #fff; border: 1px solid #fecaca; border-left: 5px solid #ef4444; border-radius: 14px; padding: 18px 20px; }
+        .err-card h3 { font-size: 1.02rem; color: #b91c1c; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+        .err-snippet { display: block; background: #1e293b; color: #fca5a5; font-family: 'Courier New', monospace; font-size: 0.78rem; padding: 8px 10px; border-radius: 8px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap; }
+        .err-card p { color: #475569; font-size: 0.9rem; line-height: 1.6; }
+        .err-card p + p { margin-top: 5px; }
+        .err-card b { color: #334155; }
+        .err-card code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
         .error-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: #991b1b; overflow-x: auto;}
 
         /* Note box: 백엔드가 항상 필요한 건 아니에요 */
@@ -429,6 +439,7 @@
             .playground { grid-template-columns: 1fr; }
             .pg-code, .pg-frame { min-height: 220px; }
             .cloud-grid { grid-template-columns: 1fr; }
+            .err-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -864,6 +875,51 @@ document.getElementById('btn').addEventListener('click', function () {
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Common errors dictionary -->
+    <section class="container">
+        <h2 class="section-title">🚨 자주 만나는 에러 간단 사전</h2>
+        <p class="section-desc">처음 보면 무섭지만, 사실 단골 손님 같은 에러들이에요. 뜻만 알면 AI에게 물어보기도 쉬워집니다.</p>
+        <div class="err-grid">
+            <div class="err-card">
+                <h3><i class="fa-solid fa-ban"></i> CORS 에러</h3>
+                <code class="err-snippet">blocked by CORS policy</code>
+                <p><b>뜻:</b> 브라우저가 '다른 출처(도메인)'의 데이터를 함부로 못 가져오게 막는 보안 규칙에 걸린 거예요.</p>
+                <p><b>해결:</b> 보통 <b>서버(백엔드)에서 CORS 허용 설정</b>을 추가해야 해요. 프론트 잘못이 아닌 경우가 많아요.</p>
+            </div>
+            <div class="err-card">
+                <h3><i class="fa-solid fa-magnifying-glass"></i> 404 Not Found</h3>
+                <code class="err-snippet">GET /page 404 (Not Found)</code>
+                <p><b>뜻:</b> 찾는 주소(파일·API 경로)가 없어요.</p>
+                <p><b>해결:</b> 경로 <b>오타·대소문자·파일 위치</b>를 확인하세요.</p>
+            </div>
+            <div class="err-card">
+                <h3><i class="fa-solid fa-server"></i> 500 Internal Server Error</h3>
+                <code class="err-snippet">500 Internal Server Error</code>
+                <p><b>뜻:</b> 서버 안에서 코드가 터졌어요(서버 쪽 오류).</p>
+                <p><b>해결:</b> <b>서버 로그(터미널)</b>를 열어 진짜 원인 메시지를 찾는 게 먼저예요.</p>
+            </div>
+            <div class="err-card">
+                <h3><i class="fa-solid fa-bug"></i> TypeError (undefined)</h3>
+                <code class="err-snippet">Cannot read properties of undefined</code>
+                <p><b>뜻:</b> 아직 없는(빈) 값을 사용하려다 난 거예요.</p>
+                <p><b>해결:</b> 데이터가 <b>도착한 뒤에 쓰는지</b> 확인, 옵셔널 체이닝 <code>?.</code> 활용.</p>
+            </div>
+            <div class="err-card">
+                <h3><i class="fa-brands fa-npm"></i> 패키지 설치 에러</h3>
+                <code class="err-snippet">npm ERR! code ENOENT</code>
+                <p><b>뜻:</b> 패키지 설치 중 파일·버전 문제가 생겼어요.</p>
+                <p><b>해결:</b> <b>node_modules 삭제 후 재설치</b>, Node 버전 확인.</p>
+            </div>
+            <div class="err-card">
+                <h3><i class="fa-solid fa-plug-circle-xmark"></i> 포트 사용 중</h3>
+                <code class="err-snippet">EADDRINUSE: address already in use :::3000</code>
+                <p><b>뜻:</b> 그 포트(예: 3000번)를 이미 다른 프로그램이 쓰고 있어요.</p>
+                <p><b>해결:</b> <b>기존 실행을 종료</b>하거나 다른 포트로 실행하세요.</p>
+            </div>
+        </div>
+        <p style="margin-top: 18px; text-align: center; color: #047857; background: #ecfdf5; border-radius: 10px; padding: 12px; font-size: 0.9rem;">🪄 어떤 에러든 <b>빨간 메시지를 그대로 복사</b>해서 "이 에러가 났어. 원인과 해결 방법, 수정된 코드 줘"라고 물어보면 가장 빠릅니다.</p>
     </section>
 
     <!-- Corporate environment tips -->
