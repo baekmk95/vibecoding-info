@@ -41,7 +41,9 @@
             --github-color: #181717;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        :focus { outline: none; }
+        :focus-visible { outline: 3px solid rgba(79,70,229,.55); outline-offset: 2px; border-radius: 6px; }
 
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; }
 
@@ -475,11 +477,22 @@
         .hero-msg { animation: heroUp .6s .3s both; }
         .hero-cta { animation: heroUp .6s .4s both, ctaGlow 2.6s ease-in-out 1.2s infinite; }
 
+        /* Git graph draws itself when scrolled into view (JS-gated, slide-safe) */
+        body.anim-ready .git-graph .draw { stroke-dasharray: 650; stroke-dashoffset: 650; }
+        body.anim-ready .detail-card.reveal.in .git-graph .draw { animation: gitdraw 1.3s ease forwards; }
+        @keyframes gitdraw { to { stroke-dashoffset: 0; } }
+        body.slide-mode .git-graph .draw { stroke-dashoffset: 0 !important; }
+        /* Roadmap step icons gently float */
+        .step-icon-wrap { animation: floaty 5s ease-in-out infinite; }
+        .flow-step:nth-child(even) .step-icon-wrap { animation-delay: .9s; }
+
         /* Respect reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
             .reveal { opacity: 1 !important; transform: none !important; }
             .hero::before { animation: none !important; }
+            .git-graph .draw { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; animation: none !important; }
+            .step-icon-wrap { animation: none !important; }
         }
 
         /* =========================================
@@ -872,9 +885,9 @@ document.getElementById('btn').addEventListener('click', function () {
                 <h3 class="git-flow-title"><i class="fa-solid fa-code-branch"></i> Git 흐름 한눈에 보기 (브랜치 · 커밋 · 머지)</h3>
                 <svg class="git-graph" viewBox="0 0 620 180" role="img" aria-label="Git 브랜치와 머지를 보여주는 그래프">
                     <!-- feature branch path: diverge from main, run parallel, merge back -->
-                    <path d="M170 135 C 215 135, 215 55, 260 55 L 400 55 C 445 55, 445 135, 490 135" fill="none" stroke="#ec4899" stroke-width="4"/>
+                    <path class="draw" d="M170 135 C 215 135, 215 55, 260 55 L 400 55 C 445 55, 445 135, 490 135" fill="none" stroke="#ec4899" stroke-width="4"/>
                     <!-- main branch line -->
-                    <line x1="55" y1="135" x2="585" y2="135" stroke="#4f46e5" stroke-width="4"/>
+                    <line class="draw" x1="55" y1="135" x2="585" y2="135" stroke="#4f46e5" stroke-width="4"/>
                     <!-- main commits -->
                     <circle cx="55" cy="135" r="11" fill="#4f46e5"/>
                     <circle cx="170" cy="135" r="11" fill="#4f46e5"/>
@@ -1819,6 +1832,7 @@ document.getElementById('btn').addEventListener('click', function () {
             var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             targets.forEach(function (el) { el.classList.add('reveal'); });
             if (reduce || !('IntersectionObserver' in window)) { targets.forEach(function (el) { el.classList.add('in'); }); return; }
+            document.body.classList.add('anim-ready');
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
             }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });

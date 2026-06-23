@@ -22,7 +22,9 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
         :root { --primary: #4f46e5; --secondary: #ec4899; --bg-color: #f8fafc; --text-main: #1e293b; --text-light: #64748b; --git-color: #f14e32; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        :focus { outline: none; }
+        :focus-visible { outline: 3px solid rgba(79,70,229,.55); outline-offset: 2px; border-radius: 6px; }
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; }
         body { font-family: 'SUITE Variable', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; width: 100%; max-width: 100%; overflow-x: hidden; word-break: keep-all; overflow-wrap: break-word; }
         img, svg, table, pre, canvas, iframe { max-width: 100%; }
