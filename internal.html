@@ -591,8 +591,8 @@
                     <div class="feature-title">로컬 자동화 (Python / Script)</div>
                     <div class="feature-text">
                         <b>목적:</b> 내 PC에서 수백 개 엑셀 취합, 폴더 정리, 반복 문서 가공.<br>
-                        <b>기본 구조:</b> .py 스크립트 또는 단일 .exe 실행 프로그램.<br>
-                        <span class="tag-pill tag-con">사내망의 벽</span> 사내망에서 <code>pip install</code> 불가, 백신 오탐지.
+                        <b>기본 구조:</b> .py 단일 스크립트 또는 패키징된 .pyz 파일.<br>
+                        <span class="tag-pill tag-con">사내망의 벽</span> <code>pip install</code> 불가, 실행파일(.exe) 반입 금지.
                     </div>
                 </div>
             </div>
@@ -670,7 +670,7 @@
                 <p>
                     집에서는 배달의민족(npm/pip)으로 그때그때 재료를 시켜 요리했습니다.<br>
                     하지만 사내망은 <b>배달 라이더가 못 들어오는 격리된 산골</b>입니다. 따라서 출발하기 전, 내가 쓸 모든 소스와 도구를
-                    <b>하나의 도시락 통(단일 HTML 파일 or 단일 .exe 파일)</b>에 완전히 조리해서 담아가야 합니다.
+                    <b>하나의 도시락 통(단일 HTML 파일 or 의존성 없는 단일 .py/.pyz 파일)</b>에 완전히 조리해서 담아가야 합니다.
                 </p>
             </div>
 
@@ -692,36 +692,69 @@
 # 결과물: dist/index.html 딱 1개 파일만 생김 → 이 파일만 사내망으로 반입!</div>
             </div>
 
-            <!-- Python Bundling -->
+            <!-- Python Bundling (Non-EXE Strategies) -->
             <div style="margin-top:36px; padding-top:24px; border-top:1px dashed #cbd5e1;">
                 <h3 style="font-size:1.25rem; font-weight:800; color:#0f172a; margin-bottom:10px;">
-                    <i class="fa-brands fa-python" style="color:#2563eb; margin-right:8px;"></i> 2) Python 도구: 표준 라이브러리 vs PyInstaller
+                    <i class="fa-brands fa-python" style="color:#2563eb; margin-right:8px;"></i> 2) Python 도구: .exe 없이 사내망으로 반입하는 3대 전략
                 </h3>
-                <p style="color:#475569; font-size:0.95rem; margin-bottom:14px;">
-                    사내 PC에는 pandas, openpyxl 같은 외부 라이브러리가 깔려 있지 않고 <code>pip install</code>도 막혀 있습니다.
-                </p>
 
-                <div class="card-grid" style="margin-bottom:16px;">
-                    <div class="feature-card">
-                        <div class="feature-title" style="font-size:1.05rem;"><i class="fa-solid fa-seedling" style="color:#16a34a;"></i> 방법 A (가장 추천)</div>
+                <div class="alert-box" style="margin:14px 0 20px;">
+                    <div class="alert-title"><i class="fa-solid fa-ban"></i> 왜 .exe 파일은 사내 반입이 어렵나요?</div>
+                    <p>
+                        사내 보안 솔루션(DLP, EDR, 백신)은 서명되지 않은 <code>.exe</code> 파일을 잠재적 악성코드로 간주해 <b>자동 격리/삭제</b>하거나, 사내 규정상 실행 파일 반입 자체를 금지합니다.<br>
+                        따라서 파이썬은 <b>.exe가 아닌 순수 파이썬 형태(.py / .pyz / .whl)로 번들링</b>해야 안전하게 반입할 수 있습니다.
+                    </p>
+                </div>
+
+                <div class="card-grid" style="margin-bottom:20px;">
+                    <div class="feature-card" style="border-top:4px solid #16a34a;">
+                        <div class="feature-title" style="font-size:1.05rem; color:#16a34a;"><i class="fa-solid fa-shield-check"></i> 전략 1 (가장 강력 추천)</div>
                         <div class="feature-text">
-                            <b>파이썬 기본 내장 모듈만 사용하기</b><br>
-                            파이썬 설치 시 기본 제공되는 <code>csv</code>, <code>json</code>, <code>sqlite3</code>, <code>urllib</code>만 사용합니다. pip가 전혀 필요 없습니다.
+                            <b>파이썬 표준 라이브러리 100% 활용 (단일 .py)</b><br>
+                            외부 패키지(pip)를 일절 쓰지 않고, 파이썬 기본 내장 모듈(<code>csv</code>, <code>json</code>, <code>sqlite3</code>, <code>urllib</code>, <code>re</code>, <code>tkinter</code>)만으로 작성합니다.<br>
+                            <span class="tag-pill tag-pro" style="margin-top:6px;">장점</span> <b>단 1개의 .py 파일</b>만 반입하면 끝! 사내 보안 승인이 100% 통과됩니다.
                         </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-title" style="font-size:1.05rem;"><i class="fa-solid fa-box-archive" style="color:#f59e0b;"></i> 방법 B (외부 모듈 필수 시)</div>
+
+                    <div class="feature-card" style="border-top:4px solid var(--bundle);">
+                        <div class="feature-title" style="font-size:1.05rem; color:#b45309;"><i class="fa-solid fa-file-zipper"></i> 전략 2 (공식 단일 압축) <button class="info-chip" data-concept="zipapp">자세히</button></div>
                         <div class="feature-text">
-                            <b>PyInstaller로 단일 .exe 만들기</b><br>
-                            파이썬 인터프리터와 필요한 패키지를 모두 압축해 <b>더블클릭하면 켜지는 단일 실행파일</b>로 묶습니다.
+                            <b>파이썬 내장 zipapp (.pyz 파일)</b><br>
+                            여러 파이썬 파일과 순수 파이썬 라이브러리를 통째로 압축해 <b>단 1개의 <code>.pyz</code> 파일</b>로 만듭니다.<br>
+                            <span class="tag-pill tag-pro" style="margin-top:6px;">장점</span> .exe가 아닌 파이썬 아카이브이므로 백신에 걸리지 않으며, <code>python app.pyz</code>로 바로 실행됩니다.
                         </div>
                     </div>
+
+                    <div class="feature-card" style="border-top:4px solid var(--cdn);">
+                        <div class="feature-title" style="font-size:1.05rem; color:#0e7490;"><i class="fa-solid fa-cubes-stacked"></i> 전략 3 (외부 모듈 필수 시) <button class="info-chip" data-concept="wheels">자세히</button></div>
+                        <div class="feature-text">
+                            <b>오프라인 휠 (Wheelhouse 번들링)</b><br>
+                            pandas, openpyxl 등이 꼭 필요할 때, 외부망에서 패키지 설치 파일(<code>.whl</code>)들을 통째로 다운로드받아 사내망으로 들여옵니다.<br>
+                            <span class="tag-pill tag-info" style="margin-top:6px;">실행</span> <code>pip install --no-index --find-links=./wheels ...</code> 로 인터넷 없이 설치!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prompts for Python Non-EXE -->
+                <h4 style="font-weight:800; font-size:1.02rem; color:#1e293b; margin:22px 0 8px;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--primary); margin-right:6px;"></i> 전략별 AI 추천 프롬프트
+                </h4>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
+                    <span class="prompt-text">"사내 PC는 외부 인터넷 차단 및 .exe 반입 금지 환경이야. 지금 작성한 파이썬 코드에서 pandas/openpyxl 같은 외부 라이브러리를 모두 제거하고, <b>파이썬 표준 내장 모듈(csv, json, sqlite3, urllib 등)</b>만 사용하도록 코드를 리팩토링해서 <b>단일 .py 파일</b>로 완성해줘."</span>
                 </div>
 
                 <div class="prompt-box">
                     <button class="copy-btn" type="button"><i class="fa-solid fa-copy"></i> 복사</button>
-                    <span class="prompt-text">"사내 PC는 외부 인터넷 차단으로 pip 패키지를 설치할 수 없어. 지금 작성한 파이썬 코드에서 pandas/openpyxl 같은 외부 라이브러리를 제거하고, <b>Python 내장 기본 라이브러리(csv, json, sqlite3 등)</b>만 사용하도록 코드를 리팩토링해줘."</span>
+                    <span class="prompt-text">"이 파이썬 프로젝트의 여러 소스 파일과 라이브러리를 사내망에 .exe 없이 반입하려고 해. 파이썬 공식 내장 도구인 <b>zipapp</b>을 사용해서 단일 <b>.pyz 압축 실행 파일</b>로 번들링하는 방법과 실행 명령어를 단계별로 알려줘."</span>
                 </div>
+
+                <div class="cmd-box"># [외부망] 필수 패키지 오프라인 휠(.whl) 다운로드
+pip download -r requirements.txt -d ./wheels
+
+# [사내망] 인터넷 연결 없이 로컬 휠 폴더에서 즉시 설치
+pip install --no-index --find-links=./wheels -r requirements.txt</div>
             </div>
         </div>
     </section>
@@ -798,7 +831,7 @@
                 </li>
                 <li>
                     <b>3. 반입 대상이 '소스 전체'가 아니라 '완성된 결과물'인가?</b><br>
-                    <span style="color:#64748b; font-size:0.9rem;">웹 프로젝트의 수만 개 파일이 들어있는 <code>node_modules</code>를 반입 신청하면 승인이 거절됩니다. 빌드된 <code>dist/index.html</code> 단일 파일 또는 패키징된 산출물 파일만 신청하세요.</span>
+                    <span style="color:#64748b; font-size:0.9rem;">웹 프로젝트의 수만 개 파일(<code>node_modules</code>)은 반입 불가입니다. 웹은 <code>dist/index.html</code> 단일 파일, 파이썬은 외부 의존성이 제거된 <b>단일 .py</b> 또는 <b>.pyz 압축 파일</b>로 신청하세요. (실행 파일인 <code>.exe</code>는 보안상 반려됩니다.)</span>
                 </li>
             </ul>
 
@@ -846,6 +879,30 @@
                         <li><b>장점:</b> 사내 로그인 계정 자동 연동, 별도 서버 비용 0원, 보안 감사 프리패스</li>
                         <li><b>데이터 저장:</b> SharePoint List(리스트)를 데이터베이스 삼아 CRUD(저장·조회) 가능</li>
                         <li><b>실제 사내 활용:</b> AX Hub, Agent Store 등 주요 사내 AI 도구들이 이 방식으로 구현됨</li>
+                    </ul>
+                `
+            },
+            zipapp: {
+                title: "파이썬 zipapp (.pyz 번들링)",
+                content: `
+                    <p><b>📦 비유: 모든 재료를 한 통에 압축한 파이썬 전용 도시락</b></p>
+                    <p style="margin-top:10px;">Python 3.5부터 기본 탑재된 공식 내장 도구로, 여러 개의 파이썬 파일과 라이브러리를 <b>하나의 <code>.pyz</code> 압축 파일</b>로 묶어줍니다.</p>
+                    <ul style="margin-top:10px; padding-left:18px;">
+                        <li><b>보안 통과:</b> <code>.exe</code> 같은 이진 실행파일이 아니라 순수 파이썬 아카이브이므로 사내 백신과 DLP에 절대 걸리지 않습니다.</li>
+                        <li><b>실행 방법:</b> 터미널에서 <code>python my_app.pyz</code> 한 줄이면 바로 실행됩니다.</li>
+                        <li><b>적합한 대상:</b> 순수 파이썬 코드로 구성된 여러 모듈이나 도구.</li>
+                    </ul>
+                `
+            },
+            wheels: {
+                title: "오프라인 휠 (Wheelhouse 번들링)",
+                content: `
+                    <p><b>🚚 비유: 인터넷 없이 쓸 수 있는 '완제품 식자재 밀키트'</b></p>
+                    <p style="margin-top:10px;">pandas나 openpyxl 같은 외부 라이브러리가 꼭 필요할 때, 외부망에서 패키지 설치 파일(<code>.whl</code>)들을 통째로 다운받아 사내망으로 가져오는 방식입니다.</p>
+                    <ul style="margin-top:10px; padding-left:18px;">
+                        <li><b>외부망에서 다운로드:</b> <code>pip download -r requirements.txt -d ./wheels</code></li>
+                        <li><b>사내망에서 오프라인 설치:</b> <code>pip install --no-index --find-links=./wheels -r requirements.txt</code></li>
+                        <li><b>장점:</b> 인터넷이 끊겨도 로컬 폴더에서 완벽하게 설치됩니다.</li>
                     </ul>
                 `
             }
