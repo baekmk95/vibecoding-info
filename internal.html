@@ -327,30 +327,150 @@
         .prompt-box b { color: #fcd34d; font-weight: 700; }
 
         /* Checklist */
-        .check-list { list-style: none; margin: 16px 0; }
-        .check-list li {
-            position: relative;
-            padding-left: 32px;
-            margin-bottom: 14px;
-            font-size: 0.98rem;
-            color: #334155;
-            line-height: 1.5;
+        /* Checklist Interactive Widget */
+        .checklist-container {
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
-        .check-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
+        .checklist-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+            padding: 18px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .progress-wrap {
+            flex: 1;
+            min-width: 220px;
+        }
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+        .progress-bar-bg {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), #10b981);
+            border-radius: 6px;
+            transition: width 0.35s ease;
+        }
+        .checklist-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .chk-btn {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+            font-family: inherit;
+        }
+        .chk-btn:hover { background: #f1f5f9; color: #0f172a; }
+        .category-block {
+            padding: 18px 24px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .category-block:last-child { border-bottom: none; }
+        .category-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            transition: all .18s ease;
+            cursor: pointer;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+        .checklist-item:hover {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+        .checklist-item.checked {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        .custom-checkbox {
+            flex-shrink: 0;
             width: 22px;
             height: 22px;
-            background: #dcfce7;
-            color: #16a34a;
-            font-weight: 800;
-            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            margin-top: 2px;
+            transition: all .18s ease;
+            color: white;
+            font-size: 0.75rem;
+        }
+        .checklist-item.checked .custom-checkbox {
+            background: #10b981;
+            border-color: #10b981;
+        }
+        .item-content { flex: 1; }
+        .item-title {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+            transition: color .18s ease;
+        }
+        .checklist-item.checked .item-title {
+            color: #15803d;
+        }
+        .item-desc {
+            font-size: 0.86rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .checklist-complete-banner {
+            display: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 18px 0 6px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(16,185,129,0.25);
+        }
+        .checklist-complete-banner.show {
+            display: block;
+            animation: fadeIn .3s ease;
         }
 
         /* Slide controls (Presentation deck) */
@@ -816,27 +936,106 @@ pip install --no-index --find-links=./wheels -r requirements.txt</div>
     <!-- 5. 실전 체크리스트 & 워크플로우 -->
     <section class="container">
         <div class="center"><span class="step-tag">SECTION 5</span></div>
-        <h2 class="section-title">✅ 사내망 반입 전 3대 자가진단 체크리스트</h2>
-        <p class="section-desc">반입 신청을 올리기 전, 내 컴퓨터에서 딱 3가지만 확인하세요!</p>
+        <h2 class="section-title">✅ 사내망 반입 전 필수 자가진단 체크리스트</h2>
+        <p class="section-desc">반입 심의를 신청하기 전, 직접 클릭하며 6가지 통과 기준을 점검해 보세요!</p>
 
         <div class="detail-card">
-            <ul class="check-list">
-                <li>
-                    <b>1. 오프라인(비행기 모드) 테스트를 통과했는가?</b><br>
-                    <span style="color:#64748b; font-size:0.9rem;">와이파이와 랜선을 뽑고 비행기 모드로 전환한 뒤, 내 도구가 정상 작동하는지 확인하세요. 인터넷을 껐는데 화면이 하얗게 나오면 숨겨진 외부 의존성이 있는 것입니다. (CDN 사용 시는 사내망 접속 상태에서 테스트)</span>
-                </li>
-                <li>
-                    <b>2. 개인정보·사내 보안 키가 하드코딩되어 있지 않은가?</b><br>
-                    <span style="color:#64748b; font-size:0.9rem;">코드 안에 내 실제 비밀번호, 사번, 실제 고객 DB 접속 계정, OpenAI API 키 등이 글자로 적혀 있지 않은지 검색해보세요. 예시 데이터는 가짜(Dummy) 데이터여야 합니다.</span>
-                </li>
-                <li>
-                    <b>3. 반입 대상이 '소스 전체'가 아니라 '완성된 결과물'인가?</b><br>
-                    <span style="color:#64748b; font-size:0.9rem;">웹 프로젝트의 수만 개 파일(<code>node_modules</code>)은 반입 불가입니다. 웹은 <code>dist/index.html</code> 단일 파일, 파이썬은 외부 의존성이 제거된 <b>단일 .py</b> 또는 <b>.pyz 압축 파일</b>로 신청하세요. (실행 파일인 <code>.exe</code>는 보안상 반려됩니다.)</span>
-                </li>
-            </ul>
+            <div class="checklist-container" id="checklistApp">
+                <div class="checklist-header">
+                    <div class="progress-wrap">
+                        <div class="progress-label-row">
+                            <span><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> 반입 점검 완료율</span>
+                            <span id="chkCountText" style="color:var(--primary); font-weight:800;">0 / 6 완료 (0%)</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="chkProgressFill"></div>
+                        </div>
+                    </div>
+                    <div class="checklist-actions">
+                        <button class="chk-btn" id="btnCheckAll" type="button"><i class="fa-solid fa-check-double"></i> 전체 선택</button>
+                        <button class="chk-btn" id="btnResetAll" type="button"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
+                    </div>
+                </div>
+
+                <!-- Category 1: 보안 및 규정 -->
+                <div class="category-block">
+                    <div class="category-title" style="color:#e11d48;">
+                        <i class="fa-solid fa-shield-halved"></i> 1. 보안 & 사내 규정 준수 (Security & Privacy)
+                    </div>
+                    
+                    <div class="checklist-item" data-chk="1">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">개인정보 및 비밀 키(API Key / DB 암호) 하드코딩 제로</div>
+                            <div class="item-desc">소스 코드, 설정 파일, 주석 내에 OpenAI/Claude API Key, 사내 DB 접속 비밀번호, 사번, 실제 고객 데이터가 남아있지 않은가요? (샘플 데이터는 반드시 가짜 Dummy 데이터로 구성)</div>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" data-chk="2">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">실행 파일(.exe, .bat) 원천 배제 및 순수 소스 준비</div>
+                            <div class="item-desc">사내 보안 솔루션(DLP, EDR, 백신)에서 악성코드로 자동 격리되는 바이너리(<code>.exe</code>)나 임의 배치 파일 대신, 순수 텍스트/표준 형식(<code>.py</code>, <code>.pyz</code>, <code>.html</code>)으로 산출물을 준비했나요?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2: 오프라인 구동 및 번들링 -->
+                <div class="category-block">
+                    <div class="category-title" style="color:var(--primary);">
+                        <i class="fa-solid fa-box-archive"></i> 2. 오프라인 구동 & 의존성 번들링 (Offline & Bundling)
+                    </div>
+
+                    <div class="checklist-item" data-chk="3">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">오프라인(비행기 모드) 자가 구동 테스트 통과</div>
+                            <div class="item-desc">와이파이와 인터넷을 완전히 끈 상태에서 도구를 실행했을 때 오류(흰 화면, 누락된 모듈, CDN 차단) 없이 로컬에서 온전히 작동하나요?</div>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" data-chk="4">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">산출물 단일화(도시락 번들링) 완결</div>
+                            <div class="item-desc">웹은 <code>node_modules</code> 없이 단일 <code>dist/index.html</code>로 번들링되었나요? 파이썬은 표준 라이브러리 기반 단일 <code>.py</code> 또는 <code>zipapp .pyz</code>로 묶였나요?</div>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" data-chk="5">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">사내망 CDN 화이트리스트 사전 점검 (CDN 사용 시)</div>
+                            <div class="item-desc">외부 패키지 대신 <code>&lt;script src="..."&gt;</code> CDN 링크 방식을 썼다면, 사내 PC 브라우저에서 해당 CDN 주소(jsdelivr/cdnjs)가 사내 방화벽에 차단되지 않고 열리는지 미리 확인했나요?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3: 인수인계 및 운영 -->
+                <div class="category-block">
+                    <div class="category-title" style="color:#0d9488;">
+                        <i class="fa-solid fa-clipboard-user"></i> 3. 인수인계 & 운영 준비 (Handover & Guide)
+                    </div>
+
+                    <div class="checklist-item" data-chk="6">
+                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <div class="item-content">
+                            <div class="item-title">비전공자 동료를 위한 3줄 실행 가이드(README) 첨부</div>
+                            <div class="item-desc">"1) 파일 더블클릭 2) 엑셀 CSV 끌어다 놓기 3) 결과 확인"처럼 팀원이 복잡한 터미널 명령어 없이도 바로 따라 할 수 있는 친절한 실행 설명서가 준비되었나요?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 축하 배너 -->
+            <div class="checklist-complete-banner" id="chkBanner">
+                <div style="font-size:1.6rem; margin-bottom:4px;">🎉</div>
+                <h4 style="font-weight:800; font-size:1.2rem; margin-bottom:6px;">사내망 반입 심의 기준(6/6)을 모두 충족했습니다!</h4>
+                <p style="font-size:0.92rem; opacity:0.95;">보안, 의존성, 인수인계 가이드 준비가 모두 끝났습니다. 이제 사내 망연계 시스템을 통해 당당하게 반입을 신청하세요!</p>
+            </div>
 
             <div style="text-align:center; margin-top:30px; padding-top:20px; border-top:1px solid #f1f5f9;">
-                <h4 style="font-weight:800; font-size:1.15rem; color:#1e293b; margin-bottom:10px;">이제 사내망 반입 준비가 모두 끝났습니다! 🎉</h4>
+                <h4 style="font-weight:800; font-size:1.15rem; color:#1e293b; margin-bottom:10px;">이제 사내망 반입 준비가 모두 끝났습니다! 🚀</h4>
                 <p style="color:#64748b; font-size:0.95rem; margin-bottom:20px;">기초 개념부터 실습, 사내 반입까지 바이브 코딩으로 나만의 업무 도구를 완성해보세요.</p>
                 <div class="nav-links">
                     <a class="nav-link" href="practice.html" style="background:var(--primary); color:white; border-color:var(--primary);">
@@ -1073,6 +1272,75 @@ pip install --no-index --find-links=./wheels -r requirements.txt</div>
                     topBtn.classList.remove('show');
                 }
             }, { passive: true });
+        })();
+
+        // Checklist Widget Controller
+        (function() {
+            var items = document.querySelectorAll('.checklist-item');
+            var fill = document.getElementById('chkProgressFill');
+            var countText = document.getElementById('chkCountText');
+            var banner = document.getElementById('chkBanner');
+            var btnAll = document.getElementById('btnCheckAll');
+            var btnReset = document.getElementById('btnResetAll');
+            if (!items.length || !fill || !countText) return;
+
+            var STORAGE_KEY = 'vibecoding_internal_chk_state_v2';
+            var saved = {};
+            try {
+                saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            } catch (e) {}
+
+            function update() {
+                var total = items.length;
+                var checked = 0;
+                items.forEach(function(el) {
+                    var key = el.getAttribute('data-chk');
+                    if (el.classList.contains('checked')) {
+                        checked++;
+                        saved[key] = true;
+                    } else {
+                        delete saved[key];
+                    }
+                });
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch (e) {}
+
+                var pct = Math.round((checked / total) * 100);
+                fill.style.width = pct + '%';
+                countText.textContent = checked + ' / ' + total + ' 완료 (' + pct + '%)';
+
+                if (banner) {
+                    if (checked === total) {
+                        banner.classList.add('show');
+                    } else {
+                        banner.classList.remove('show');
+                    }
+                }
+            }
+
+            // Restore from saved state
+            items.forEach(function(el) {
+                var key = el.getAttribute('data-chk');
+                if (saved[key]) el.classList.add('checked');
+
+                el.addEventListener('click', function() {
+                    el.classList.toggle('checked');
+                    update();
+                });
+            });
+            update();
+
+            if (btnAll) {
+                btnAll.addEventListener('click', function() {
+                    items.forEach(function(el) { el.classList.add('checked'); });
+                    update();
+                });
+            }
+            if (btnReset) {
+                btnReset.addEventListener('click', function() {
+                    items.forEach(function(el) { el.classList.remove('checked'); });
+                    update();
+                });
+            }
         })();
     </script>
 </body>
